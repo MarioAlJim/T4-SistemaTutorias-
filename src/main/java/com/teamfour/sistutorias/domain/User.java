@@ -3,7 +3,6 @@ package com.teamfour.sistutorias.domain;
 public class User extends Person{
     private String email;
     private String password;
-    private int rol;
 
     public String getEmail() {
         return email;
@@ -21,11 +20,4 @@ public class User extends Person{
         this.password = password;
     }
 
-    public int getRol() {
-        return rol;
-    }
-
-    public void setRol(int rol) {
-        this.rol = rol;
-    }
 }
