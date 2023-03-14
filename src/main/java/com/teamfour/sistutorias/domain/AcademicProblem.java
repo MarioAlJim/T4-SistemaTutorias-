@@ -6,6 +6,7 @@ public class AcademicProblem {
     private String description;
     private String solution;
     private int group;
+    private int register;
 
     public String getTitle() {
         return title;
@@ -37,5 +38,13 @@ public class AcademicProblem {
 
     public void setGroup(int group) {
         this.group = group;
+    }
+
+    public int getRegister() {
+        return register;
+    }
+
+    public void setRegister(int register) {
+        this.register = register;
     }
 }
