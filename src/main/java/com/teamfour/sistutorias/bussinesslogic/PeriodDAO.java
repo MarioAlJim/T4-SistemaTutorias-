@@ -15,18 +15,13 @@ public class PeriodDAO implements IPeriodDAO {
         ArrayList<Period> periods = new ArrayList<>();
         String query = "SELECT P.start, P.end FROM period P";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        try {
-            Connection connection = dataBaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                periods.add(getPeriod(resultSet));
-            }
-        } catch (SQLException sqlException) {
-            throw sqlException;
-        } finally {
-            dataBaseConnection.closeConection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            periods.add(getPeriod(resultSet));
         }
+        dataBaseConnection.closeConection();
         return periods;
     }
 

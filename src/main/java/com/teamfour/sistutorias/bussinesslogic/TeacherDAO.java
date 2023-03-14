@@ -16,18 +16,13 @@ public class TeacherDAO implements ITeacherDAO {
         String query = "SELECT T.personal_number, P.name, P.paternal_surname, P.maternal_surname FROM teacher T " +
                 "INNER JOIN person P ON P.person_id = T.person_id";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        try {
-            Connection connection = dataBaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                teachers.add(getTeacher(resultSet));
-            }
-        } catch (SQLException sqlException) {
-            throw sqlException;
-        } finally {
-            dataBaseConnection.closeConection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            teachers.add(getTeacher(resultSet));
         }
+        dataBaseConnection.closeConection();
         return teachers;
     }
 

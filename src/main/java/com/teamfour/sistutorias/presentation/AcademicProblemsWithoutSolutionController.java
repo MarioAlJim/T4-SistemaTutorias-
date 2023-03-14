@@ -4,6 +4,7 @@ import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
 import com.teamfour.sistutorias.bussinesslogic.EEDAO;
 import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
 import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
+import com.teamfour.sistutorias.domain.EE;
 import com.teamfour.sistutorias.domain.Period;
 import com.teamfour.sistutorias.domain.Teacher;
 import javafx.collections.FXCollections;
@@ -42,16 +43,21 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
 
     private ObservableList<Teacher> teachers = FXCollections.observableArrayList();
     private ObservableList<Period> periods = FXCollections.observableArrayList();
+    private ObservableList<EE> ees = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
-    public void populateCombobox() throws SQLException {
+    public void populateComboBoxes() throws SQLException {
         TeacherDAO teacherDAO = new TeacherDAO();
         this.teachers.addAll(teacherDAO.getTeachers());
         this.cbTeacher.setItems(teachers);
+
+        EEDAO eedao = new EEDAO();
+        this.ees.addAll(eedao.getEEs());
+        this.cbEE.setItems(ees);
 
         PeriodDAO periodDAO = new PeriodDAO();
         this.periods.addAll(periodDAO.getPeriods());

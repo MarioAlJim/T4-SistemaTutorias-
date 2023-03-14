@@ -5,7 +5,7 @@ public class AcademicProblem {
     private String title;
     private String description;
     private String solution;
-    private int group;
+    private Group group;
     private int register;
 
     public String getTitle() {
@@ -32,11 +32,11 @@ public class AcademicProblem {
         this.solution = solution;
     }
 
-    public int getGroup() {
+    public Group getGroup() {
         return group;
     }
 
-    public void setGroup(int group) {
+    public void setGroup(Group group) {
         this.group = group;
     }
 
