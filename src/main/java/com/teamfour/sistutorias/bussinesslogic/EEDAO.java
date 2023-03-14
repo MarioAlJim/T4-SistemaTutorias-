@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public class Teacher implements ITeacher {
+public class EEDAO implements IEEDAO {
 }

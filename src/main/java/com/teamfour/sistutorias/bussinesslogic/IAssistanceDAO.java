@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public interface IAssistance {
+public interface IAssistanceDAO {
 }

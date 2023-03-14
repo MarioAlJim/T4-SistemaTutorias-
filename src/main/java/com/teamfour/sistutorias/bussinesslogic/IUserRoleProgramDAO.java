@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public interface ITeacher {
+public interface IUserRoleProgramDAO {
 }

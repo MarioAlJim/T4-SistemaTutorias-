@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public interface ITutorship {
+public class UserDAO implements IUserDAO {
 }

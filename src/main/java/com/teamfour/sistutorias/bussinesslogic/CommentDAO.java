@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public interface IEducationProgram {
+public class CommentDAO implements ICommentDAO {
 }

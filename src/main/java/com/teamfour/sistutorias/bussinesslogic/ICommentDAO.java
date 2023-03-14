@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public interface IPerson {
+public interface ICommentDAO {
 }
