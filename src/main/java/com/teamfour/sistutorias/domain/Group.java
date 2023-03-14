@@ -6,6 +6,9 @@ public class Group {
     private int nrc;
     private int educativeProgram;
 
+    private String teacher;
+    private String ee;
+
     public int getPersonalNumber() {
         return personalNumber;
     }
@@ -36,5 +39,21 @@ public class Group {
 
     public void setEducativeProgram(int educativeProgram) {
         this.educativeProgram = educativeProgram;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getEe() {
+        return ee;
+    }
+
+    public void setEe(String ee) {
+        this.ee = ee;
     }
 }
