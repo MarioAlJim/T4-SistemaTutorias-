@@ -57,8 +57,6 @@ public class LoginController implements Initializable {
     private Label lblInvalidUser;
     @javafx.fxml.FXML
     private Label lblInvalidPassword;
-
-    private ArrayList<UserRoleProgram> users = new ArrayList<UserRoleProgram>();
     /**
      * Initializes the controller class.
      */
@@ -97,13 +95,12 @@ public class LoginController implements Initializable {
 
     private void validateUser(String uvAcount, String password) {
         Messages alerts = new Messages();
-       /*ry {
-           // RoleDAO roleDAO = new RoleDAO();
-            //users = RoleDAO.searchUser(uvAcount, password);
+        ArrayList<UserRoleProgram> users;
+        try {
+            RoleDAO roleDAO = new RoleDAO();
+            users = roleDAO.searchUser(uvAcount, password);
             if (users.size() == 1) {
-
-            } else if (users.size() > 1) {
-                switch(usuarioRecuperado.getRol()) {
+                switch(users.get(1).getIdRole()) {
                     case 1:
                         //mostrarMenuAdministrador();
                         break;
@@ -120,13 +117,15 @@ public class LoginController implements Initializable {
                         alerts.mostrarAlertaUsuarioIncorrecto();
                         break;
                 }
+            } else if (users.size() > 1) {
+
             } else {
                 alerts.mostrarAlertaUsuarioIncorrecto();
             }
         }catch (SQLException exception) {
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
             alerts.mostrarAlertaErrorConexionDB();
-        }*/
+        }
     }
 
     /*private void mostrarMenuTutor(Usuario usuarioRecuperado) throws IOException{
