@@ -1,7 +1,6 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.domain.AcademicProblem;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 

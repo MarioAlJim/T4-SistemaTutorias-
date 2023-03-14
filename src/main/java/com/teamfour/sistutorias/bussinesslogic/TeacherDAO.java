@@ -1,4 +1,4 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-public interface IUserRoleProgram {
+public class TeacherDAO implements ITeacherDAO {
 }
