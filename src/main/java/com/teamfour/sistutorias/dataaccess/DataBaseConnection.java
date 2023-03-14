@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.teamfour.sistutorias.dataaccess.*;
 
 public class DataBaseConnection {
     
@@ -22,7 +23,8 @@ public class DataBaseConnection {
 
     private void connect() throws SQLException{
         try {
-            FileInputStream configurationFile = new FileInputStream(new File("dbconfig.txt"));
+            File archivo = new File("src/main/resources/dbconfig.txt");
+            FileInputStream configurationFile = new FileInputStream(archivo);
             Properties properties = new Properties();
             properties.load(configurationFile);
             configurationFile.close();

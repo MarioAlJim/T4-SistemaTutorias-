@@ -6,9 +6,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.teamfour.sistutorias.presentation.RegisterProblem"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="420.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.RegisterProblem">
+    <children>
+    <TextField fx:id="txtNumberTutorados" layoutX="199.0" layoutY="22.0" prefHeight="25.0" prefWidth="66.0" promptText="lblCantidadTutorados" />
+    <TextField fx:id="txtTitle" layoutX="37.0" layoutY="141.0" prefHeight="25.0" prefWidth="522.0" promptText="Titulo" />
+    <TextArea fx:id="txtDescription" layoutX="39.0" layoutY="195.0" prefHeight="178.0" prefWidth="522.0" promptText="Descripción de la problemática" />
+    <Label layoutX="35.0" layoutY="26.0" text="No. Tutorados que reportan" />
+    <Label layoutX="37.0" layoutY="124.0" text="Titulo" />
+    <Label layoutX="36.0" layoutY="178.0" text="Descripción" />
+    <Label layoutX="36.0" layoutY="92.0" text="Experiencia Educativa" />
+    <ComboBox fx:id="cbEe" layoutX="183.0" layoutY="88.0" prefHeight="25.0" prefWidth="374.0" promptText="Elija un Docente" />
+    <Button fx:id="btnSave" layoutX="502.0" layoutY="380.0" mnemonicParsing="false" onAction="#newRegister" text="Guardar" />
+    <Button fx:id="btnCancel" layoutX="425.0" layoutY="380.0" mnemonicParsing="false" onAction="#close" text="Cancelar" />
+</children>
 
 </AnchorPane>

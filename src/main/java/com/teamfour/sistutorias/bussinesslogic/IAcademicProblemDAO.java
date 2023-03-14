@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public interface IAcademicProblemDAO {
 
-    public int registrarProblematicaAcademica(AcademicProblem academicProblem, int register) throws SQLException;
+    public int register(AcademicProblem academicProblem) throws SQLException;
 
-    public int actualizarProblematica(AcademicProblem academicProblem)throws SQLException;
+    public int update(AcademicProblem academicProblem)throws SQLException;
 
-    public int eliminarProblematica(AcademicProblem academicProblem) throws SQLException;
+    public int delete(AcademicProblem academicProblem) throws SQLException;
 }

@@ -2,6 +2,8 @@ package com.teamfour.sistutorias.domain;
 
 public class AcademicProblem {
 
+    private int idAcademicProblem;
+    private int numberTutorados;
     private String title;
     private String description;
     private String solution;
@@ -46,5 +48,21 @@ public class AcademicProblem {
 
     public void setRegister(int register) {
         this.register = register;
+    }
+
+    public int getNumberTutorados() {
+        return numberTutorados;
+    }
+
+    public void setNumberTutorados(int numberTutorados) {
+        this.numberTutorados = numberTutorados;
+    }
+
+    public int getIdAcademicProblem() {
+        return idAcademicProblem;
+    }
+
+    public void setIdAcademicProblem(int idAcademicProblem) {
+        this.idAcademicProblem = idAcademicProblem;
     }
 }
