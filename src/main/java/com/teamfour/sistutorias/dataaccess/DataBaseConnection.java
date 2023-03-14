@@ -1,15 +1,19 @@
 package com.teamfour.sistutorias.dataaccess;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DataBaseConnection {
     
     private Connection connection;
-    private final String DB="jdbc:mysql://sistematutoriasfei.mysql.database.azure.com:3306/sistematutoriasfei?useSSL=true&requireSSL=false";
 
     public Connection getConnection() throws SQLException{
         connect();
@@ -17,8 +21,20 @@ public class DataBaseConnection {
     }
 
     private void connect() throws SQLException{
-       /* usuarioDB = usuarioDataBase.obtenerUsuario();
-        connection=DriverManager.getConnection(DB,usuarioDB.getUser(),usuarioDB.getPassword());*/
+        try {
+            FileInputStream configurationFile = new FileInputStream(new File("dbconfig.txt"));
+            Properties properties = new Properties();
+            properties.load(configurationFile);
+            configurationFile.close();
+            String direction = properties.getProperty("Direction");
+            String user = properties.getProperty("User");
+            String password = properties.getProperty("Password");
+            connection = DriverManager.getConnection(direction, user, password);
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println(fileNotFoundException.getMessage());
+        } catch (IOException ioException) {
+            System.out.println(ioException.getMessage());
+        }
     }
 
     public void closeConection(){

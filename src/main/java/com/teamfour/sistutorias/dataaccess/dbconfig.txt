@@ -1,0 +1,3 @@
+Direction = jdbc:mysql://sistematutoriasfei.mysql.database.azure.com:3306/sistematutoriasfei?useSSL=true&requireSSL=false
+User = tutorshipSystemUser
+Password = zOc0B;i0xYQXL~H(@~5D-+

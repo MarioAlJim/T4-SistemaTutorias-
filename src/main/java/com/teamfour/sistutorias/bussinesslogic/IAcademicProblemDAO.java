@@ -11,6 +11,4 @@ public interface IAcademicProblemDAO {
     public int actualizarProblematica(AcademicProblem academicProblem)throws SQLException;
 
     public int eliminarProblematica(AcademicProblem academicProblem) throws SQLException;
-
-
 }
