@@ -28,7 +28,7 @@ public class EducationProgramDAO implements IEducationProgramDAO {
     @Override
     public boolean register(EducationProgram educationProgram) throws SQLException {
         boolean educationProgramWasRegistered = false;
-        String query = "";
+        String query = "INSERT INTO education_program(name) VALUES(?)";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);

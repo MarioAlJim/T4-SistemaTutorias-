@@ -2,10 +2,12 @@ package com.teamfour.sistutorias.domain;
 
 public class AcademicProblem {
 
+    private int idAcademicProblem;
+    private int numberTutorados;
     private String title;
     private String description;
     private String solution;
-    private Group group;
+    private int group;
     private int register;
 
     public String getTitle() {
@@ -32,19 +34,34 @@ public class AcademicProblem {
         this.solution = solution;
     }
 
-    public Group getGroup() {
+    public int getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(int group) {
         this.group = group;
     }
-
     public int getRegister() {
         return register;
     }
 
     public void setRegister(int register) {
         this.register = register;
+    }
+
+    public int getNumberTutorados() {
+        return numberTutorados;
+    }
+
+    public void setNumberTutorados(int numberTutorados) {
+        this.numberTutorados = numberTutorados;
+    }
+
+    public int getIdAcademicProblem() {
+        return idAcademicProblem;
+    }
+
+    public void setIdAcademicProblem(int idAcademicProblem) {
+        this.idAcademicProblem = idAcademicProblem;
     }
 }
