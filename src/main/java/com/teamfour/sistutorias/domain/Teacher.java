@@ -10,4 +10,11 @@ public class Teacher extends Person{
     public void setPersonalNumber(int personalNumber) {
         this.personalNumber = personalNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "personalNumber=" + personalNumber +
+                '}';
+    }
 }

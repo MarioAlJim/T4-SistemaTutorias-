@@ -1,15 +1,15 @@
 package com.teamfour.sistutorias.domain;
 
 public class EducationProgram {
-    private int idEduationProgram;
+    private int idEducationProgram;
     private String name;
 
-    public int getIdEduationProgram() {
-        return idEduationProgram;
+    public int getIdEducationProgram() {
+        return idEducationProgram;
     }
 
-    public void setIdEduationProgram(int idEduationProgram) {
-        this.idEduationProgram = idEduationProgram;
+    public void setIdEducationProgram(int idEducationProgram) {
+        this.idEducationProgram = idEducationProgram;
     }
 
     public String getName() {

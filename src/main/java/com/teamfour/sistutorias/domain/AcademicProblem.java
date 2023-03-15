@@ -41,7 +41,6 @@ public class AcademicProblem {
     public void setGroup(int group) {
         this.group = group;
     }
-
     public int getRegister() {
         return register;
     }
