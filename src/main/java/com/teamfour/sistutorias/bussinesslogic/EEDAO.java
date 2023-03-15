@@ -13,7 +13,7 @@ public class EEDAO implements IEEDAO {
     @Override
     public ArrayList<EE> getEEs() throws SQLException {
         ArrayList<EE> ees = new ArrayList<>();
-        String query = "SELECT name FROM EE";
+        String query = "SELECT nombre AS name FROM EE";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
