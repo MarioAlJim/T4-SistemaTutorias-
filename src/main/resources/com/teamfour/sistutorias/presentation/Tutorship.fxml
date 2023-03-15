@@ -30,5 +30,6 @@
         <Label fx:id="endThirdSessionLabel" layoutX="388.0" layoutY="263.0" text="Cierre tercera sesión" />
         <DatePicker fx:id="thirdDate" layoutX="49.0" layoutY="289.0" />
         <DatePicker fx:id="endThirdDate" layoutX="354.0" layoutY="289.0" />
+      <TextField layoutX="127.0" layoutY="33.0" />
     </children>
 </AnchorPane>
