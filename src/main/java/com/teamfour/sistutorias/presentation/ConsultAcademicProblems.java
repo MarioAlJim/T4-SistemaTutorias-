@@ -24,7 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
+//listo
 public class ConsultAcademicProblems implements Initializable{
 
     @javafx.fxml.FXML
