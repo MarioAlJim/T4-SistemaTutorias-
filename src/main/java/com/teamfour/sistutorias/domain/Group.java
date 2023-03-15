@@ -1,29 +1,10 @@
 package com.teamfour.sistutorias.domain;
 
 public class Group {
-    private int personalNumber;
-    private int idEe;
     private int nrc;
-    private int educativeProgram;
-
-    private String teacher;
-    private String ee;
-
-    public int getPersonalNumber() {
-        return personalNumber;
-    }
-
-    public void setPersonalNumber(int personalNumber) {
-        this.personalNumber = personalNumber;
-    }
-
-    public int getIdEe() {
-        return idEe;
-    }
-
-    public void setIdEe(int idEe) {
-        this.idEe = idEe;
-    }
+    private EE ee;
+    private Teacher teacher;
+    private EducationProgram educationProgram;
 
     public int getNrc() {
         return nrc;
@@ -33,27 +14,27 @@ public class Group {
         this.nrc = nrc;
     }
 
-    public int getEducativeProgram() {
-        return educativeProgram;
-    }
-
-    public void setEducativeProgram(int educativeProgram) {
-        this.educativeProgram = educativeProgram;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getEe() {
+    public EE getEe() {
         return ee;
     }
 
-    public void setEe(String ee) {
+    public void setEe(EE ee) {
         this.ee = ee;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public EducationProgram getEducationProgram() {
+        return educationProgram;
+    }
+
+    public void setEducationProgram(EducationProgram educationProgram) {
+        this.educationProgram = educationProgram;
     }
 }
