@@ -13,7 +13,7 @@ public class PeriodDAO implements IPeriodDAO {
     @Override
     public ArrayList<Period> getPeriods() throws SQLException {
         ArrayList<Period> periods = new ArrayList<>();
-        String query = "SELECT P.start, P.end FROM period P";
+        String query = "SELECT * FROM period P";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
@@ -27,6 +27,8 @@ public class PeriodDAO implements IPeriodDAO {
 
     private Period getPeriod(ResultSet resultSet) throws SQLException {
         Period period = new Period();
+        int idPeriod = resultSet.getInt("period_id");
+        period.setIdPeriod(idPeriod);
         String start = resultSet.getString("start");
         period.setStart(start);
         String end = resultSet.getString("end");
