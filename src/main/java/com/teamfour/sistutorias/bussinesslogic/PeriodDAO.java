@@ -3,10 +3,8 @@ package com.teamfour.sistutorias.bussinesslogic;
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.Period;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class PeriodDAO implements IPeriodDAO {
@@ -26,13 +24,16 @@ public class PeriodDAO implements IPeriodDAO {
     }
 
     private Period getPeriod(ResultSet resultSet) throws SQLException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
         Period period = new Period();
         int idPeriod = resultSet.getInt("period_id");
         period.setIdPeriod(idPeriod);
-        String start = resultSet.getString("start");
-        period.setStart(start);
-        String end = resultSet.getString("end");
-        period.setEnd(end);
+        Date start = resultSet.getDate("start");
+        String startWithFormat = dateFormat.format(start);
+        period.setStart(startWithFormat);
+        Date end = resultSet.getDate("end");
+        String endWithFormat = dateFormat.format(end);
+        period.setEnd(endWithFormat);
         return period;
     }
 }
