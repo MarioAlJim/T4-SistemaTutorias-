@@ -28,4 +28,9 @@ public class Tutorship {
     public void setEnd(String end) {
         this.end = end;
     }
+
+    @Override
+    public String toString() {
+        return start;
+    }
 }

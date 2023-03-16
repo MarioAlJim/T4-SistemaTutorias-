@@ -3,7 +3,10 @@ package com.teamfour.sistutorias.bussinesslogic;
 import com.teamfour.sistutorias.domain.Tutorship;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface ITutorshipDAO {
     public Tutorship getLatestTutorship() throws SQLException;
+
+    public ArrayList<Tutorship> getTutorships() throws SQLException;
 }
