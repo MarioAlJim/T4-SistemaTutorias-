@@ -9,6 +9,10 @@ public class Comment {
         this.description = description;
     }
 
+    public Comment() {
+
+    }
+
     public int getComment_id() {
         return comment_id;
     }
