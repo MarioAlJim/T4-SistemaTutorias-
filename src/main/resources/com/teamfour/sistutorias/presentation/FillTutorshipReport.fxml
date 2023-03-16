@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.FillTutorshipReport">
+   <children>
+      <TableView fx:id="tvTutored" layoutX="14.0" layoutY="83.0" prefHeight="200.0" prefWidth="384.0">
+        <columns>
+          <TableColumn fx:id="tcAssistance" prefWidth="75.0" text="Asistencia" />
+          <TableColumn fx:id="tcTutored" prefWidth="211.44293975830078" text="Tutorado" />
+            <TableColumn fx:id="tcRisk" prefWidth="96.7451171875" text="En riesgo" />
+        </columns>
+      </TableView>
+      <Label fx:id="lbPeriod" layoutX="14.0" layoutY="23.0" text="Periodo escolar: " />
+      <Label fx:id="lbDate" layoutX="318.0" layoutY="23.0" text="Fecha de sesion de tutoria:" />
+      <Button layoutX="418.0" layoutY="139.0" mnemonicParsing="false" onAction="#openRegisterProblem" text="Registrar Problematicas" />
+      <Button layoutX="418.0" layoutY="200.0" mnemonicParsing="false" onAction="#openAddComment" prefHeight="27.0" prefWidth="165.0" text="Registrar Comentario" />
+      <Label fx:id="lbAssistantPercentage" layoutX="14.0" layoutY="303.0" text="Porcentaje de asistencias:" />
+      <Label fx:id="lbRiskPercentage" layoutX="13.0" layoutY="322.0" text="Porcentaje de alumnos en riesgo:" />
+      <Button layoutX="517.0" layoutY="359.0" mnemonicParsing="false" onAction="#saveRegister" text="Guardar" />
+      <Button layoutX="431.0" layoutY="359.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
+   </children>
+</AnchorPane>
