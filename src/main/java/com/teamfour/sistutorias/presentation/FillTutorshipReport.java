@@ -150,6 +150,26 @@ public class FillTutorshipReport implements Initializable {
                     throw new RuntimeException(e);
                 }
             }
+
+            for(Assistance tutored : tutorados) {
+                AssistanceDAO assistanceDAO = new AssistanceDAO();
+                tutored.setRegister_id(register.getRegister_id());
+                if (tutored.getCheckBoxAsistencia().isSelected()) {
+                    tutored.setAsistencia(true);
+                } else {
+                    tutored.setAsistencia(false);
+                }
+                if (tutored.getCheckBoxRiesgo().isSelected()) {
+                    tutored.setRiesgo(true);
+                } else {
+                    tutored.setRiesgo(false);
+                }
+                try {
+                    assistanceDAO.register(tutored);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
