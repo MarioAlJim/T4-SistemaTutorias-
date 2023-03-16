@@ -4,8 +4,10 @@ import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.Assistance;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 public class AssistanceDAO implements IAssistanceDAO {
     @Override
@@ -59,5 +61,36 @@ public class AssistanceDAO implements IAssistanceDAO {
             statement.setInt(1, id);
             insertedFiles = statement.executeUpdate();
         return insertedFiles;
+    }
+
+    @Override
+    public ArrayList<Assistance> getAssistanceTutor(String tutor_id) throws SQLException {
+        DataBaseConnection db = new DataBaseConnection();
+        Connection connection = db.getConnection();
+        ArrayList<Assistance> tutoradosAsistencia = new ArrayList<>();
+        String query = "SELECT * FROM tutorado\n" +
+                "JOIN person ON tutorado.person_id = person.person_id\n" +
+                "JOIN tutorado_tutor WHERE user_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, tutor_id);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String registrationNumber = resultSet.getString("registration_number");
+            String name = resultSet.getString("name");
+            String paternalSurname = resultSet.getString("paternal_surname");
+            String maternalSurname = resultSet.getString("maternal_surname");
+            int programId = resultSet.getInt("program_id");
+            Assistance tutorado = new Assistance(registrationNumber, name, paternalSurname, maternalSurname, programId);
+            for (Assistance assistance : tutoradosAsistencia) {
+                if (assistance.getRegistrationNumber().equals(tutorado.getRegistrationNumber())) {
+                    tutorado = null;
+                    break;
+                }
+            }
+            if (tutorado != null) {
+                tutoradosAsistencia.add(tutorado);
+            }
+        }
+        return tutoradosAsistencia;
     }
 }

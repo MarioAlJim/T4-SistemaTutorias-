@@ -6,4 +6,6 @@ module com.teamfour.sistutorias {
 
     opens com.teamfour.sistutorias.presentation to javafx.fxml;
     exports com.teamfour.sistutorias.presentation;
+    opens com.teamfour.sistutorias.domain to javafx.fxml;
+    exports com.teamfour.sistutorias.domain;
 }
