@@ -25,7 +25,7 @@ public class AcademicProblemDAOTest {
     void consultAcademicProblemsByProgram() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testConsultAcademicProblemsByTutor() {
     }
 }
