@@ -6,7 +6,7 @@ module com.teamfour.sistutorias {
     requires controlsfx;
 
     opens com.teamfour.sistutorias.presentation to javafx.fxml;
-    exports com.teamfour.sistutorias.presentation;
     opens com.teamfour.sistutorias.domain to javafx.fxml;
+    exports com.teamfour.sistutorias.presentation;
     exports com.teamfour.sistutorias.domain;
 }

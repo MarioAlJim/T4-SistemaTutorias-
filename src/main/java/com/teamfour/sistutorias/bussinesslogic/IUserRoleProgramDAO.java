@@ -7,4 +7,5 @@ import java.util.ArrayList;
 
 public interface IUserRoleProgramDAO {
     public ArrayList<UserRoleProgram> getTutors() throws SQLException;
+    public ArrayList<UserRoleProgram> searchUser(String uvAcount, String password) throws SQLException;
 }

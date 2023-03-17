@@ -1,5 +1,5 @@
-module-info.class
-com\teamfour\sistutorias\presentation\App.class
 com\teamfour\sistutorias\presentation\PrimaryController.class
+com\teamfour\sistutorias\presentation\App.class
 com\teamfour\sistutorias\presentation\SecondaryController.class
 com\teamfour\sistutorias\presentation\LoginController.class
+module-info.class

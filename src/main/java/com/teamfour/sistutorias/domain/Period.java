@@ -9,6 +9,13 @@ public class Period {
         return idPeriod;
     }
 
+    @Override
+    public String toString() {
+        return "Periodo " + idPeriod +
+                ":" + start  +
+                "-" + end ;
+    }
+
     public void setIdPeriod(int idPeriod) {
         this.idPeriod = idPeriod;
     }
