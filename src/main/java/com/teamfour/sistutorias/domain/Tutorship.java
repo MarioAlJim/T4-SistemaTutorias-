@@ -31,5 +31,11 @@ public class Tutorship {
     }
 
     public int getPeriodId() {return periodId;}
+
     public void setPeriodId(int periodId) {this.periodId = periodId;}
+
+    @Override
+    public String toString() {
+        return "Inicio:" + start + " - Fin:" + end;
+    }
 }

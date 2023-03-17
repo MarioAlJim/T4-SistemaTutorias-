@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,6 +62,15 @@ public class LoginController implements Initializable {
     /**
      * Initializes the controller class.
      */
+
+    Messages alerts = new Messages();
+    @FXML
+    private ComboBox cbTipeUser;
+    @FXML
+    private Label lblTipeUser;
+    @FXML
+    private Button btnLoadUser;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -94,31 +105,15 @@ public class LoginController implements Initializable {
     }
 
     private void validateUser(String uvAcount, String password) {
-        Messages alerts = new Messages();
         ArrayList<UserRoleProgram> users;
         try {
-            RoleDAO roleDAO = new RoleDAO();
-            users = roleDAO.searchUser(uvAcount, password);
+            UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
+            users = userRoleProgram.searchUser(uvAcount, password);
             if (users.size() == 1) {
-                switch(users.get(1).getIdRole()) {
-                    case 1:
-                        //mostrarMenuAdministrador();
-                        break;
-                    case 2:
-                        //mostrarMenuJefedeCarrera(usuarioRecuperado);
-                        break;
-                    case 3:
-                        //mostrarMenuCoordinaro(usuarioRecuperado);
-                        break;
-                    case 4:
-                        //mostrarMenuTutor(usuarioRecuperado);
-                        break;
-                    default:
-                        alerts.mostrarAlertaUsuarioIncorrecto();
-                        break;
-                }
+                SessionGlobalData.getSessionGlobalData().setUserRoleProgram(users.get(0));
+                invoqueWindow();
             } else if (users.size() > 1) {
-
+                showSelectRol(users);
             } else {
                 alerts.mostrarAlertaUsuarioIncorrecto();
             }
@@ -126,6 +121,48 @@ public class LoginController implements Initializable {
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
             alerts.mostrarAlertaErrorConexionDB();
         }
+    }
+
+    private void invoqueWindow(){
+        int window = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdRole();
+        switch(window) {
+            case 4:
+                //mostrarMenuAdministrador();
+                break;
+            case 3:
+                //mostrarMenuJefedeCarrera(usuarioRecuperado);
+                break;
+            case 2:
+                //mostrarMenuCoordinaro(usuarioRecuperado);
+                break;
+            case 1:
+                //mostrarMenuTutor(usuarioRecuperado);
+                break;
+        }
+    }
+
+    private void showSelectRol(ArrayList<UserRoleProgram> users){
+        ObservableList<UserRoleProgram> roles = FXCollections.observableArrayList();
+        for(UserRoleProgram user : users){
+            roles.add(user);
+        }
+        cbTipeUser.setItems(roles);
+
+        lblPassword.setVisible(false);
+        lblUser.setVisible(false);
+        txtPassword.setVisible(false);
+        txtUser.setVisible(false);
+        btnSignIn.setVisible(false);
+
+        btnLoadUser.setVisible(true);
+        lblTipeUser.setVisible(true);
+        cbTipeUser.setVisible(true);
+    }
+
+    @FXML
+    public void lauchSpecific(ActionEvent actionEvent) {
+        SessionGlobalData.getSessionGlobalData().setUserRoleProgram((UserRoleProgram) cbTipeUser.getSelectionModel().getSelectedItem());
+        invoqueWindow();
     }
 
     /*private void mostrarMenuTutor(Usuario usuarioRecuperado) throws IOException{

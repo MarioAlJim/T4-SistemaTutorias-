@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 public interface IAcademicProblemDAO {
 
+    public ArrayList<AcademicProblem> consultAcademicProblemsByProgram(int idProgram) throws SQLException;
+
+    ArrayList<AcademicProblem> consultAcademicProblemsByTutor(int idTutorship, int idProgram, String uvAcount) throws SQLException;
+
     public int register(AcademicProblem academicProblem) throws SQLException;
 
     public int update(AcademicProblem academicProblem)throws SQLException;

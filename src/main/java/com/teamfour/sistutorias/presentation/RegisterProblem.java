@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.Group;
 import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;

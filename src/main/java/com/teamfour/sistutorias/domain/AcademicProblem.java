@@ -9,6 +9,8 @@ public class AcademicProblem {
     private String solution;
     private int group;
     private int register;
+    private String teacher;
+    private String ee;
 
     public String getTitle() {
         return title;
@@ -41,6 +43,7 @@ public class AcademicProblem {
     public void setGroup(int group) {
         this.group = group;
     }
+
     public int getRegister() {
         return register;
     }
@@ -64,4 +67,21 @@ public class AcademicProblem {
     public void setIdAcademicProblem(int idAcademicProblem) {
         this.idAcademicProblem = idAcademicProblem;
     }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getEe() {
+        return ee;
+    }
+
+    public void setEe(String ee) {
+        this.ee = ee;
+    }
+
 }
