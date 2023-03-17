@@ -4,6 +4,7 @@ public class Tutorship {
     private int idTutorShip;
     private String start;
     private String end;
+    private int periodId;
 
     public int getIdTutorShip() {
         return idTutorShip;
@@ -28,4 +29,7 @@ public class Tutorship {
     public void setEnd(String end) {
         this.end = end;
     }
+
+    public int getPeriodId() {return periodId;}
+    public void setPeriodId(int periodId) {this.periodId = periodId;}
 }
