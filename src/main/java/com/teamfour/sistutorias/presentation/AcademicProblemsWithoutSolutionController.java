@@ -107,11 +107,8 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     }
 
     public void populateTable() throws SQLException {
-        TeacherDAO teacherDAO = new TeacherDAO();
-        EEDAO eedao = new EEDAO();
-        PeriodDAO periodDAO = new PeriodDAO();
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-
+        academicProblemDAO.consultAcademicProblemsByProgram(1);
     }
 
     @FXML
