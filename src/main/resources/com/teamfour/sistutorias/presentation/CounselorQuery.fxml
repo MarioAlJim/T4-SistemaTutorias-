@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.CounselorQuery">
+   <children>
+      <Button layoutX="473.0" layoutY="361.0" mnemonicParsing="false" text="Cerrar" />
+      <Button layoutX="534.0" layoutY="361.0" mnemonicParsing="false" style="-fx-background-color: #A5C9FF;" text="Buscar" />
+      <Label layoutX="28.0" layoutY="49.0" text="Buscar">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField layoutX="82.0" layoutY="45.0" prefHeight="25.0" prefWidth="496.0" />
+      <ListView layoutX="28.0" layoutY="100.0" prefHeight="269.0" prefWidth="252.0" />
+      <Label layoutX="28.0" layoutY="70.0" prefHeight="25.0" prefWidth="293.0" text="Seleccione al tutor académico del cual desea consultar*" />
+      <Label layoutX="307.0" layoutY="127.0" text="Nombre" />
+      <Label layoutX="307.0" layoutY="168.0" text="Apellido paterno" />
+      <Label layoutX="307.0" layoutY="211.0" text="Apellido materno" />
+      <Label layoutX="307.0" layoutY="293.0" text="Correo UV" />
+      <TextField layoutX="402.0" layoutY="123.0" prefHeight="25.0" prefWidth="177.0" />
+      <TextField layoutX="402.0" layoutY="164.0" prefHeight="25.0" prefWidth="177.0" />
+      <TextField layoutX="402.0" layoutY="207.0" prefHeight="25.0" prefWidth="177.0" />
+      <TextField layoutX="402.0" layoutY="289.0" prefHeight="25.0" prefWidth="177.0" />
+   </children>
+</AnchorPane>
