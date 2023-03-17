@@ -64,7 +64,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
             @Override
             public String toString(Teacher teacher) {
-                return teacher == null ? null : teacher.getName() + " " + teacher.getPaternalSurname() + " " + teacher.getMaternalSurname();
+                return teacher == null ? null : teacher.getFullName();
             }
 
             @Override
