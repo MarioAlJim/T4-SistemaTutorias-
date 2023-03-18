@@ -11,7 +11,7 @@ public class PeriodDAO implements IPeriodDAO {
     @Override
     public ArrayList<Period> getPeriods() throws SQLException {
         ArrayList<Period> periods = new ArrayList<>();
-        String query = "SELECT * FROM period P";
+        String query = "SELECT * FROM period";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
