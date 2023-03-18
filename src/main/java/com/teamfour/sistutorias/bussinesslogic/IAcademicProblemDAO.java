@@ -11,4 +11,6 @@ public interface IAcademicProblemDAO {
     public int update(AcademicProblem academicProblem)throws SQLException;
 
     public int delete(AcademicProblem academicProblem) throws SQLException;
+
+    public ArrayList<AcademicProblem> getAcademicProblemsFromRegister(int registerId) throws SQLException;
 }

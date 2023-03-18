@@ -12,4 +12,5 @@ public interface ICommentDAO {
 
     public int delete(Comment comment) throws SQLException;
 
+    public Comment getCommentFromRegister(int registerId) throws SQLException;
 }
