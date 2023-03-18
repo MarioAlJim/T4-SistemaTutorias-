@@ -44,7 +44,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO{
         int register = academicProblem.getRegister();
         int id = academicProblem.getIdAcademicProblem();
         String query = "UPDATE academic_problems SET title = ?, description = ?, numbertutorados = ?, nrc = ?, register_id = ? WHERE academic_problems_id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
             statement.setString(2, description);
             statement.setInt(3, numberTutorados);
@@ -77,7 +77,16 @@ public class AcademicProblemDAO implements IAcademicProblemDAO{
             academicProblem.setNumberTutorados(resultSet.getInt("numbertutorados"));
             academicProblem.setGroup(resultSet.getInt("nrc"));
             academicProblem.setRegister(resultSet.getInt("register_id"));
-            academicProblems.add(academicProblem);
+            boolean alreadyRegistered = false;
+            for (AcademicProblem academicProblem1 : academicProblems) {
+                if (academicProblem1.getIdAcademicProblem() == academicProblem.getIdAcademicProblem()) {
+                    alreadyRegistered = true;
+                    break;
+                }
+            }
+            if (!alreadyRegistered) {
+                academicProblems.add(academicProblem);
+            }
         }
         return academicProblems;
     }

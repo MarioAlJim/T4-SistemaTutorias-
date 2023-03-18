@@ -131,7 +131,13 @@ public class ConsultTutorshipReport implements Initializable {
                 ArrayList<Assistance> assistancesArrayList = assistanceDAO.getAssistancesFromRegister(tutorshipReport.getRegister_id());
                 Comment comment = commentDAO.getCommentFromRegister(tutorshipReport.getRegister_id());
                 ArrayList<AcademicProblem> academicProblemsArrayList = academicProblemDAO.getAcademicProblemsFromRegister(tutorshipReport.getRegister_id());
-                academicProblems.addAll(academicProblemsArrayList);
+                for (AcademicProblem a : academicProblemsArrayList) {
+                    for (AcademicProblem b : academicProblems) {
+                        if (a.getIdAcademicProblem() == b.getIdAcademicProblem()) {
+                            academicProblems.add(a);
+                        }
+                    }
+                }
                 if (assistancesArrayList != null && !assistancesArrayList.isEmpty()) {
                     assistances.addAll(assistancesArrayList);
                     for (Assistance a : assistances) {
@@ -180,7 +186,6 @@ public class ConsultTutorshipReport implements Initializable {
         if (totalAssistances > 0) {
             lbAssistance.setText("Porcentaje de asistencia: " + (assistance / totalAssistances) * 100 + "%");
             lbRisk.setText("Porcentaje de riesgo: " + (risk / totalAssistances) * 100 + "%");
-            System.out.println(risk);
         } else {
             lbAssistance.setText("Porcentaje de asistencia: 0%");
         }
