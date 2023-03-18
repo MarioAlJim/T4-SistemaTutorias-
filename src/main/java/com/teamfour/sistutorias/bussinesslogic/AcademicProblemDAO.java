@@ -16,7 +16,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         String query = ("SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
-                "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ´ ´, maternal_surname) as teacher, s.description as solution " +
+                "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, s.description as solution " +
                 "FROM academic_problems ap " +
                 "INNER JOIN register r on ap.register_id = r.register_id " +
                 "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
@@ -25,7 +25,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
                 "INNER JOIN person p on p.person_id = t.person_id " +
                 "LEFT JOIN problem_solution ps on ps.academic_problem_id " +
                 "LEFT JOIN solution s on s.solution_id = ps.solution_id " +
-                "where r.educative_program_id = '?';");
+                "where r.educative_program_id = ?");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, idProgram);
         ResultSet resultSet = statement.executeQuery();

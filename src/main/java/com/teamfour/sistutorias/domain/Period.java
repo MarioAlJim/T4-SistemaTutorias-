@@ -35,4 +35,8 @@ public class Period {
     public void setEnd(String end) {
         this.end = end;
     }
+
+    public String getFullPeriod() {
+        return getStart() + " - " + getEnd();
+    }
 }
