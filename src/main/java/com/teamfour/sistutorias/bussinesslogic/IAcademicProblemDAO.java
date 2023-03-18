@@ -12,7 +12,7 @@ public interface IAcademicProblemDAO {
 
     public int register(AcademicProblem academicProblem) throws SQLException;
 
-    public int update(AcademicProblem academicProblem)throws SQLException;
+    public int updateAcademicProblem(AcademicProblem academicProblem)throws SQLException;
 
-    public int delete(AcademicProblem academicProblem) throws SQLException;
+    public int deleteAcademicProblem(int idAcademicProblem) throws SQLException;
 }
