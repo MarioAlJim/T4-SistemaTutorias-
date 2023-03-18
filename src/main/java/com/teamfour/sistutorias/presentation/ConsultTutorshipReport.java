@@ -118,6 +118,7 @@ public class ConsultTutorshipReport implements Initializable {
     }
 
     private void LoadTutorshipReport() {
+        setPeriod(cbTutorship.getSelectionModel().getSelectedItem());
         int tutorshipId = cbTutorship.getSelectionModel().getSelectedItem().getIdTutorShip();
         RegisterDAO registerDAO = new RegisterDAO();
         AssistanceDAO assistanceDAO = new AssistanceDAO();
@@ -168,6 +169,21 @@ public class ConsultTutorshipReport implements Initializable {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             new Alert(Alert.AlertType.ERROR, "Error al cargar el reporte de tutoría").showAndWait();
+        }
+    }
+
+    private void setPeriod(Tutorship tutorship) {
+        PeriodDAO periodDAO = new PeriodDAO();
+        try {
+            ArrayList<Period> periods = periodDAO.getPeriods();
+            for (Period p : periods) {
+                System.out.println(p.getIdPeriod());
+                System.out.println(tutorship.getIdPeriod());
+                if (p.getIdPeriod() == tutorship.getIdPeriod())
+                    lbPeriod.setText("Periodo: " + p.getStart() + " - " + p.getEnd());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
