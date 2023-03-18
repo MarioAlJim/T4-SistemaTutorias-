@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.teamfour.sistutorias.presentation;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,10 +53,6 @@ public class LoginController implements Initializable {
     private Label lblInvalidUser;
     @javafx.fxml.FXML
     private Label lblInvalidPassword;
-    /**
-     * Initializes the controller class.
-     */
-
     Messages alerts = new Messages();
     @FXML
     private ComboBox cbTipeUser;
@@ -73,35 +63,6 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
-    @javafx.fxml.FXML
-    private void signUp(ActionEvent event) {
-        String uvAcount = txtUser.getText();
-        String password = txtPassword.getText();
-        if(uvAcount.isEmpty()){
-            lblInvalidUser.setVisible(true);
-        }else if(password.isEmpty()){
-            lblInvalidPassword.setVisible(true);
-        }else {
-            lblInvalidUser.setVisible(false);
-            lblInvalidPassword.setVisible(false);
-            validateUser(uvAcount, password);
-        }
-    }
-
-    @javafx.fxml.FXML
-    private void close(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
-    }
-
-    private void closeAux(ActionEvent event) {
-        Stage stageActual = (Stage)lblUser.getScene().getWindow();
-        Stage stage = (Stage) stageActual.getScene().getWindow();
-        stage.close();
     }
 
     private void validateUser(String uvAcount, String password) {
@@ -123,20 +84,20 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void invoqueWindow(){
-        int window = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdRole();
-        switch(window) {
+    private void invoqueWindow() {
+        int tipeUser = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdRole();
+        switch (tipeUser) {
             case 4:
-                //mostrarMenuAdministrador();
+                showMenu("AdminMenu.fxml", "Menu de administradores");
                 break;
             case 3:
-                //mostrarMenuJefedeCarrera(usuarioRecuperado);
+                showMenu("TutoringCoordinatorMenu.fxml", "Menu de Jefe de carrera");
                 break;
             case 2:
-                //mostrarMenuCoordinaro(usuarioRecuperado);
+                showMenu("TutoringCoordinatorMenu.fxml", "Menu de coordinadores");
                 break;
             case 1:
-                //mostrarMenuTutor(usuarioRecuperado);
+                showMenu("TutorMenu.fxml", "Menu de tutores");
                 break;
         }
     }
@@ -148,78 +109,68 @@ public class LoginController implements Initializable {
         }
         cbTipeUser.setItems(roles);
 
+        cbTipeUser.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
+            btnLoadUser.setDisable(false);
+            SessionGlobalData.getSessionGlobalData().setUserRoleProgram((UserRoleProgram) valorNuevo);
+        });
+
         lblPassword.setVisible(false);
         lblUser.setVisible(false);
         txtPassword.setVisible(false);
         txtUser.setVisible(false);
         btnSignIn.setVisible(false);
-
         btnLoadUser.setVisible(true);
         lblTipeUser.setVisible(true);
         cbTipeUser.setVisible(true);
     }
 
+    private void showMenu(String windowResource, String title){
+        Stage stageMenuTutor = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getResource(windowResource).openStream());
+            Scene scene = new Scene(root);
+            stageMenuTutor.setScene(scene);
+            stageMenuTutor.setTitle(title);
+            stageMenuTutor.alwaysOnTopProperty();
+            stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
+            stageMenuTutor.show();
+            closeAux();
+        } catch (IOException exception){
+            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+        }
+    }
+
+    @javafx.fxml.FXML
+    private void signUp(ActionEvent event) {
+        String uvAcount = txtUser.getText();
+        String password = txtPassword.getText();
+        if(uvAcount.isEmpty() || uvAcount.length() > 15){
+            lblInvalidUser.setVisible(true);
+        }else if(password.isEmpty() || password.length() > 15){
+            lblInvalidPassword.setVisible(true);
+        }else {
+            lblInvalidUser.setVisible(false);
+            lblInvalidPassword.setVisible(false);
+            validateUser(uvAcount, password);
+        }
+    }
+
+    @javafx.fxml.FXML
+    private void close(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+
+    private void closeAux() {
+        Stage stageActual = (Stage)lblUser.getScene().getWindow();
+        Stage stage = (Stage) stageActual.getScene().getWindow();
+        stage.close();
+    }
+
     @FXML
     public void lauchSpecific(ActionEvent actionEvent) {
-        SessionGlobalData.getSessionGlobalData().setUserRoleProgram((UserRoleProgram) cbTipeUser.getSelectionModel().getSelectedItem());
         invoqueWindow();
     }
-
-    /*private void mostrarMenuTutor(Usuario usuarioRecuperado) throws IOException{
-        Stage stageMenuTutor = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/uv/gui/interfaces/MenuTutorGUI.fxml").openStream());
-        MenuTutorGUIController menuTutorGUIController = (MenuTutorGUIController) loader.getController();
-        menuTutorGUIController.recibirParametros(usuarioRecuperado);
-        Scene scene = new Scene(root);
-        stageMenuTutor.setScene(scene);
-        stageMenuTutor.setTitle("Menu de tutores");
-        stageMenuTutor.alwaysOnTopProperty();
-        stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-        stageMenuTutor.show();
-        cerrarVentanaAux();
-    }
-
-    private void mostrarMenuAdministrador() throws IOException{
-        Stage stageMenuTutor = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/uv/gui/interfaces/MenuAdministradorGUI.fxml").openStream());
-        Scene scene = new Scene(root);
-        stageMenuTutor.setScene(scene);
-        stageMenuTutor.setTitle("Menu de administradores");
-        stageMenuTutor.alwaysOnTopProperty();
-        stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-        stageMenuTutor.show();
-        cerrarVentanaAux();
-    }
-
-    private void mostrarMenuCoordinaro(Usuario usuarioRecuperado) throws IOException{
-        Stage stageMenuTutor = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/uv/gui/interfaces/MenuCoordinadorGUI.fxml").openStream());
-        MenuCoordinadorGUIController menuCoordinadorGUIController = (MenuCoordinadorGUIController) loader.getController();
-        menuCoordinadorGUIController.recibirParametros(usuarioRecuperado);
-        Scene scene = new Scene(root);
-        stageMenuTutor.setScene(scene);
-        stageMenuTutor.setTitle("Menu de coordinadores");
-        stageMenuTutor.alwaysOnTopProperty();
-        stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-        stageMenuTutor.show();
-    }
-
-    private void mostrarMenuJefedeCarrera(Usuario usuarioRecuperado) throws IOException {
-        Stage stageMenuTutor = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/uv/gui/interfaces/MenuJefedeCarreraGUI.fxml").openStream());
-        MenuJefedeCarreraGUIController menuJefedeCarreraGUIController = (MenuJefedeCarreraGUIController) loader.getController();
-        menuJefedeCarreraGUIController.recibirParametros(usuarioRecuperado);
-        Scene scene = new Scene(root);
-        stageMenuTutor.setScene(scene);
-        stageMenuTutor.setTitle("Menu de Jefe de carrera");
-        stageMenuTutor.alwaysOnTopProperty();
-        stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-        stageMenuTutor.show();
-        cerrarVentanaAux();
-    }*/
-
 }

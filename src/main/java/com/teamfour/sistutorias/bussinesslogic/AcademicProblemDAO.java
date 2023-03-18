@@ -43,7 +43,6 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int tutorship = idTutorship;
         Connection connection = dataBaseConnection.getConnection();
-        System.out.println("conexion");
         String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', maternal_surname) as teacher, s.description as solution " +
                 "FROM academic_problems ap " +
@@ -60,9 +59,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         statement.setString(2, uvAcount);
         statement.setInt(3, idProgram);
         ResultSet resultSet = statement.executeQuery();
-        System.out.println("ejecutado");
             while (resultSet.next()) {
-                System.out.println("encontrado");
                 academicProblems.add(getAcademicProblem(resultSet));
         }
         dataBaseConnection.closeConection();
@@ -93,7 +90,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
     }
 
     @Override
-    public int update(AcademicProblem academicProblem) throws SQLException {
+    public int updateAcademicProblem(AcademicProblem academicProblem) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int insertedFiles = 0;
         Connection connection = dataBaseConnection.getConnection();
@@ -117,8 +114,16 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
     }
 
     @Override
-    public int delete(AcademicProblem academicProblem) throws SQLException {
-        return 0;
+    public int deleteAcademicProblem(int idAcademicProblem) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        int modifiedFiles = 0;
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM `academic_problems` WHERE (`academic_problems_id` = ?);";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idAcademicProblem);
+        modifiedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return modifiedFiles;
     }
 
     private AcademicProblem getAcademicProblem(ResultSet resultSet) throws SQLException{

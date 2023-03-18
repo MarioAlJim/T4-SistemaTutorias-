@@ -40,18 +40,18 @@ public class RegisterProblem implements Initializable{
     @FXML
     public void newRegister(ActionEvent event) {
         if(txtNumberTutorados.getText().isEmpty()){
-            alerts.mostrarAlertaCamposVacios();
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else if(txtTitle.getText().isEmpty()){
-            alerts.mostrarAlertaCamposVacios();
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else if(txtDescription.getText().isEmpty()){
-            alerts.mostrarAlertaCamposVacios();
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else if(ees != null){
-            alerts.mostrarAlertaCamposVacios();
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else {
             if(validateData() == 3){
                 saveProblem();
             } else {
-                alerts.mostrarCamposInvalidos();
+                WindowManagement.showAlert("Error", "Se detectó el uso de caracteres invalidos", Alert.AlertType.INFORMATION);
             }
         }
     }
@@ -80,8 +80,8 @@ public class RegisterProblem implements Initializable{
             cbEe.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
                 ees = (Group) valorNuevo;
             });
-        } catch (SQLException exception){ //excepcion de sqL controlada
-            alerts.mostrarAlertaErrorConexionDB();
+        } catch (SQLException exception){
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
@@ -102,9 +102,6 @@ public class RegisterProblem implements Initializable{
         if(txtDescription.getText().length() < 500){
             ++validData;
         }
-        /*if(ees != null){
-            ++validData;
-        }*/
         return validData;
     }
 
@@ -128,7 +125,7 @@ public class RegisterProblem implements Initializable{
                 alerts.mostrarAlertaRegistroNoCompletado();
             }
         }catch (SQLException exception){
-            alerts.mostrarAlertaErrorConexionDB();
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
     }

@@ -1,10 +1,11 @@
 package com.teamfour.sistutorias.domain;
 
 public class UserRoleProgram extends User{
+    private int userRoleProgram;
     private int idRole;
     private int idProgram;
-
     private String program;
+    private String descriptioRole;
 
     public int getIdRole() {
         return idRole;
@@ -12,6 +13,21 @@ public class UserRoleProgram extends User{
 
     public void setIdRole(int idRole) {
         this.idRole = idRole;
+        switch (idRole){
+            case 1:
+                descriptioRole = "Tutor";
+                break;
+            case 2:
+                descriptioRole = "Coordinador";
+                break;
+            case 3:
+                descriptioRole = "Jefe de carrera";
+                break;
+            case 4:
+                descriptioRole = "Admin";
+                break;
+
+        }
     }
 
     public int getIdProgram() {
@@ -30,8 +46,20 @@ public class UserRoleProgram extends User{
         this.program = program;
     }
 
+    public int getUserRoleProgram() {
+        return userRoleProgram;
+    }
+
+    public void setUserRoleProgram(int userRoleProgram) {
+        this.userRoleProgram = userRoleProgram;
+    }
+
+    public String getDescriptioRole() {
+        return descriptioRole;
+    }
+
     @Override
     public String toString() {
-        return "Role:" + idRole +"- Programa=" + program;
+        return "Role:" + descriptioRole +"- Programa=" + program;
     }
 }
