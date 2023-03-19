@@ -45,6 +45,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     @FXML
     private TextArea taSolution;
 
+    final int MAX_CHARS = 100;
     private ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
 
     @Override
@@ -53,6 +54,8 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
+            taSolution.setTextFormatter(new TextFormatter<String>(change ->
+                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
         } catch (SQLException sqlException) {
             WindowManagement.connectionLostMessage();
             WindowManagement.closeWindow(new ActionEvent());

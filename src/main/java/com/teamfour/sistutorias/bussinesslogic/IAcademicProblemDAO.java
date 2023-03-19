@@ -19,5 +19,8 @@ public interface IAcademicProblemDAO {
     public ArrayList<AcademicProblem> getAcademicProblemsWithoutSolutionByProgram(int idProgram) throws SQLException;
 
     public int registerSolutionToAcademicProblem(String solution) throws SQLException;
+
     public int linkSolutionToProblems(AcademicProblem academicProblem, int idSolucion) throws SQLException;
+
+    public ArrayList<AcademicProblem> getAcademicProblemsWithSolutionByProgram(int idProgram) throws SQLException;
 }

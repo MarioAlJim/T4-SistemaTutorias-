@@ -84,4 +84,22 @@ class AcademicProblemDAOTest {
             isValid = true;
         assertTrue(isValid);
     }
+
+    @Test
+    void getAcademicProblemsWithSolutionByProgram() throws SQLException {
+        academicProblem1.setIdAcademicProblem(1);
+        registeredAcademicProblems.add(academicProblem1);
+
+        academicProblems = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(1);
+
+        boolean isValid = true;
+        int iterator = 0;
+        for(AcademicProblem academicProblemUV : academicProblems) {
+            if(academicProblemUV.getIdAcademicProblem() != registeredAcademicProblems.get(iterator).getIdAcademicProblem()) {
+                isValid = false;
+            }
+            iterator++;
+        }
+        assertTrue(isValid);
+    }
 }

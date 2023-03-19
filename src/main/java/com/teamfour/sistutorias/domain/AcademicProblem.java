@@ -6,6 +6,7 @@ public class AcademicProblem {
     private int numberTutorados;
     private String title;
     private String description;
+    private int idSolution;
     private String solution;
     private int group;
     private int register;
@@ -40,6 +41,14 @@ public class AcademicProblem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getIdSolution() {
+        return idSolution;
+    }
+
+    public void setIdSolution(int idSolution) {
+        this.idSolution = idSolution;
     }
 
     public String getSolution() {

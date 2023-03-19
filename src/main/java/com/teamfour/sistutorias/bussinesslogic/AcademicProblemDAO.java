@@ -178,6 +178,34 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         return solutionLinked;
     }
 
+    public ArrayList<AcademicProblem> getAcademicProblemsWithSolutionByProgram(int idProgram) throws SQLException {
+        ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+                "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, " +
+                "pd.start, pd.end, s.solution_id, s.description AS solution_description " +
+                "FROM academic_problems ap " +
+                "INNER JOIN register r on ap.register_id = r.register_id " +
+                "INNER JOIN tutorship ts on ts.tutorship_id = r.tutorship_id " +
+                "INNER JOIN period pd on pd.period_id = ts.period_id " +
+                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN ee on ee.ee_id = gp.ee_id " +
+                "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
+                "INNER JOIN person p on p.person_id = t.person_id " +
+                "INNER JOIN problem_solution ps ON ps.academic_problem_id = ap.academic_problems_id " +
+                "INNER JOIN solution s ON s.solution_id = ps.solution_id " +
+                "WHERE r.educative_program_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProgram);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            academicProblems.add(getAcademicProblemWithSolutionAndPeriod(resultSet));
+        }
+        dataBaseConnection.closeConection();
+        return academicProblems;
+    }
+
     private AcademicProblem getAcademicProblem(ResultSet resultSet) throws SQLException{
         int academicProblemsId = resultSet.getInt("academic_problems_id");
         String title = resultSet.getString("title");
@@ -206,6 +234,15 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         String endWithFormat = dateFormat.format(end);
         academicProblem.getPeriod().setStart(startWithFormat);
         academicProblem.getPeriod().setEnd(endWithFormat);
+        return academicProblem;
+    }
+
+    private AcademicProblem getAcademicProblemWithSolutionAndPeriod(ResultSet resultSet) throws SQLException {
+        AcademicProblem academicProblem = getAcademicProblemWithPeriod(resultSet);
+        int idSolution = resultSet.getInt("solution_id");
+        String solutionDescription = resultSet.getString("solution_description");
+        academicProblem.setIdSolution(idSolution);
+        academicProblem.setSolution(solutionDescription);
         return academicProblem;
     }
 }
