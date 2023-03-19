@@ -45,6 +45,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     @FXML
     private TextArea taSolution;
 
+    private final int MAX_CHARS = 100 ;
     private ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
 
     @Override
@@ -53,6 +54,8 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
+            taSolution.setTextFormatter(new TextFormatter<String>(change ->
+                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
         } catch (SQLException sqlException) {
             WindowManagement.connectionLostMessage();
             WindowManagement.closeWindow(new ActionEvent());
@@ -144,12 +147,11 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     @FXML
     private void clickSave(ActionEvent event) {
         boolean emptySolution = this.taSolution.getText().isEmpty();
-
         ArrayList<AcademicProblemsTable> selectedAcademicProblems = new ArrayList<>();
         boolean noProblemsSelected = validateAProblemWasSelected(selectedAcademicProblems);
-
         int totalSelectedProblems = selectedAcademicProblems.size();
         boolean differentProblemsSelected = false;
+
         if(totalSelectedProblems > 1) {
             differentProblemsSelected = validateSameProblemWasSelected(selectedAcademicProblems);
         }
@@ -167,21 +169,16 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
                     "Una o más de las problemáticas seleccionadas no coinciden con el docente y/o experiencia educativa",
                     Alert.AlertType.WARNING);
         } else {
-            // SOUT START
-            for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
-                System.out.println(academicProblem.getIdAcademicProblem());
-            }
-            System.out.println(this.taSolution.getText());
-            // SOUT END
-
             AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-
             try {
                 int solution = academicProblemDAO.registerSolutionToAcademicProblem(this.taSolution.getText());
                 if(solution != -1) {
                     for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
-
+                        academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
+                        this.tvAcademicProblems.getItems().remove(academicProblem);
                     }
+                    this.taAcademicProblem.clear();
+                    this.taSolution.clear();
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
                             Alert.AlertType.CONFIRMATION);
