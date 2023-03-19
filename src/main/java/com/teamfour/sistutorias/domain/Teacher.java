@@ -4,7 +4,7 @@ public class Teacher extends Person{
     private int personalNumber;
 
     public Teacher() {
-        this.personalNumber = 0;
+        this.setPersonalNumber(0);
         this.setIdPerson(0);
         this.setName("");
         this.setPaternalSurname("");

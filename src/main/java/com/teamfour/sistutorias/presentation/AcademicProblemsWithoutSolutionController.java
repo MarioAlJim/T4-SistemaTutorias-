@@ -20,7 +20,6 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AcademicProblemsWithoutSolutionController implements Initializable {
@@ -99,6 +98,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
 
         PeriodDAO periodDAO = new PeriodDAO();
         ObservableList<Period> periods = FXCollections.observableArrayList();
+        periods.add(new Period());
         periods.addAll(periodDAO.getPeriods());
         this.cbPeriod.setItems(periods);
         this.cbPeriod.getSelectionModel().selectFirst();
@@ -117,48 +117,17 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
 
     public void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        /* TODO:
-        //Crear metodo para traer solo los que no tienen solucion
-        */
-        List<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.consultAcademicProblemsByProgram(1);
+        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(1);
         for(AcademicProblem academicProblem : academicProblemsWithoutSolution) {
             AcademicProblemsTable academicProblemFromTable = new AcademicProblemsTable();
+            academicProblemFromTable.setIdAcademicProblem(academicProblem.getIdAcademicProblem());
             academicProblemFromTable.setTitle(academicProblem.getTitle());
             academicProblemFromTable.setEe(academicProblem.getEe());
             academicProblemFromTable.setTeacher(academicProblem.getTeacher());
+            academicProblemFromTable.setDescription(academicProblem.getDescription());
+            academicProblemFromTable.setPeriod(academicProblem.getPeriod());
             tableAcademicProblems.add(academicProblemFromTable);
         }
-
-        // TEMPORAL DATA
-        AcademicProblemsTable academicProblem1 = new AcademicProblemsTable();
-        academicProblem1.setTitle("Problem 1");
-        academicProblem1.setIdAcademicProblem(1);
-        academicProblem1.setTeacher("Joshua Hernandez Suarez");
-        academicProblem1.setEe("Redes");
-        academicProblem1.setDescription("Solution 1");
-        tableAcademicProblems.add(academicProblem1);
-        AcademicProblemsTable academicProblem2 = new AcademicProblemsTable();
-        academicProblem2.setTitle("Problem 2");
-        academicProblem2.setIdAcademicProblem(2);
-        academicProblem2.setTeacher("Miriam Gomez Lopez");
-        academicProblem2.setEe("Diseño de software");
-        academicProblem2.setDescription("Solution 2");
-        tableAcademicProblems.add(academicProblem2);
-        AcademicProblemsTable academicProblem3 = new AcademicProblemsTable();
-        academicProblem3.setTitle("Problem 3");
-        academicProblem3.setIdAcademicProblem(3);
-        academicProblem3.setTeacher("Joshua Hernandez Suarez");
-        academicProblem3.setEe("Redes");
-        academicProblem3.setDescription("Solution 3");
-        tableAcademicProblems.add(academicProblem3);
-        AcademicProblemsTable academicProblem4 = new AcademicProblemsTable();
-        academicProblem4.setTitle("Problem 4");
-        academicProblem4.setIdAcademicProblem(4);
-        academicProblem4.setTeacher("Joshua Hernandez Suarez");
-        academicProblem4.setEe("Diseño de software");
-        academicProblem4.setDescription("Solution 4");
-        tableAcademicProblems.add(academicProblem4);
-        // END OF TEMPORAL DATA
 
         this.tcCheckbox.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCheckBox()));
         this.tcAcademicProblem.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTitle()));
@@ -204,6 +173,26 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
             }
             System.out.println(this.taSolution.getText());
             // SOUT END
+
+            AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
+
+            try {
+                int solution = academicProblemDAO.registerSolutionToAcademicProblem(this.taSolution.getText());
+                if(solution != -1) {
+                    for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
+
+                    }
+                    WindowManagement.showAlert("Solución registrada",
+                            "La solución se registró correctamente",
+                            Alert.AlertType.CONFIRMATION);
+                } else {
+                    WindowManagement.showAlert("Solución no registrada",
+                            "La solución no ha sido registrada",
+                            Alert.AlertType.WARNING);
+                }
+            } catch (SQLException sqlException) {
+                WindowManagement.connectionLostMessage();
+            }
         }
     }
 
@@ -242,10 +231,31 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
         String selectedTeacherName = selectedTeacher.getFullName().replaceAll("\\s", "");
         EE selectedEE = (EE) this.cbEE.getSelectionModel().getSelectedItem();
         String selectedEEName = selectedEE.getName().replaceAll("\\s", "");
+        Period selectedPeriod = (Period) this.cbPeriod.getSelectionModel().getSelectedItem();
+        String selectedPeriodDates = selectedPeriod.getFullPeriod().replaceAll("\\s", "");
 
         ObservableList<AcademicProblemsTable> filteredAcademicProblems = FXCollections.observableArrayList();
 
-        if(!selectedTeacherName.isEmpty() && !selectedEEName.isEmpty()) {
+        if(!selectedTeacherName.isEmpty() && !selectedEEName.isEmpty() && !selectedPeriodDates.isEmpty()) {
+            for(AcademicProblemsTable academicProblem : tableAcademicProblems) {
+                if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
+                        && academicProblem.getEe().equals(selectedEE.getName())
+                        && academicProblem.getPeriod().getFullPeriod().equals(selectedPeriod.getFullPeriod()))
+                    filteredAcademicProblems.add(academicProblem);
+            }
+        } else if(!selectedTeacherName.isEmpty() && !selectedPeriodDates.isEmpty()) {
+            for(AcademicProblemsTable academicProblem : tableAcademicProblems) {
+                if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
+                        && academicProblem.getPeriod().getFullPeriod().equals(selectedPeriod.getFullPeriod()))
+                    filteredAcademicProblems.add(academicProblem);
+            }
+        } else if(!selectedEEName.isEmpty() && !selectedPeriodDates.isEmpty()) {
+            for(AcademicProblemsTable academicProblem : tableAcademicProblems) {
+                if(academicProblem.getEe().equals(selectedEE.getName())
+                        && academicProblem.getPeriod().getFullPeriod().equals(selectedPeriod.getFullPeriod()))
+                    filteredAcademicProblems.add(academicProblem);
+            }
+        } else if(!selectedTeacherName.isEmpty() && !selectedEEName.isEmpty()) {
             for(AcademicProblemsTable academicProblem : tableAcademicProblems) {
                 if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
                         && academicProblem.getEe().equals(selectedEE.getName()))
@@ -259,6 +269,11 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
         } else if(!selectedEEName.isEmpty()) {
             for(AcademicProblemsTable academicProblem : tableAcademicProblems) {
                 if(academicProblem.getEe().equals(selectedEE.getName()))
+                    filteredAcademicProblems.add(academicProblem);
+            }
+        } else if(!selectedPeriodDates.isEmpty()) {
+            for(AcademicProblemsTable academicProblem : tableAcademicProblems) {
+                if(academicProblem.getPeriod().getFullPeriod().equals(selectedPeriod.getFullPeriod()))
                     filteredAcademicProblems.add(academicProblem);
             }
         } else {

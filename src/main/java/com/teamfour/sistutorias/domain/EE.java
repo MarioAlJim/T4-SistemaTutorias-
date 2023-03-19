@@ -5,8 +5,8 @@ public class EE {
     private String name;
 
     public EE() {
-        this.idEe = 0;
-        this.name = "";
+        this.setIdEe(0);
+        this.setName("");
     }
 
     public int getIdEe() {
