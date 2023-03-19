@@ -165,15 +165,16 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
     }
 
     @Override
-    public int linkSolutionToProblems(AcademicProblem academicProblem, int solutionId) throws SQLException {
-        int solutionLinked = -1;
+    public boolean linkSolutionToProblems(AcademicProblem academicProblem, int solutionId) throws SQLException {
+        boolean solutionLinked = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO problem_solution (academic_problem_id, solution_id) VALUES (?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, academicProblem.getIdAcademicProblem());
         statement.setInt(2, solutionId);
-        solutionLinked = statement.executeUpdate();
+        if(statement.executeUpdate() != 0)
+            solutionLinked = true;
         dataBaseConnection.closeConection();
         return solutionLinked;
     }
@@ -204,6 +205,19 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         }
         dataBaseConnection.closeConection();
         return academicProblems;
+    }
+
+    public boolean deleteSolution(int idSolution) throws SQLException {
+        boolean solutionDeleted = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM solution WHERE solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idSolution);
+        if(statement.executeUpdate() != 0)
+            solutionDeleted = true;
+        dataBaseConnection.closeConection();
+        return solutionDeleted;
     }
 
     private AcademicProblem getAcademicProblem(ResultSet resultSet) throws SQLException{

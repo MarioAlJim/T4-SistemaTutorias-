@@ -4,7 +4,7 @@ import com.teamfour.sistutorias.domain.AcademicProblem;
 import javafx.scene.control.ComboBox;
 
 public class SolutionsTable extends AcademicProblem {
-    ComboBox cbAcademicProblems;
+    ComboBox<String> cbAcademicProblems;
 
     public SolutionsTable() {
         this.cbAcademicProblems = new ComboBox();

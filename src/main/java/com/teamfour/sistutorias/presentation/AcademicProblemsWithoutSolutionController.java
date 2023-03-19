@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class AcademicProblemsWithoutSolutionController implements Initializable {
 
     @FXML
-    private ComboBox cbEE;
+    private ComboBox<EE> cbEE;
     @FXML
     private TableView<AcademicProblemsTable> tvAcademicProblems;
     @FXML
@@ -37,16 +37,16 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     @FXML
     private TableColumn<AcademicProblemsTable, String> tcEE;
     @FXML
-    private ComboBox cbTeacher;
+    private ComboBox<Teacher> cbTeacher;
     @FXML
-    private ComboBox cbPeriod;
+    private ComboBox<Period> cbPeriod;
     @FXML
     private TextArea taAcademicProblem;
     @FXML
     private TextArea taSolution;
 
     final int MAX_CHARS = 100;
-    private ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
+    private final ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -170,29 +170,32 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
                     "Una o más de las problemáticas seleccionadas no coinciden con el docente y/o experiencia educativa",
                     Alert.AlertType.WARNING);
         } else {
-            // SOUT START
-            for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
-                System.out.println(academicProblem.getIdAcademicProblem());
-            }
-            System.out.println(this.taSolution.getText());
-            // SOUT END
-
             AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
 
             try {
                 int solution = academicProblemDAO.registerSolutionToAcademicProblem(this.taSolution.getText());
+                boolean solutionLinked = false;
                 if(solution != -1) {
                     for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
-
+                        solutionLinked = academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
+                        if(solutionLinked)
+                            this.tvAcademicProblems.getItems().remove(academicProblem);
+                        else
+                            break;
                     }
+                }
+
+                if(solutionLinked) {
+                    this.taSolution.clear();
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
                             Alert.AlertType.CONFIRMATION);
                 } else {
                     WindowManagement.showAlert("Solución no registrada",
                             "La solución no ha sido registrada",
-                            Alert.AlertType.WARNING);
+                            Alert.AlertType.ERROR);
                 }
+
             } catch (SQLException sqlException) {
                 WindowManagement.connectionLostMessage();
             }
