@@ -28,10 +28,8 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, idProgram);
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            while (resultSet.next()) {
-                academicProblems.add(getAcademicProblem(resultSet));
-            }
+        while (resultSet.next()) {
+            academicProblems.add(getAcademicProblem(resultSet));
         }
         dataBaseConnection.closeConection();
         return academicProblems;
