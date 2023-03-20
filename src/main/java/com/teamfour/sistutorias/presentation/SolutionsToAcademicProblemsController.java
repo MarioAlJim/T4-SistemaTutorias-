@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            // FOR DEMONSTRATION PURPOSES
+            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(2);
             populateComboBoxes();
             populateTable();
             seeSolutionListener();
@@ -58,7 +61,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         TeacherDAO teacherDAO = new TeacherDAO();
         ObservableList<Teacher> teachers = FXCollections.observableArrayList();
         teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachers());
+        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
         this.cbTeacher.setItems(teachers);
         this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
@@ -76,7 +79,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEs());
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
@@ -112,7 +115,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     private void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(1);
+        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
 
         int idSolution = 0;
         int positionSolution = 0;
@@ -220,8 +223,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     }
 
     @FXML
-    private void clickModify(ActionEvent event) {
-
+    private void clickModify(ActionEvent event) throws IOException {
+        App.setRoot("AcademicProblemsWithoutSolution");
     }
 
     @FXML
@@ -230,20 +233,26 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         SolutionsTable selectedSolution = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
 
         if(selectedSolution != null) {
-            try {
-                boolean deletedSolution = academicProblemDAO.deleteSolution(selectedSolution.getIdSolution());
-                if(deletedSolution) {
-                    this.tvAcademicProblems.getItems().remove(selectedSolution);
-                    WindowManagement.showAlert("Solución eliminada",
-                            "La solución ha sido eliminada exitosamente",
-                            Alert.AlertType.CONFIRMATION);
-                } else {
-                    WindowManagement.showAlert("Solución no eliminada",
-                            "La solución no ha sido eliminada",
-                            Alert.AlertType.ERROR);
+            boolean deleteSolution = false;
+            deleteSolution = WindowManagement.showAlertWithConfirmation("Eliminar solución",
+                    "¿Desea eliminar la solución seleccionada?");
+
+            if(deleteSolution) {
+                try {
+                    boolean deletedSolution = academicProblemDAO.deleteSolution(selectedSolution.getIdSolution());
+                    if(deletedSolution) {
+                        this.tvAcademicProblems.getItems().remove(selectedSolution);
+                        WindowManagement.showAlert("Solución eliminada",
+                                "La solución ha sido eliminada exitosamente",
+                                Alert.AlertType.CONFIRMATION);
+                    } else {
+                        WindowManagement.showAlert("Solución no eliminada",
+                                "La solución no ha sido eliminada",
+                                Alert.AlertType.ERROR);
+                    }
+                } catch (SQLException sqlException) {
+                    WindowManagement.connectionLostMessage();
                 }
-            } catch (SQLException sqlException) {
-                WindowManagement.connectionLostMessage();
             }
         } else {
             WindowManagement.showAlert("No se ha seleccionado una solución",

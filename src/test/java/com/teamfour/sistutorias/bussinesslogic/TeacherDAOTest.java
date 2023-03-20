@@ -33,7 +33,7 @@ class TeacherDAOTest {
         teacher2.setPersonalNumber(123456);
         registeredTeachers.add(teacher2);
 
-        teachers = teacherDAO.getTeachers();
+        teachers = teacherDAO.getTeachersByProgram();
         boolean isValid = true;
         int iterator = 0;
         for(Teacher teacherUV : teachers) {

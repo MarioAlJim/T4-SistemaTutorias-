@@ -2,8 +2,11 @@ package com.teamfour.sistutorias.presentation;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+
+import java.util.Optional;
 
 public class WindowManagement {
     public static void showAlert(String title, String message, Alert.AlertType alertType){
@@ -12,6 +15,18 @@ public class WindowManagement {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static boolean showAlertWithConfirmation(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        Optional<ButtonType> action = alert.showAndWait();
+        boolean actionConfirmed = false;
+        if(action.get() == ButtonType.OK)
+            actionConfirmed = true;
+        return actionConfirmed;
     }
 
     public static void connectionLostMessage(){
