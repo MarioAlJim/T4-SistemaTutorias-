@@ -9,5 +9,5 @@ public interface ITutorshipDAO {
     public ArrayList<Tutorship> getTutorshipByPeriod (int idPeriod) throws SQLException;
     public boolean addTutorship(Tutorship tutorship) throws SQLException;
     public boolean updateTutorship(Tutorship tutorship) throws SQLException;
-
+    public ArrayList<Tutorship> getTutorships() throws SQLException;
 }

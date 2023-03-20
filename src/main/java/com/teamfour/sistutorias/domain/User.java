@@ -20,4 +20,8 @@ public class User extends Person{
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return this.getName() + " " + this.getPaternalSurname() + " " + this.getMaternalSurname();
+    }
 }
