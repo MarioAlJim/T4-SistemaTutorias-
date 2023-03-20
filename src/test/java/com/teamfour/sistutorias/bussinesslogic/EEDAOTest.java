@@ -33,7 +33,7 @@ class EEDAOTest {
         ee2.setName("Desarrollo de aplicaciones");
         registeredEEs.add(ee2);
 
-        ees = eedao.getEEs();
+        ees = eedao.getEEsByProgram();
         boolean isValid = true;
         int iterator = 0;
         for(EE eeUV : ees) {

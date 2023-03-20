@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class AcademicProblemsWithoutSolutionController implements Initializable {
 
     @FXML
-    private ComboBox cbEE;
+    private ComboBox<EE> cbEE;
     @FXML
     private TableView<AcademicProblemsTable> tvAcademicProblems;
     @FXML
@@ -37,20 +37,22 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     @FXML
     private TableColumn<AcademicProblemsTable, String> tcEE;
     @FXML
-    private ComboBox cbTeacher;
+    private ComboBox<Teacher> cbTeacher;
     @FXML
-    private ComboBox cbPeriod;
+    private ComboBox<Period> cbPeriod;
     @FXML
     private TextArea taAcademicProblem;
     @FXML
     private TextArea taSolution;
 
-    private final int MAX_CHARS = 100 ;
-    private ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
+    final int MAX_CHARS = 100;
+    private final ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            // FOR DEMONSTRATION PURPOSES
+            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(2);
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
@@ -66,7 +68,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
         TeacherDAO teacherDAO = new TeacherDAO();
         ObservableList<Teacher> teachers = FXCollections.observableArrayList();
         teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachers());
+        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
         this.cbTeacher.setItems(teachers);
         this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
@@ -84,7 +86,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEs());
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
@@ -120,7 +122,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
 
     public void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(1);
+        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
         for(AcademicProblem academicProblem : academicProblemsWithoutSolution) {
             AcademicProblemsTable academicProblemFromTable = new AcademicProblemsTable();
             academicProblemFromTable.setIdAcademicProblem(academicProblem.getIdAcademicProblem());
@@ -172,12 +174,18 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
             AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
             try {
                 int solution = academicProblemDAO.registerSolutionToAcademicProblem(this.taSolution.getText());
+                boolean solutionLinked = false;
                 if(solution != -1) {
                     for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
-                        academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
-                        this.tvAcademicProblems.getItems().remove(academicProblem);
+                        solutionLinked = academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
+                        if(solutionLinked)
+                            this.tvAcademicProblems.getItems().remove(academicProblem);
+                        else
+                            break;
                     }
-                    this.taAcademicProblem.clear();
+                }
+
+                if(solutionLinked) {
                     this.taSolution.clear();
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
@@ -185,8 +193,9 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
                 } else {
                     WindowManagement.showAlert("Solución no registrada",
                             "La solución no ha sido registrada",
-                            Alert.AlertType.WARNING);
+                            Alert.AlertType.ERROR);
                 }
+
             } catch (SQLException sqlException) {
                 WindowManagement.connectionLostMessage();
             }

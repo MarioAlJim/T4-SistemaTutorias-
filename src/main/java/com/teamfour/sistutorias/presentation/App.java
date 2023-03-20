@@ -21,7 +21,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
-        scene = new Scene(loadFXML("AcademicProblemsWithoutSolution"));
+        scene = new Scene(loadFXML("SolutionsToAcademicProblems"));
         stage.setScene(scene);
         stage.show();
     }
