@@ -19,10 +19,10 @@
       <Label layoutX="307.0" layoutY="127.0" text="Nombre" />
       <Label layoutX="307.0" layoutY="168.0" text="Apellido paterno" />
       <Label layoutX="307.0" layoutY="211.0" text="Apellido materno" />
-      <Label layoutX="307.0" layoutY="293.0" text="Correo UV" />
+      <Label layoutX="307.0" layoutY="251.0" text="Correo UV" />
       <TextField layoutX="402.0" layoutY="123.0" prefHeight="25.0" prefWidth="177.0" />
       <TextField layoutX="402.0" layoutY="164.0" prefHeight="25.0" prefWidth="177.0" />
       <TextField layoutX="402.0" layoutY="207.0" prefHeight="25.0" prefWidth="177.0" />
-      <TextField layoutX="402.0" layoutY="289.0" prefHeight="25.0" prefWidth="177.0" />
+      <TextField layoutX="402.0" layoutY="247.0" prefHeight="25.0" prefWidth="177.0" />
    </children>
 </AnchorPane>

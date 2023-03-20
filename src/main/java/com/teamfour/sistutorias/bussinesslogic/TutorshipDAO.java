@@ -9,6 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+
+
 public class TutorshipDAO implements ITutorshipDAO {
 
     @Override
@@ -108,6 +112,7 @@ public class TutorshipDAO implements ITutorshipDAO {
         return flag;
     }
 
+
     public boolean isValidDate(String date) {
         return true;
     }
@@ -131,4 +136,26 @@ public class TutorshipDAO implements ITutorshipDAO {
         }
         return tutorships;
     }
+     public List<Tutorship> getTutorship(int periodId) throws SQLException{
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT * FROM tutorship WHERE period_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, periodId);
+        ResultSet resultSet = statement.executeQuery();
+        List<Tutorship> listTutorships = new ArrayList<>();
+        if(resultSet.next()){
+            do{
+                Tutorship tutorship = new Tutorship();
+                tutorship.setIdTutorShip(resultSet.getInt("tutorship_id"));
+                tutorship.setStart(resultSet.getString("start"));
+                tutorship.setEnd(resultSet.getString("end"));
+                tutorship.setPeriodId(resultSet.getInt("period_id"));
+                listTutorships.add(tutorship);
+            } while(resultSet.next());
+        }
+        dataBaseConnection.closeConection();
+        return listTutorships;
+    }
+
 }

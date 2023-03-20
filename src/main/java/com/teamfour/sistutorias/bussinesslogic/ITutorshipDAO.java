@@ -2,7 +2,9 @@ package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.domain.Tutorship;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ArrayList;
+
 
 public interface ITutorshipDAO {
     public Tutorship getLatestTutorship() throws SQLException;
@@ -10,4 +12,6 @@ public interface ITutorshipDAO {
     public boolean addTutorship(Tutorship tutorship) throws SQLException;
     public boolean updateTutorship(Tutorship tutorship) throws SQLException;
     public ArrayList<Tutorship> getTutorships() throws SQLException;
+   // public List<Tutorship> getTutorship(int periodId) throws SQLException;
+
 }
