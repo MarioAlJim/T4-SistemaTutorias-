@@ -1,9 +1,11 @@
 package com.teamfour.sistutorias.presentation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,12 +21,17 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-//listo
+
+
 public class ConsultAcademicProblems implements Initializable{
 
     @javafx.fxml.FXML
@@ -34,9 +41,9 @@ public class ConsultAcademicProblems implements Initializable{
     @javafx.fxml.FXML
     private TableView<AcademicProblem> tblProblems;
     @javafx.fxml.FXML
-    private TableColumn colIdProblem;
+    private TableColumn<AcademicProblem, String> colIdProblem;
     @javafx.fxml.FXML
-    private TableColumn colNrc;
+    private TableColumn<AcademicProblem, Integer> colNrc;
     @javafx.fxml.FXML
     private Button btnClose;
     @javafx.fxml.FXML
@@ -66,8 +73,9 @@ public class ConsultAcademicProblems implements Initializable{
     @javafx.fxml.FXML
     private Label lblSolution;
     @FXML
-    private TableColumn colTitle;
-
+    private TableColumn<AcademicProblem, String> colTitle;
+    private ObservableList<AcademicProblem> showAcademicProblems;
+    private AcademicProblem academicProblem = new AcademicProblem();
     Messages alerts = new Messages();
 
     private void definePeriods() {
@@ -77,9 +85,7 @@ public class ConsultAcademicProblems implements Initializable{
         options = FXCollections.observableArrayList();
         try {
             periods = periodDAO.getPeriods();
-            for(Period period : periods){
-                options.add(period);
-            }
+            options.addAll(periods);
         } catch (SQLException ex){
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -98,11 +104,8 @@ public class ConsultAcademicProblems implements Initializable{
             options = FXCollections.observableArrayList();
             TutorshipDAO tutorshipDAO = new TutorshipDAO();
             ArrayList<Tutorship> tutorships = tutorshipDAO.getTutorshipByPeriod(selectedPeriod.getIdPeriod());
-            for (Tutorship tutorshipCicles : tutorships) {
-                options.add(tutorshipCicles);
-            }
+            options.addAll(tutorships);
             cbTutorship.setItems(options);
-
             cbTutorship.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
                 tblProblems.getItems().clear();
                 if (valorNuevo != null) {
@@ -116,17 +119,15 @@ public class ConsultAcademicProblems implements Initializable{
     }
 
     private void showProblems(Tutorship tutorship) {
-        colIdProblem.setCellValueFactory(new PropertyValueFactory<AcademicProblem, String>("idAcademicProblem"));
-        colTitle.setCellValueFactory(new PropertyValueFactory<AcademicProblem, String>("title"));
-        colNrc.setCellValueFactory(new PropertyValueFactory <AcademicProblem, Integer>("group"));
+        colIdProblem.setCellValueFactory(new PropertyValueFactory<>("idAcademicProblem"));
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colNrc.setCellValueFactory(new PropertyValueFactory <>("group"));
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         ArrayList<AcademicProblem> academicProblems;
-        ObservableList<AcademicProblem> showAcademicProblems = FXCollections.observableArrayList();
+        showAcademicProblems = FXCollections.observableArrayList();
         try {
             academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(1, 1, "mario14");
-            for (AcademicProblem problems : academicProblems) {
-                showAcademicProblems.add(problems);
-            }
+            showAcademicProblems.addAll(academicProblems);
         } catch (SQLException exception) {
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
@@ -134,32 +135,28 @@ public class ConsultAcademicProblems implements Initializable{
     }
 
     private final ListChangeListener<AcademicProblem> selectProblem =
-            new ListChangeListener<AcademicProblem>() {
-                @Override
-                public void onChanged(ListChangeListener.Change<? extends AcademicProblem> c) {
-                    loadDataProbleam();
-                }
-            };
+            c -> loadDataProblem();
 
     public AcademicProblem getproblem() {
-        AcademicProblem academicProblem = new AcademicProblem();
         if (tblProblems != null) {
             List<AcademicProblem> tabla = tblProblems.getSelectionModel().getSelectedItems();
             if (tabla.size() == 1) {
                 academicProblem = tabla.get(0);
-                System.out.println(academicProblem);
             }
         }
         return academicProblem;
     }
 
-    private void loadDataProbleam(){
+    private void loadDataProblem(){
         AcademicProblem academicProblem = getproblem();
         txtDescription.setText(academicProblem.getDescription());
-        txtGroup.setText(academicProblem.getGroup() + "");
+        txtGroup.setText(academicProblem.getGroup() + " " + academicProblem.getTeacher() + " " + academicProblem.getEe());
         txtSolution.setText(academicProblem.getSolution());
         txtTitle.setText(academicProblem.getTitle());
         txtTutorados.setText(academicProblem.getNumberTutorados() + "");
+
+        btnDelete.setDisable(false);
+        btnModiify.setDisable(false);
     }
 
     @Override
@@ -169,13 +166,45 @@ public class ConsultAcademicProblems implements Initializable{
         problems.addListener(selectProblem);
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void delete(ActionEvent actionEvent) {
+        showAcademicProblems.remove(tblProblems.getSelectionModel().getSelectedIndex());
+        AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Estas seguro de confirmar la acción?");
+        Optional<ButtonType> action = alert.showAndWait();
+        if (action.get() == ButtonType.OK) {
+            int result = 0;
+            try {
+                result = academicProblemDAO.deleteAcademicProblem(academicProblem.getIdAcademicProblem());
+            } catch (SQLException exception){
+                Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            }
+            if (result == 1) {
+                WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
+            }
+        }
     }
 
     @javafx.fxml.FXML
     public void startModificate(ActionEvent actionEvent) {
-
+        Stage stageMenuTutor = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            Parent root = loader.load(getClass().getResource("ModifyAcademicProblem.fxml").openStream());
+            Scene scene = new Scene(root);
+            stageMenuTutor.setScene(scene);
+            stageMenuTutor.setTitle("Modificar problematica academica");
+            stageMenuTutor.alwaysOnTopProperty();
+            stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
+            ModifyAcademicProblem modifyAcademicProblem = (ModifyAcademicProblem) loader.getController();
+            modifyAcademicProblem.recibeParameters(academicProblem);
+            stageMenuTutor.show();
+        } catch (IOException exception){
+            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+        }
     }
 
     @javafx.fxml.FXML

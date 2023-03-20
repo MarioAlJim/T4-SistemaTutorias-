@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;

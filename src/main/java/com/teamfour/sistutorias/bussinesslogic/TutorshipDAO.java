@@ -8,8 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 public class TutorshipDAO implements ITutorshipDAO {
+
     @Override
     public Tutorship getLatestTutorship() throws SQLException {
         DataBaseConnection db = new DataBaseConnection();
@@ -106,7 +106,8 @@ public class TutorshipDAO implements ITutorshipDAO {
         return flag;
     }
 
-    public boolean isValidDate(String date){
+    public boolean isValidDate(String date) {
         return true;
     }
+
 }
