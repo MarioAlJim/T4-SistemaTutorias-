@@ -2,14 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="667.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblems">
+<AnchorPane prefHeight="667.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblems">
     <children>
         <Label layoutX="59.0" layoutY="15.0" text="Periodo" />
         <Label layoutX="312.0" layoutY="15.0" text="Tutoria" />
@@ -24,7 +18,7 @@
         </TableView>
         <Button fx:id="btnClose" layoutX="331.0" layoutY="617.0" mnemonicParsing="false" onAction="#close" text="Cerrar" />
         <TextField fx:id="txtTutorados" disable="true" layoutX="180.0" layoutY="292.0" prefHeight="25.0" prefWidth="55.0" />
-        <TextField fx:id="txtGroup" disable="true" layoutX="180.0" layoutY="326.0" />
+        <TextField fx:id="txtGroup" disable="true" layoutX="180.0" layoutY="326.0" prefHeight="25.0" prefWidth="358.0" />
         <TextField fx:id="txtSolution" disable="true" layoutX="55.0" layoutY="538.0" prefHeight="55.0" prefWidth="488.0" />
         <TextField fx:id="txtTitle" disable="true" layoutX="52.0" layoutY="376.0" prefHeight="25.0" prefWidth="488.0" />
         <TextField fx:id="txtDescription" disable="true" layoutX="54.0" layoutY="423.0" prefHeight="92.0" prefWidth="488.0" />

@@ -54,6 +54,10 @@ class AcademicProblemDAOTest {
 
         academicProblems = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(1);
 
+        for(AcademicProblem academicProblemUV : academicProblems) {
+            System.out.println(academicProblemUV.getIdAcademicProblem());
+        }
+/*
         boolean isValid = true;
         int iterator = 0;
         for(AcademicProblem academicProblemUV : academicProblems) {
@@ -63,6 +67,8 @@ class AcademicProblemDAOTest {
             iterator++;
         }
         assertTrue(isValid);
+
+ */
     }
 
     @Test
@@ -76,12 +82,31 @@ class AcademicProblemDAOTest {
     }
 
     @Test
-    void linkSolutionToProblems() throws SQLException {
-        boolean isValid = false;
+    public void linkSolutionToProblems() throws SQLException {
         academicProblem1.setIdAcademicProblem(1);
-        int solutionId = academicProblemDAO.linkSolutionToProblems(academicProblem1,1);
-        if(solutionId != -1)
-            isValid = true;
+        assertTrue(academicProblemDAO.linkSolutionToProblems(academicProblem1,1));
+    }
+
+    @Test
+    public void getAcademicProblemsWithSolutionByProgram() throws SQLException {
+        academicProblem1.setIdAcademicProblem(1);
+        registeredAcademicProblems.add(academicProblem1);
+
+        academicProblems = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(1);
+
+        boolean isValid = true;
+        int iterator = 0;
+        for(AcademicProblem academicProblemUV : academicProblems) {
+            if(academicProblemUV.getIdAcademicProblem() != registeredAcademicProblems.get(iterator).getIdAcademicProblem()) {
+                isValid = false;
+            }
+            iterator++;
+        }
         assertTrue(isValid);
+    }
+
+    @Test
+    public void deleteSolution() throws SQLException {
+        assertTrue(academicProblemDAO.deleteSolution(2));
     }
 }

@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;
@@ -21,7 +18,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
-        scene = new Scene(loadFXML("AcademicProblemsWithoutSolution"));
+        scene = new Scene(loadFXML("ConsultTutorshipReport"));
         stage.setScene(scene);
         stage.show();
     }

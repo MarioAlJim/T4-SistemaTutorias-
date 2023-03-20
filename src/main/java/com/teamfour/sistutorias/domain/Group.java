@@ -5,6 +5,8 @@ public class Group {
     private EE ee;
     private Teacher teacher;
     private EducationProgram educationProgram;
+    private String teacherName;
+    private String experience;
 
     public int getNrc() {
         return nrc;
@@ -36,5 +38,26 @@ public class Group {
 
     public void setEducationProgram(EducationProgram educationProgram) {
         this.educationProgram = educationProgram;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    @Override
+    public String toString() {
+        return "NRC:" + nrc + " - " + teacherName + " - " + experience;
     }
 }

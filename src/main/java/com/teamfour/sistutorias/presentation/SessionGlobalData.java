@@ -7,10 +7,6 @@ public class SessionGlobalData {
     private static SessionGlobalData instance;
     private UserRoleProgram user;
 
-    public User getUser() {
-        return user;
-    }
-
     public UserRoleProgram getUserRoleProgram() {
         return user;
     }
@@ -20,6 +16,7 @@ public class SessionGlobalData {
     }
 
     private SessionGlobalData() {
+        this.user = new UserRoleProgram();
     }
 
     public static SessionGlobalData getSessionGlobalData() {

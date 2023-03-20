@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IEEDAO {
-    public ArrayList<EE> getEEs() throws SQLException;
+    public ArrayList<EE> getEEsByProgram(int idProgram) throws SQLException;
 }
