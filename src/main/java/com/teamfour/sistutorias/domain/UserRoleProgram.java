@@ -58,6 +58,9 @@ public class UserRoleProgram extends User{
         return descriptioRole;
     }
 
+    public String getFullName(){
+        return this.getName() + " " + this.getPaternalSurname() + " " + this.getMaternalSurname();
+    }
     @Override
     public String toString() {
         return "Role:" + descriptioRole +"- Programa=" + program;

@@ -1,9 +1,7 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import com.teamfour.sistutorias.domain.User;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,9 +20,9 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
+        do {
             tutors.add(getTutor(resultSet));
-        }
+        } while (resultSet.next());
         dataBaseConnection.closeConection();
         return tutors;
     }
@@ -76,5 +74,64 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
             }while (resultSet.next());
         }
         return users;
+    }
+    @Override
+    public ArrayList<UserRoleProgram> getTutorsByProgram(int idProgram) throws SQLException {
+        ArrayList<UserRoleProgram> tutors = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT P.name, P.paternal_surname, P.maternal_surname, U.email FROM user_program_role UPR " +
+                "INNER JOIN user U ON U.email = UPR.email " +
+                "INNER JOIN person P ON P.person_id = U.person_id " +
+                "WHERE UPR.role_id = 1 AND program_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProgram);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()){
+            do {
+                UserRoleProgram tutor = new UserRoleProgram();
+                String uvAcount = resultSet.getString("email");
+                tutor.setEmail(uvAcount);
+                String name = resultSet.getString("name");
+                tutor.setName(name);
+                String paternalSurname = resultSet.getString("paternal_surname");
+                tutor.setPaternalSurname(paternalSurname);
+                String maternalSurname = resultSet.getString("maternal_surname");
+                tutor.setMaternalSurname(maternalSurname);
+                tutors.add(tutor);
+            } while (resultSet.next());
+        }
+        dataBaseConnection.closeConection();
+        return tutors;
+    }
+
+    public ArrayList<UserRoleProgram> getTutorsByProgramName(String searchedName,int idProgram) throws SQLException {
+        ArrayList<UserRoleProgram> tutors = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT P.name, P.paternal_surname, P.maternal_surname, U.email FROM user_program_role UPR " +
+                "INNER JOIN user U ON U.email = UPR.email " +
+                "INNER JOIN person P ON P.person_id = U.person_id " +
+                "WHERE UPR.role_id = 1 AND program_id = ? AND P.name = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProgram);
+        statement.setString(2, searchedName);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()){
+            do {
+                UserRoleProgram tutor = new UserRoleProgram();
+                String uvAcount = resultSet.getString("email");
+                tutor.setEmail(uvAcount);
+                String name = resultSet.getString("name");
+                tutor.setName(name);
+                String paternalSurname = resultSet.getString("paternal_surname");
+                tutor.setPaternalSurname(paternalSurname);
+                String maternalSurname = resultSet.getString("maternal_surname");
+                tutor.setMaternalSurname(maternalSurname);
+                tutors.add(tutor);
+            } while (resultSet.next());
+        }
+        dataBaseConnection.closeConection();
+        return tutors;
     }
 }

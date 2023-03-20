@@ -63,7 +63,7 @@ public class RegisterProblem implements Initializable{
         stage.close();
     }
 
-    private void loadEes(int idProgram) { // este metodo ecibe el numero personal de un maestro
+    private void loadEes(int idProgram) {
         ArrayList<Group> educativeExperiences;
         ObservableList<Group> educativeExperiencesObservableList = FXCollections.observableArrayList();
         try {

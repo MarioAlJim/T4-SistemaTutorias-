@@ -106,7 +106,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         statement.setString(2, description);
         statement.setInt(3, numberTutorados);
         statement.setInt(4, group);
-        statement.setInt(5 , register);
+        statement.setInt(5, register);
         statement.setInt(6, id);
         insertedFiles = statement.executeUpdate();
         dataBaseConnection.closeConection();

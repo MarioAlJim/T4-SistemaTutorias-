@@ -49,7 +49,7 @@ public class ModifyAcademicProblem implements Initializable {
         txtNumberTutorados.setText(academicProblem.getNumberTutorados() + "");
     }
 
-    private void loadEes(int idProgram) { // este metodo ecibe el numero personal de un maestro
+    private void loadEes(int idProgram) {
         ArrayList<Group> educativeExperiences;
         ObservableList<Group> educativeExperiencesObservableList = FXCollections.observableArrayList();
         try {
@@ -57,13 +57,15 @@ public class ModifyAcademicProblem implements Initializable {
             educativeExperiences = groupDAO.groupsList(idProgram);
             if (!educativeExperiences.isEmpty()) {
                 educativeExperiencesObservableList.addAll(educativeExperiences);
+            } else {
+                WindowManagement.showAlert("Error", "No se pudieron encontrar Experiencias educactivas", Alert.AlertType.INFORMATION);
             }
             cbEe.setItems(educativeExperiencesObservableList);
             cbEe.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
                 ees = (Group) valorNuevo;
             });
-        } catch (SQLException exception){ //excepcion de sqL controlada
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.WARNING);
+        } catch (SQLException exception){
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
@@ -133,6 +135,9 @@ public class ModifyAcademicProblem implements Initializable {
 
     @javafx.fxml.FXML
     public void close(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     @Override
