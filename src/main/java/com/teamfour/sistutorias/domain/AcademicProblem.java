@@ -11,6 +11,20 @@ public class AcademicProblem {
     private int register;
     private String teacher;
     private String ee;
+    private Period period;
+
+    public AcademicProblem() {
+        this.setIdAcademicProblem(0);
+        this.setNumberTutorados(0);
+        this.setTitle("");
+        this.setDescription("");
+        this.setSolution("");
+        this.setGroup(0);
+        this.setRegister(0);
+        this.setTeacher("");
+        this.setEe("");
+        this.setPeriod(new Period());
+    }
 
     public String getTitle() {
         return title;
@@ -84,4 +98,11 @@ public class AcademicProblem {
         this.ee = ee;
     }
 
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
 }

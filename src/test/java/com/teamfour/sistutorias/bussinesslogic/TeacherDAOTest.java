@@ -15,6 +15,7 @@ class TeacherDAOTest {
     ArrayList<Teacher> registeredTeachers;
     Teacher teacher;
     Teacher teacher1;
+    Teacher teacher2;
     @BeforeEach
     void setUp() {
         teacherDAO = new TeacherDAO();
@@ -22,15 +23,15 @@ class TeacherDAOTest {
         registeredTeachers = new ArrayList<>();
         teacher = new Teacher();
         teacher1 = new Teacher();
+        teacher2 = new Teacher();
     }
 
     @Test
     public void getTeachers() throws SQLException {
-        teacher1.setPersonalNumber(123);
-        teacher1.setName("Max William");
-        teacher1.setPaternalSurname("Millan");
-        teacher1.setMaternalSurname("Martinez");
+        teacher1.setPersonalNumber(789456);
         registeredTeachers.add(teacher1);
+        teacher2.setPersonalNumber(123456);
+        registeredTeachers.add(teacher2);
 
         teachers = teacherDAO.getTeachers();
         boolean isValid = true;
