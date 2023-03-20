@@ -38,4 +38,8 @@ public class Person {
     public void setIdPerson(int idPerson) {
         this.idPerson = idPerson;
     }
+
+    public String getFullName() {
+        return this.name.trim() + " " + this.paternalSurname.trim() + " " + this.maternalSurname.trim();
+    }
 }

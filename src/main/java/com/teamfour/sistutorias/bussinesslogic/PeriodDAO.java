@@ -26,7 +26,8 @@ public class PeriodDAO implements IPeriodDAO {
     private Period getPeriod(ResultSet resultSet) throws SQLException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
         Period period = new Period();
-        period.setIdPeriod(resultSet.getInt("period_id"));
+        int idPeriod = resultSet.getInt("period_id");
+        period.setIdPeriod(idPeriod);
         Date start = resultSet.getDate("start");
         String startWithFormat = dateFormat.format(start);
         period.setStart(startWithFormat);

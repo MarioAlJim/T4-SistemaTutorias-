@@ -5,26 +5,18 @@ import com.teamfour.sistutorias.domain.UserRoleProgram;
 
 public class SessionGlobalData {
     private static SessionGlobalData instance;
-    private User user;
-    private UserRoleProgram userRoleProgram;
+    private UserRoleProgram user;
 
-    public User getUser() {
+    public UserRoleProgram getUserRoleProgram() {
         return user;
     }
 
-    public void setUser(User user_) {
-        this.user = user_;
-    }
-
-    public UserRoleProgram getUserRoleProgram() {
-        return userRoleProgram;
-    }
-
     public void setUserRoleProgram(UserRoleProgram userRoleProgram_) {
-        this.userRoleProgram = userRoleProgram_;
+        this.user = userRoleProgram_;
     }
 
     private SessionGlobalData() {
+        this.user = new UserRoleProgram();
     }
 
     public static SessionGlobalData getSessionGlobalData() {

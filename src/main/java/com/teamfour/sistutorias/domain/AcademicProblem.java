@@ -6,9 +6,26 @@ public class AcademicProblem {
     private int numberTutorados;
     private String title;
     private String description;
+    private int idSolution;
     private String solution;
     private int group;
     private int register;
+    private String teacher;
+    private String ee;
+    private Period period;
+
+    public AcademicProblem() {
+        this.setIdAcademicProblem(0);
+        this.setNumberTutorados(0);
+        this.setTitle("");
+        this.setDescription("");
+        this.setSolution("");
+        this.setGroup(0);
+        this.setRegister(0);
+        this.setTeacher("");
+        this.setEe("");
+        this.setPeriod(new Period());
+    }
 
     public String getTitle() {
         return title;
@@ -26,6 +43,14 @@ public class AcademicProblem {
         this.description = description;
     }
 
+    public int getIdSolution() {
+        return idSolution;
+    }
+
+    public void setIdSolution(int idSolution) {
+        this.idSolution = idSolution;
+    }
+
     public String getSolution() {
         return solution;
     }
@@ -41,6 +66,7 @@ public class AcademicProblem {
     public void setGroup(int group) {
         this.group = group;
     }
+
     public int getRegister() {
         return register;
     }
@@ -63,5 +89,29 @@ public class AcademicProblem {
 
     public void setIdAcademicProblem(int idAcademicProblem) {
         this.idAcademicProblem = idAcademicProblem;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getEe() {
+        return ee;
+    }
+
+    public void setEe(String ee) {
+        this.ee = ee;
+    }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
     }
 }

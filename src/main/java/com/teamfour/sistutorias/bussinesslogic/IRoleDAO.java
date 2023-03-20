@@ -6,5 +6,4 @@ import com.teamfour.sistutorias.domain.UserRoleProgram;
 
 public interface IRoleDAO {
 
-    public ArrayList<UserRoleProgram> searchUser(String uvAcount, String password) throws SQLException;;
 }

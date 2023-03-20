@@ -1,8 +1,24 @@
 package com.teamfour.sistutorias.domain;
 
 public class UserRoleProgram extends User{
+    private int userRoleProgram;
     private int idRole;
     private int idProgram;
+    private String program;
+    private String descriptioRole;
+
+    public UserRoleProgram() {
+        this.setIdRole(0);
+        this.setIdProgram(0);
+        this.setProgram("");
+        this.setEmail("");
+        this.setPassword("");
+        this.setName("");
+        this.setIdPerson(0);
+        this.setName("");
+        this.setPaternalSurname("");
+        this.setMaternalSurname("");
+    }
 
     public int getIdRole() {
         return idRole;
@@ -10,6 +26,21 @@ public class UserRoleProgram extends User{
 
     public void setIdRole(int idRole) {
         this.idRole = idRole;
+        switch (idRole){
+            case 1:
+                descriptioRole = "Tutor";
+                break;
+            case 2:
+                descriptioRole = "Coordinador";
+                break;
+            case 3:
+                descriptioRole = "Jefe de carrera";
+                break;
+            case 4:
+                descriptioRole = "Admin";
+                break;
+
+        }
     }
 
     public int getIdProgram() {
@@ -18,5 +49,33 @@ public class UserRoleProgram extends User{
 
     public void setIdProgram(int idProgram) {
         this.idProgram = idProgram;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
+
+    public int getUserRoleProgram() {
+        return userRoleProgram;
+    }
+
+    public void setUserRoleProgram(int userRoleProgram) {
+        this.userRoleProgram = userRoleProgram;
+    }
+
+    public String getDescriptioRole() {
+        return descriptioRole;
+    }
+
+    public String getFullName(){
+        return this.getName() + " " + this.getPaternalSurname() + " " + this.getMaternalSurname();
+    }
+    @Override
+    public String toString() {
+        return "Role:" + descriptioRole +"- Programa=" + program;
     }
 }

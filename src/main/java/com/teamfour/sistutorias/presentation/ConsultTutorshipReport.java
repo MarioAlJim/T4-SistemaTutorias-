@@ -177,9 +177,7 @@ public class ConsultTutorshipReport implements Initializable {
         try {
             ArrayList<Period> periods = periodDAO.getPeriods();
             for (Period p : periods) {
-                System.out.println(p.getIdPeriod());
-                System.out.println(tutorship.getIdPeriod());
-                if (p.getIdPeriod() == tutorship.getIdPeriod())
+                if (p.getIdPeriod() == tutorship.getPeriodId());
                     lbPeriod.setText("Periodo: " + p.getStart() + " - " + p.getEnd());
             }
         } catch (SQLException e) {

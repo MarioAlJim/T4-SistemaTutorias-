@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface ITeacherDAO {
-    public ArrayList<Teacher> getTeachers() throws SQLException;
+    public ArrayList<Teacher> getTeachersByProgram(int idProgram) throws SQLException;
 }

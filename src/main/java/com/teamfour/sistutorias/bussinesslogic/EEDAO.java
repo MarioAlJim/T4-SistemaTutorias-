@@ -11,12 +11,15 @@ import java.util.ArrayList;
 
 public class EEDAO implements IEEDAO {
     @Override
-    public ArrayList<EE> getEEs() throws SQLException {
+    public ArrayList<EE> getEEsByProgram(int idProgram) throws SQLException {
         ArrayList<EE> ees = new ArrayList<>();
-        String query = "SELECT name FROM EE";
+        String query = "SELECT name FROM group_program gp " +
+                "INNER JOIN ee ee ON ee.ee_id = gp.ee_id " +
+                "WHERE gp.program_id = ?";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProgram);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             ees.add(getEE(resultSet));

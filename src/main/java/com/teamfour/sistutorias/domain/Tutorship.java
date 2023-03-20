@@ -4,8 +4,7 @@ public class Tutorship {
     private int idTutorShip;
     private String start;
     private String end;
-
-    private int idPeriod;
+    private int periodId;
 
     public int getIdTutorShip() {
         return idTutorShip;
@@ -31,13 +30,9 @@ public class Tutorship {
         this.end = end;
     }
 
-    public int getIdPeriod() {
-        return idPeriod;
-    }
+    public int getPeriodId() {return periodId;}
 
-    public void setIdPeriod(int idPeriod) {
-        this.idPeriod = idPeriod;
-    }
+    public void setPeriodId(int periodId) {this.periodId = periodId;}
 
     @Override
     public String toString() {
