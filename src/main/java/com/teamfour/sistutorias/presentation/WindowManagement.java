@@ -1,11 +1,16 @@
 package com.teamfour.sistutorias.presentation;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 
 public class WindowManagement {
@@ -38,5 +43,16 @@ public class WindowManagement {
         Node source = (Node) event.getSource();
         Stage scene = (Stage) source.getScene().getWindow();
         scene.close();
+    }
+
+    public static void changeScene(String title, URL resource) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 }
