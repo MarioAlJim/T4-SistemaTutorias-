@@ -54,6 +54,7 @@ public class EducationProgramController implements Initializable {
                     educationProgram.setName(this.tfEducationProgram.getText());
                     boolean educationProgramWasRegistered = educationProgramDAO.register(educationProgram);
                     if(educationProgramWasRegistered) {
+                        this.tfEducationProgram.clear();
                         WindowManagement.showAlert("Programa educativo registrado exitosamente",
                                 "El programa educativo ha sido registrado exitosamente",
                                 Alert.AlertType.CONFIRMATION);

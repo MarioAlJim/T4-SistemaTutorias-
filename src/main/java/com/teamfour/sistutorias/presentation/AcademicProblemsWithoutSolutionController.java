@@ -52,7 +52,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             // FOR DEMONSTRATION PURPOSES
-            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(2);
+            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
@@ -178,10 +178,12 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
                 if(solution != -1) {
                     for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
                         solutionLinked = academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
-                        if(solutionLinked)
+                        if(solutionLinked) {
+                            this.taSolution.clear();
                             this.tvAcademicProblems.getItems().remove(academicProblem);
-                        else
+                        } else {
                             break;
+                        }
                     }
                 }
 
