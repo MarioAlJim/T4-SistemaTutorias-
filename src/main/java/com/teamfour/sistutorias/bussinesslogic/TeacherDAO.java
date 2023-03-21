@@ -13,7 +13,7 @@ public class TeacherDAO implements ITeacherDAO {
     @Override
     public ArrayList<Teacher> getTeachersByProgram(int idProgram) throws SQLException {
         ArrayList<Teacher> teachers = new ArrayList<>();
-        String query = "SELECT t.personal_number, p.name, p.paternal_surname, p.maternal_surname FROM group_program gp " +
+        String query = "SELECT DISTINCT t.personal_number, p.name, p.paternal_surname, p.maternal_surname FROM group_program gp " +
                 "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
                 "INNER JOIN person p ON P.person_id = T.person_id " +
                 "WHERE gp.program_id = ?";

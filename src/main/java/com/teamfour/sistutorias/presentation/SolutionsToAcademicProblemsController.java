@@ -48,7 +48,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             // FOR DEMONSTRATION PURPOSES
-            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(2);
+            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
             populateComboBoxes();
             populateTable();
             seeSolutionListener();
@@ -241,6 +241,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 try {
                     boolean deletedSolution = academicProblemDAO.deleteSolution(selectedSolution.getIdSolution());
                     if(deletedSolution) {
+                        this.taSolution.clear();
                         this.tvAcademicProblems.getItems().remove(selectedSolution);
                         WindowManagement.showAlert("Solución eliminada",
                                 "La solución ha sido eliminada exitosamente",
