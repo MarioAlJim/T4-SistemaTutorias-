@@ -148,7 +148,7 @@ public class AcademicProblemsWithoutSolutionController implements Initializable 
 
     @FXML
     private void clickSave(ActionEvent event) {
-        boolean emptySolution = this.taSolution.getText().isEmpty();
+        boolean emptySolution = this.taSolution.getText().replaceAll("\\s", "").isEmpty();
         ArrayList<AcademicProblemsTable> selectedAcademicProblems = new ArrayList<>();
         boolean noProblemsSelected = validateAProblemWasSelected(selectedAcademicProblems);
         int totalSelectedProblems = selectedAcademicProblems.size();
