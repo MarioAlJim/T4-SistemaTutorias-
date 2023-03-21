@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.Group;
-import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
 import com.teamfour.sistutorias.bussinesslogic.GroupDAO;
 import com.teamfour.sistutorias.domain.AcademicProblem;
 import javafx.collections.FXCollections;
@@ -16,7 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 public class RegisterProblem implements Initializable{
@@ -37,8 +35,8 @@ public class RegisterProblem implements Initializable{
     private Group ees;
     private ArrayList<AcademicProblem> listAcademicProblems;
 
-    public void setListAcademicProblems(){
-        listAcademicProblems = new ArrayList<>();
+    public void setListAcademicProblems(ArrayList<AcademicProblem> academicProblems){
+        this.listAcademicProblems = academicProblems;
     }
     public ArrayList getListAcademicProblems(){
         return listAcademicProblems;
@@ -47,13 +45,13 @@ public class RegisterProblem implements Initializable{
     @FXML
     public void newRegister(ActionEvent event) {
         if(txtNumberTutorados.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados 1", Alert.AlertType.INFORMATION);
         }else if(txtTitle.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados 2", Alert.AlertType.INFORMATION);
         }else if(txtDescription.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        }else if(ees != null){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados 3", Alert.AlertType.INFORMATION);
+        }else if(ees == null){
+            WindowManagement.showAlert("Error", "Campos vacios detectados 4", Alert.AlertType.INFORMATION);
         }else {
             if(validateData() == 3){
                 saveProblem();
@@ -65,9 +63,11 @@ public class RegisterProblem implements Initializable{
 
     @FXML
     public void close(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
+        exitWindow();
+    }
 
+    private void exitWindow() {
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
@@ -98,7 +98,7 @@ public class RegisterProblem implements Initializable{
     private int validateData() {
         int validData = 0;
         String cantidadTutorados = txtNumberTutorados.getText();
-        if(cantidadTutorados.matches("[+-]?\\d*(\\.\\d+)?")) {
+        if(cantidadTutorados.matches("[0-9]+")) {
             int number = Integer.parseInt(cantidadTutorados);
             if(number > 0 && number < 30) {
                 ++validData;
@@ -115,29 +115,17 @@ public class RegisterProblem implements Initializable{
 
     private void saveProblem() {
         AcademicProblem academicProblem = new AcademicProblem();
-        //AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         int numberTutorados = Integer.parseInt(txtNumberTutorados.getText());
         String title = txtTitle.getText();
         String description = txtDescription.getText();
-        int nrc = 12345; //ees.getNrc();
+        int nrc = ees.getNrc();
         academicProblem.setNumberTutorados(numberTutorados);
         academicProblem.setDescription(description);
         academicProblem.setTitle(title);
         academicProblem.setGroup(nrc);
         academicProblem.setRegister(1);
         listAcademicProblems.add(academicProblem);
-        /*try {
-            //int result = academicProblemDAO.register(academicProblem);
-            //if (result == 1) {
-            //   alerts.mostrarAlertaRegistroExitoso();
-            //    clean();
-            //} else {
-                alerts.mostrarAlertaRegistroNoCompletado();
-            //}
-        }catch (SQLException exception){
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
-        }*/
+        exitWindow();
     }
 
     @Override
@@ -150,5 +138,7 @@ public class RegisterProblem implements Initializable{
         txtTitle.setText("");
         txtNumberTutorados.setText("");
         cbEe.getSelectionModel().clearSelection();
+        if (listAcademicProblems == null)
+            listAcademicProblems = new ArrayList<>();
     }
 }

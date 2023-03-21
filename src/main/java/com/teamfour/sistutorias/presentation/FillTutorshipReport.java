@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -83,9 +80,10 @@ public class FillTutorshipReport implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Agregar comentario");
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("AddComment.fxml"))));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddComment.fxml"));
+            stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
-            AddComment addComment = new AddComment();
+            AddComment addComment = loader.getController();
             addComment.setComment(comment);
             stage.showAndWait();
             comment = addComment.getComment();
@@ -96,20 +94,19 @@ public class FillTutorshipReport implements Initializable {
 
     @FXML
     void openRegisterProblem(ActionEvent event) {
-        /* TODO: Create a new window to register academic problems
         Stage stage = new Stage();
         stage.setTitle("Registrar problema académico");
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("RegisterAcademicProblem.fxml"))));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterProblem.fxml"));
+            stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
-            RegisterAcademicProblem registerAcademicProblem = new RegisterAcademicProblem();
-            registerAcademicProblem.setAcademicProblems(academicProblems);
+            RegisterProblem registerAcademicProblem = loader.getController();
+            registerAcademicProblem.setListAcademicProblems(academicProblems);
             stage.showAndWait();
-            academicProblems = registerAcademicProblem.getAcademicProblems();
+            academicProblems = registerAcademicProblem.getListAcademicProblems();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        */
     }
 
     @FXML
@@ -122,55 +119,49 @@ public class FillTutorshipReport implements Initializable {
         RegisterDAO registerDAO = new RegisterDAO();
         try {
             registerDAO.register(register);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        try {
             register = registerDAO.getLatestRegister();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        if(register.getRegister_id() != 0) {
-            comment.setRegister(register.getRegister_id());
-            CommentDAO commentDAO = new CommentDAO();
-            try {
+            if(register.getRegister_id() != 0) {
+                System.out.println("Register saved");
+
+                comment.setRegister(register.getRegister_id());
+                CommentDAO commentDAO = new CommentDAO();
                 commentDAO.register(comment);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+                System.out.println("Comment saved");
 
-            for(AcademicProblem academicProblem : academicProblems) {
-                academicProblem.setRegister(register.getRegister_id());
-                AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-                try {
+                for(AcademicProblem academicProblem : academicProblems) {
+                    academicProblem.setRegister(register.getRegister_id());
+                    AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
                     academicProblemDAO.register(academicProblem);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
+                System.out.println("Academic problems saved");
+
+                for(Assistance tutored : tutorados) {
+                    AssistanceDAO assistanceDAO = new AssistanceDAO();
+                    tutored.setRegister_id(register.getRegister_id());
+                    if (tutored.getCheckBoxAsistencia().isSelected()) {
+                        tutored.setAsistencia(true);
+                    } else {
+                        tutored.setAsistencia(false);
+                    }
+                    if (tutored.getCheckBoxRiesgo().isSelected()) {
+                        tutored.setRiesgo(true);
+                    } else {
+                        tutored.setRiesgo(false);
+                    }
+                    assistanceDAO.register(tutored);
+                }
+                System.out.println("Assistance saved");
             }
 
-            for(Assistance tutored : tutorados) {
-                AssistanceDAO assistanceDAO = new AssistanceDAO();
-                tutored.setRegister_id(register.getRegister_id());
-                if (tutored.getCheckBoxAsistencia().isSelected()) {
-                    tutored.setAsistencia(true);
-                } else {
-                    tutored.setAsistencia(false);
-                }
-                if (tutored.getCheckBoxRiesgo().isSelected()) {
-                    tutored.setRiesgo(true);
-                } else {
-                    tutored.setRiesgo(false);
-                }
-                try {
-                    assistanceDAO.register(tutored);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Error al guardar el registro").showAndWait();
+            System.err.println(e.getMessage());
         }
+
+        new Alert(Alert.AlertType.INFORMATION, "Registro guardado").showAndWait();
+        closeWindow(event);
     }
 
     private void setUpTable() {

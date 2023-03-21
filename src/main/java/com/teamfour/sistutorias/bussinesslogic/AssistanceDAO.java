@@ -19,7 +19,7 @@ public class AssistanceDAO implements IAssistanceDAO {
         boolean assis = assistance.getAsistencia();
         boolean risk = assistance.getRiesgo();
         int register = assistance.getRegister_id();
-        String query = "INSERT INTO assistance (registration_number, asistencia, riesgo, register_id) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO assistance (registration_number_id, assis, risk, register_id) VALUES (?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, registrationNumber);
             statement.setBoolean(2, assis);

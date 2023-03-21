@@ -17,7 +17,7 @@ public class CommentDAO implements ICommentDAO {
         Connection connection = dataBaseConnection.getConnection();
         String description = comment.getDescription();
         int register = comment.getRegister();
-        String query = "INSERT INTO comment (description, register_id) VALUES (?, ?)";
+        String query = "INSERT INTO comment (description, register) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, description);
             statement.setInt(2, register);
