@@ -7,18 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class App extends Application {
 
     private static Scene scene;
 
-
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
-        scene = new Scene(loadFXML("ConsultTutorshipReport"));
+        scene = new Scene(loadFXML("FillTutorshipReport"));
         stage.setScene(scene);
         stage.show();
     }

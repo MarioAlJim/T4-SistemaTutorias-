@@ -74,12 +74,13 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         int group = academicProblem.getGroup();
         int numberTutorados = academicProblem.getNumberTutorados();
         int register = academicProblem.getRegister();
-        String query = "INSERT INTO academic_problems (title, description, numbertutorados, nrc, register_id) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO academic_problems (title, description, nrc, register_id, numbertutorados) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
             statement.setString(2, description);
-            statement.setInt(3, numberTutorados);
-            statement.setInt(4, group);
+            statement.setInt(3, group);
+            statement.setInt(4, register);
+            statement.setInt(5, numberTutorados);
         statement.setInt(5 , register);
             insertedFiles = statement.executeUpdate();
         dataBaseConnection.closeConection();
