@@ -36,6 +36,6 @@ public class Tutorship {
 
     @Override
     public String toString() {
-        return "Inicio:" + start + " - Fin:" + end;
+        return start;
     }
 }

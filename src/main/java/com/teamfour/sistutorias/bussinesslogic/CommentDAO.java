@@ -6,6 +6,8 @@ import com.teamfour.sistutorias.domain.Comment;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 
 public class CommentDAO implements ICommentDAO {
     @Override
@@ -51,5 +53,22 @@ public class CommentDAO implements ICommentDAO {
             statement.setInt(1, id);
             insertedFiles = statement.executeUpdate();
         return insertedFiles;
+    }
+
+    @Override
+    public Comment getCommentFromRegister(int registerId) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        Comment comment = new Comment();
+        String query = "SELECT * FROM comment WHERE register = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, registerId);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            comment.setComment_id(resultSet.getInt("comment_id"));
+            comment.setDescription(resultSet.getString("description"));
+            comment.setRegister(resultSet.getInt("register"));
+        }
+        return comment;
     }
 }

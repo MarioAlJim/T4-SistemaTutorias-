@@ -33,9 +33,16 @@ public class RegisterProblem implements Initializable{
     private Button btnSave;
     @FXML
     private Button btnCancel;
-
     Messages alerts = new Messages();
-    Group ees;
+    private Group ees;
+    private ArrayList<AcademicProblem> listAcademicProblems;
+
+    public void setListAcademicProblems(){
+        listAcademicProblems = new ArrayList<>();
+    }
+    public ArrayList getListAcademicProblems(){
+        return listAcademicProblems;
+    }
 
     @FXML
     public void newRegister(ActionEvent event) {
@@ -60,6 +67,7 @@ public class RegisterProblem implements Initializable{
     public void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
+
         stage.close();
     }
 
@@ -107,7 +115,7 @@ public class RegisterProblem implements Initializable{
 
     private void saveProblem() {
         AcademicProblem academicProblem = new AcademicProblem();
-        AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
+        //AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         int numberTutorados = Integer.parseInt(txtNumberTutorados.getText());
         String title = txtTitle.getText();
         String description = txtDescription.getText();
@@ -117,17 +125,19 @@ public class RegisterProblem implements Initializable{
         academicProblem.setTitle(title);
         academicProblem.setGroup(nrc);
         academicProblem.setRegister(1);
-        try {
-            int result = academicProblemDAO.register(academicProblem);
-            if (result == 1) {
-                alerts.mostrarAlertaRegistroExitoso();
-            } else {
+        listAcademicProblems.add(academicProblem);
+        /*try {
+            //int result = academicProblemDAO.register(academicProblem);
+            //if (result == 1) {
+            //   alerts.mostrarAlertaRegistroExitoso();
+            //    clean();
+            //} else {
                 alerts.mostrarAlertaRegistroNoCompletado();
-            }
+            //}
         }catch (SQLException exception){
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
-        }
+        }*/
     }
 
     @Override
@@ -135,7 +145,7 @@ public class RegisterProblem implements Initializable{
         loadEes(1);
     }
 
-    private void clean(ActionEvent event) {
+    private void clean() {
         txtDescription.setText("");
         txtTitle.setText("");
         txtNumberTutorados.setText("");
