@@ -49,15 +49,9 @@ public class RegisterProblem implements Initializable{
         }else if(txtTitle.getText().isEmpty()){
             WindowManagement.showAlert("Error", "Campos vacios detectados 2", Alert.AlertType.INFORMATION);
         }else if(txtDescription.getText().isEmpty()){
-<<<<<<< HEAD
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        }else if(ees == null){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-=======
             WindowManagement.showAlert("Error", "Campos vacios detectados 3", Alert.AlertType.INFORMATION);
         }else if(ees == null){
             WindowManagement.showAlert("Error", "Campos vacios detectados 4", Alert.AlertType.INFORMATION);
->>>>>>> main
         }else {
             if(validateData() == 3){
                 saveProblem();

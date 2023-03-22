@@ -40,7 +40,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int tutorship = idTutorship;
         Connection connection = dataBaseConnection.getConnection();
-        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, r.register_id, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', maternal_surname) as teacher, s.description as solution " +
                 "FROM academic_problems ap " +
                 "INNER JOIN register r on ap.register_id = r.register_id " +
@@ -56,13 +56,31 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         statement.setString(2, uvAcount);
         statement.setInt(3, idProgram);
         ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                academicProblems.add(getAcademicProblem(resultSet));
+        if (resultSet.next()) {
+            do {
+                int academicProblemsId = resultSet.getInt("academic_problems_id");
+                String title = resultSet.getString("title");
+                int number_tutorados = resultSet.getInt("number_tutorados");
+                String nameee = resultSet.getString("nameee");
+                String teacher = resultSet.getString("teacher");
+                int nrc = resultSet.getInt("nrc");
+                String description = resultSet.getString("description");
+                int register_id = resultSet.getInt("register_id");
+                AcademicProblem academicProblem = new AcademicProblem();
+                academicProblem.setIdAcademicProblem(academicProblemsId);
+                academicProblem.setTitle(title);
+                academicProblem.setDescription(description);
+                academicProblem.setGroup(nrc);
+                academicProblem.setEe(nameee);
+                academicProblem.setTeacher(teacher);
+                academicProblem.setNumberTutorados(number_tutorados);
+                academicProblem.setRegister(register_id);
+                academicProblems.add(academicProblem);
+            } while (resultSet.next());
         }
         dataBaseConnection.closeConection();
         return academicProblems;
     }
-
 
     @Override
     public int register(AcademicProblem academicProblem) throws SQLException {
@@ -82,7 +100,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             statement.setInt(4, register);
             statement.setInt(5, numberTutorados);
         statement.setInt(5 , register);
-            insertedFiles = statement.executeUpdate();
+        insertedFiles = statement.executeUpdate();
         dataBaseConnection.closeConection();
         return insertedFiles;
     }
@@ -96,16 +114,14 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         String title = academicProblem.getTitle();
         int group = academicProblem.getGroup();
         int numberTutorados = academicProblem.getNumberTutorados();
-        int register = academicProblem.getRegister();
         int id = academicProblem.getIdAcademicProblem();
-        String query = "UPDATE academic_problems SET title = ?, description = ?, numbertutorados = ?, nrc = ?, register_id = ? WHERE academic_problems_id = ?;";
+        String query = "UPDATE academic_problems SET title = ?, description = ?, number_tutorados = ?, nrc = ? WHERE academic_problems_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, title);
         statement.setString(2, description);
         statement.setInt(3, numberTutorados);
         statement.setInt(4, group);
-        statement.setInt(5, register);
-        statement.setInt(6, id);
+        statement.setInt(5, id);
         insertedFiles = statement.executeUpdate();
         dataBaseConnection.closeConection();
         return insertedFiles;

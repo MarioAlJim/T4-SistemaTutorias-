@@ -16,14 +16,11 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
-<<<<<<< HEAD
         //scene = new Scene(loadFXML("Tutorship"));
-        //scene = new Scene(loadFXML("ConsultAcademicProblems"));
+        scene = new Scene(loadFXML("ConsultAcademicProblems"));
         //scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
-        scene = new Scene(loadFXML("RegisterProblem"));
-=======
-        scene = new Scene(loadFXML("AdminMenu"));
->>>>>>> main
+        //scene = new Scene(loadFXML("RegisterProblem"));
+        //scene = new Scene(loadFXML("AdminMenu"));
         stage.setScene(scene);
         stage.show();
     }
