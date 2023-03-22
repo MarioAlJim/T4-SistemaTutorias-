@@ -20,7 +20,8 @@ public class App extends Application {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
         //scene = new Scene(loadFXML("Tutorship"));
         //scene = new Scene(loadFXML("ConsultAcademicProblems"));
-        scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
+        //scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
+        scene = new Scene(loadFXML("RegisterProblem"));
         stage.setScene(scene);
         stage.show();
     }
