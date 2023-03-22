@@ -94,7 +94,6 @@ public class RegisterProblem implements Initializable{
         }
     }
 
-
     private int validateData() {
         int validData = 0;
         String cantidadTutorados = txtNumberTutorados.getText();
@@ -107,7 +106,7 @@ public class RegisterProblem implements Initializable{
         if(txtTitle.getText().length() < 100) {
             ++validData;
         }
-        if(txtDescription.getText().length() < 500){
+        if(txtDescription.getText().length() < 500) {
             ++validData;
         }
         return validData;

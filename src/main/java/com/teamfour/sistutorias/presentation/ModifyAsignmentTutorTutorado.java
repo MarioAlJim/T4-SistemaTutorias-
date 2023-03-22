@@ -3,7 +3,6 @@ package com.teamfour.sistutorias.presentation;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,10 +12,10 @@ import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.Tutorado;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -26,9 +25,9 @@ import javafx.stage.Stage;
 
 public class ModifyAsignmentTutorTutorado implements Initializable {
     @javafx.fxml.FXML
-    private TableView<Tutorado> tblTutorados;
+    private TableView<Tutorado> tvTutorados;
     @javafx.fxml.FXML
-    private TableView<UserRoleProgram> tblTutores;
+    private TableView<UserRoleProgram> tvTutors;
     @FXML
     private TableColumn<Tutorado, String> colNumberRegister;
     @FXML
@@ -38,87 +37,156 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
     @FXML
     private TableColumn<UserRoleProgram, String> colNameTutor;
     @FXML
-    private TextField txtNameTutor;
+    private TextField tfNameTutor;
     @FXML
-    private TextField txtNameTutorado;
+    private TextField tfNameTutorado;
     @FXML
-    private Button btnSearchTutor;
+    private TextField tfSelectedTutor;
     @FXML
-    private Button btnSearchtutorado;
-    @FXML
-    private TextField txtSelectecTutor;
-    @FXML
-    private TextField txtSelectedTutorado;
+    private TextField tfSelectedTutorado;
     @FXML
     private Button btnModifyAsignament;
     @FXML
     private Button btnClose;
-
-    private ObservableList<Tutorado> showTutorados;
-    private ObservableList<UserRoleProgram> showTutores;
-    private UserRoleProgram userRoleProgram= new UserRoleProgram();
-    private Tutorado tutorado = new Tutorado();
+    private ObservableList<Tutorado> tutoradosData;
+    private ObservableList<UserRoleProgram> tutorsData;
+    private UserRoleProgram selectedTutor= new UserRoleProgram();
+    private Tutorado selectedTutorado = new Tutorado();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setTutorsTable();
+        setTutoradosTable();
+        seeSelectedTutorListener();
+        seeSelectedTutoradoListener();
+        searchTutor();
+        searchTutorado();
+    }
+
+    private void setTutoradosTable() {
         colNameTurorado.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colNumberRegister.setCellValueFactory(new PropertyValueFactory<>("registrationNumber"));
-        colNameTutor.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        colNumPersonal.setCellValueFactory(new PropertyValueFactory<>("email"));
-        ObservableList<Tutorado> tutorados = tblTutorados.getSelectionModel().getSelectedItems();
-        tutorados.addListener(selectTutorado);
-        ObservableList<UserRoleProgram> tutors = tblTutores.getSelectionModel().getSelectedItems();
-        tutors.addListener(selectTutor);
-        setTutor(1);
-        setTutorado(1);
-    }
-
-    private void setTutorado(int typeSearch) {
         TutoradoDAO tutoradoDAO = new TutoradoDAO();
         ArrayList<Tutorado> tutorados = new ArrayList<>();
-        showTutorados = FXCollections.observableArrayList();
+        tutoradosData = FXCollections.observableArrayList();
         try {
-            if (typeSearch == 1){
-                tutorados = tutoradoDAO.getTutoradosByProgramTutor(1); //(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
-            }
-            else {
-                tutorados = tutoradoDAO.getTutoradosByNameProgramTutor(txtNameTutorado.getText(),1);
-            }
+            tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
-        showTutorados.addAll(tutorados);
-        tblTutorados.setItems(showTutorados);
+        tutoradosData.addAll(tutorados);
+        tvTutorados.setItems(tutoradosData);
     }
 
-    private void setTutor(int typeSearch) {
+    private void setTutorsTable() {
+        colNameTutor.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colNumPersonal.setCellValueFactory(new PropertyValueFactory<>("email"));
         UserRoleProgramDAO userRoleProgramDAO = new UserRoleProgramDAO();
         ArrayList<UserRoleProgram> tutors = new ArrayList<>();
-        showTutores = FXCollections.observableArrayList();
+        tutorsData = FXCollections.observableArrayList();
         try {
-            if (typeSearch == 1){
-                tutors = userRoleProgramDAO.getTutorsByProgram(1); //(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
-            }
-            else {
-                tutors = userRoleProgramDAO.getTutorsByProgramName(txtNameTutor.getText(),1);
-            }
+            tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
-        showTutores.addAll(tutors);
-        tblTutores.setItems(showTutores);
+        tutorsData.addAll(tutors);
+        tvTutors.setItems(tutorsData);
+    }
+
+
+    private void seeSelectedTutorListener() {
+        this.tvTutors.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if(newSelection != null) {
+                selectedTutor = this.tvTutors.getSelectionModel().getSelectedItem();
+                String tutorsName = selectedTutor.getFullName();
+                this.tfSelectedTutor.setText(tutorsName);
+            } else {
+                this.tfSelectedTutor.clear();
+            }
+        });
+    }
+
+    private void seeSelectedTutoradoListener() {
+        this.tvTutorados.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if(newSelection != null) {
+                selectedTutorado = this.tvTutorados.getSelectionModel().getSelectedItem();
+                String tutoradosName = selectedTutorado.getFullName();
+                this.tfSelectedTutorado.setText(tutoradosName);
+            } else {
+                this.tfSelectedTutorado.clear();
+            }
+        });
+    }
+
+    @FXML
+    public void searchTutorado() {
+        FilteredList<Tutorado> filteredTutorados = new FilteredList<>(tutoradosData, b -> true);
+        tfNameTutorado.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredTutorados.setPredicate(
+                    tutorado -> {
+                        if (newValue == null || newValue.isEmpty())
+                            return true;
+                        String lowerCaseFilter = newValue.toLowerCase().replaceAll("\\s", "");
+                        boolean itsInTable = false;
+                        if (tutorado.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        } else if (tutorado.getPaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        } else if (tutorado.getMaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        } else if (tutorado.getRegistrationNumber().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        }
+                        return itsInTable;
+                    }
+            );
+        });
+        SortedList<Tutorado> sortedTutorados = new SortedList<>(filteredTutorados);
+        sortedTutorados.comparatorProperty().bind(this.tvTutorados.comparatorProperty());
+        this.tvTutorados.setItems(sortedTutorados);
+    }
+
+    @FXML
+    private void searchTutor() {
+        FilteredList<UserRoleProgram> filteredTutors = new FilteredList<>(tutorsData, b-> true);
+        tfNameTutor.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredTutors.setPredicate(
+                    tutor -> {
+                        if(newValue == null || newValue.isEmpty())
+                            return true;
+                        String lowerCaseFilter = newValue.toLowerCase().replaceAll("\\s", "");
+                        boolean itsInTable = false;
+                        if(tutor.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        } else if(tutor.getPaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        } else if(tutor.getMaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        } else if(tutor.getEmail().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                            itsInTable = true;
+                        }
+                        return itsInTable;
+                    }
+            );
+        });
+        SortedList<UserRoleProgram> sortedTutors = new SortedList<>(filteredTutors);
+        sortedTutors.comparatorProperty().bind(this.tvTutors.comparatorProperty());
+        this.tvTutors.setItems(sortedTutors);
     }
 
     @FXML
     public void modifyAsignament(ActionEvent actionEvent) {
-            TutoradoDAO tutoradoDAO = new TutoradoDAO();
-            int result;
-        if (!txtSelectedTutorado.getText().isEmpty() && ! txtSelectecTutor.getText().isEmpty()){
+        TutoradoDAO tutoradoDAO = new TutoradoDAO();
+        int result;
+        if (!tfSelectedTutorado.getText().isEmpty() && ! tfSelectedTutor.getText().isEmpty()){
             try {
-                result = tutoradoDAO.updateTutor(tutorado, userRoleProgram.getEmail());
+                result = tutoradoDAO.updateTutor(selectedTutorado, selectedTutor.getEmail());
                 if (result == 1){
                     WindowManagement.showAlert("Exito", "Asignacion actualizada", Alert.AlertType.INFORMATION);
+                }
+                else {
+                    System.out.println(result);
                 }
             } catch (SQLException exception) {
                 WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
@@ -127,45 +195,10 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
         }
     }
 
-    private final ListChangeListener<UserRoleProgram> selectTutor =
-            c -> loadTutor();
-
-    public void loadTutor() {
-        if (tblTutores != null) {
-            List<UserRoleProgram> tabla = tblTutores.getSelectionModel().getSelectedItems();
-            if (tabla.size() == 1) {
-                userRoleProgram = tabla.get(0);
-            }
-        }
-        txtSelectecTutor.setText(userRoleProgram.getFullName());
-    }
-
-    private final ListChangeListener<Tutorado> selectTutorado =
-            c -> loadTutorado();
-
-    public void loadTutorado() {
-        if (tblTutores != null) {
-            List<Tutorado> tabla = tblTutorados.getSelectionModel().getSelectedItems();
-            if (tabla.size() == 1) {
-                tutorado = tabla.get(0);
-            }
-        }
-        txtSelectedTutorado.setText(tutorado.getFullName());
-    }
     @FXML
     public void close(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-    }
-
-    @FXML
-    public void searchTutorado(ActionEvent actionEvent) {
-        setTutorado(2);
-    }
-
-    @FXML
-    public void searchTutor(ActionEvent actionEvent) {
-        setTutor(2);
     }
 }
