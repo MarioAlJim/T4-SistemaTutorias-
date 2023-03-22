@@ -86,4 +86,21 @@ public class RegisterDAO implements IRegisterDAO{
             insertedFiles = statement.executeUpdate();
         return insertedFiles;
     }
+
+    public Register getTutorshipRegister(int tutorshipId) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Register register = new Register();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT * FROM register WHERE tutorship_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, tutorshipId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                register.setRegister_id(resultSet.getInt("register_id"));
+                register.setEmail(resultSet.getString("email"));
+                register.setTutorship_id(resultSet.getInt("tutorship_id"));
+                register.setEducative_program_id(resultSet.getInt("educative_program_id"));
+            }
+        return register;
+    }
 }

@@ -11,13 +11,16 @@ import java.util.ArrayList;
 
 public class TeacherDAO implements ITeacherDAO {
     @Override
-    public ArrayList<Teacher> getTeachers() throws SQLException {
+    public ArrayList<Teacher> getTeachersByProgram(int idProgram) throws SQLException {
         ArrayList<Teacher> teachers = new ArrayList<>();
-        String query = "SELECT T.personal_number, P.name, P.paternal_surname, P.maternal_surname FROM teacher T " +
-                "INNER JOIN person P ON P.person_id = T.person_id";
+        String query = "SELECT DISTINCT t.personal_number, p.name, p.paternal_surname, p.maternal_surname FROM group_program gp " +
+                "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
+                "INNER JOIN person p ON P.person_id = T.person_id " +
+                "WHERE gp.program_id = ?";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProgram);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             teachers.add(getTeacher(resultSet));

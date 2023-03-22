@@ -1,12 +1,14 @@
 package com.teamfour.sistutorias.presentation;
 
+import com.teamfour.sistutorias.domain.AcademicProblem;
 import javafx.scene.control.CheckBox;
 
-public class AcademicProblemsTable {
+public class AcademicProblemsTable extends AcademicProblem {
     private CheckBox checkBox;
-    private String academicProblem;
-    private String teacher;
-    private String ee;
+
+    public AcademicProblemsTable() {
+        this.checkBox = new CheckBox();
+    }
 
     public CheckBox getCheckBox() {
         return checkBox;
@@ -14,29 +16,5 @@ public class AcademicProblemsTable {
 
     public void setCheckBox(CheckBox checkBox) {
         this.checkBox = checkBox;
-    }
-
-    public String getAcademicProblem() {
-        return academicProblem;
-    }
-
-    public void setAcademicProblem(String academicProblem) {
-        this.academicProblem = academicProblem;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getEE() {
-        return ee;
-    }
-
-    public void setEE(String ee) {
-        this.ee = ee;
     }
 }

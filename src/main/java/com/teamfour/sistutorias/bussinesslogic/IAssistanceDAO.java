@@ -14,4 +14,6 @@ public interface IAssistanceDAO {
     public int delete(Assistance assistance) throws SQLException;
 
     public ArrayList<Assistance> getAssistanceTutor(String tutor_id) throws SQLException;
+
+    public ArrayList<Assistance> getAssistancesFromRegister(int registerId) throws SQLException;
 }

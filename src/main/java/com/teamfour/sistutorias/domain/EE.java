@@ -4,6 +4,11 @@ public class EE {
     private int idEe;
     private String name;
 
+    public EE() {
+        this.setIdEe(0);
+        this.setName("");
+    }
+
     public int getIdEe() {
         return idEe;
     }

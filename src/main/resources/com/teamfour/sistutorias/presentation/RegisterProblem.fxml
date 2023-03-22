@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="420.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.RegisterProblem">
+<AnchorPane prefHeight="420.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.RegisterProblem">
     <children>
-    <TextField fx:id="txtNumberTutorados" layoutX="199.0" layoutY="22.0" prefHeight="25.0" prefWidth="66.0" promptText="lblCantidadTutorados" />
+    <TextField fx:id="txtNumberTutorados" layoutX="215.0" layoutY="22.0" prefHeight="25.0" prefWidth="66.0" promptText="lblCantidadTutorados" />
     <TextField fx:id="txtTitle" layoutX="37.0" layoutY="141.0" prefHeight="25.0" prefWidth="522.0" promptText="Titulo" />
     <TextArea fx:id="txtDescription" layoutX="39.0" layoutY="195.0" prefHeight="178.0" prefWidth="522.0" promptText="Descripción de la problemática" />
     <Label layoutX="35.0" layoutY="26.0" text="No. Tutorados que reportan" />

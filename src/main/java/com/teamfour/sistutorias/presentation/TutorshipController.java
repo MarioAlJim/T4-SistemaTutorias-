@@ -16,11 +16,13 @@ import com.teamfour.sistutorias.bussinesslogic.TutorshipDAO;
 import com.teamfour.sistutorias.domain.Tutorship;
 import com.teamfour.sistutorias.domain.Period;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TutorshipController implements Initializable {
@@ -134,6 +136,11 @@ public class TutorshipController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             populateComboBox();
+            TutorshipDAO tutorship = new TutorshipDAO();
+            List<Tutorship> tutorships = tutorship.getTutorship(1);
+            for (Tutorship tutorship2 : tutorships) {
+                System.out.println(tutorship2.getPeriodId());
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

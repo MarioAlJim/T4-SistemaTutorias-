@@ -7,6 +7,19 @@ public class UserRoleProgram extends User{
     private String program;
     private String descriptioRole;
 
+    public UserRoleProgram() {
+        this.setIdRole(0);
+        this.setIdProgram(0);
+        this.setProgram("");
+        this.setEmail("");
+        this.setPassword("");
+        this.setName("");
+        this.setIdPerson(0);
+        this.setName("");
+        this.setPaternalSurname("");
+        this.setMaternalSurname("");
+    }
+
     public int getIdRole() {
         return idRole;
     }

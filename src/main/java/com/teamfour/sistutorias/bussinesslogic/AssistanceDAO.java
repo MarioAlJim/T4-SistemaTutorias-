@@ -19,7 +19,7 @@ public class AssistanceDAO implements IAssistanceDAO {
         boolean assis = assistance.getAsistencia();
         boolean risk = assistance.getRiesgo();
         int register = assistance.getRegister_id();
-        String query = "INSERT INTO assistance (registration_number, asistencia, riesgo, register_id) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO assistance (registration_number_id, assis, risk, register_id) VALUES (?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, registrationNumber);
             statement.setBoolean(2, assis);
@@ -66,6 +66,31 @@ public class AssistanceDAO implements IAssistanceDAO {
             if (tutorado != null) {
                 tutoradosAsistencia.add(tutorado);
             }
+        }
+        return tutoradosAsistencia;
+    }
+
+    @Override
+    public ArrayList<Assistance> getAssistancesFromRegister(int registerId) throws SQLException {
+        DataBaseConnection db = new DataBaseConnection();
+        Connection connection = db.getConnection();
+        ArrayList<Assistance> tutoradosAsistencia = new ArrayList<>();
+        String query = "SELECT * FROM assistance \n" +
+                "JOIN tutorado ON assistance.registration_number_id = tutorado.registration_number\n" +
+                "JOIN person ON tutorado.person_id = person.person_id\n" +
+                "WHERE register_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, registerId);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Assistance tutorado = new Assistance();
+            tutorado.setRegistrationNumber(resultSet.getString("registration_number"));
+            tutorado.setName(resultSet.getString("name"));
+            tutorado.setPaternalSurname(resultSet.getString("paternal_surname"));
+            tutorado.setMaternalSurname(resultSet.getString("maternal_surname"));
+            tutorado.setAsistencia(resultSet.getBoolean("assis"));
+            tutorado.setRiesgo(resultSet.getBoolean("risk"));
+            tutoradosAsistencia.add(tutorado);
         }
         return tutoradosAsistencia;
     }

@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="1015.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="1015.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.SolutionsToAcademicProblemsController">
    <children>
       <Label layoutX="24.0" layoutY="28.0" text="Docente">
          <font>
@@ -27,24 +26,24 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbDocente" layoutX="24.0" layoutY="46.0" prefWidth="250.0" />
-      <ComboBox fx:id="cbEE" layoutX="286.0" layoutY="47.0" prefWidth="250.0" />
-      <ComboBox fx:id="cbPeriodo" layoutX="546.0" layoutY="47.0" prefWidth="200.0" />
-      <TextArea fx:id="taSolucion" editable="false" layoutX="763.0" layoutY="42.0" prefHeight="447.0" prefWidth="234.0" wrapText="true" />
+      <ComboBox fx:id="cbTeacher" layoutX="24.0" layoutY="46.0" onAction="#filterAcademicProblems" prefWidth="250.0" />
+      <ComboBox fx:id="cbEE" layoutX="286.0" layoutY="47.0" onAction="#filterAcademicProblems" prefWidth="250.0" />
+      <ComboBox fx:id="cbPeriod" layoutX="546.0" layoutY="47.0" onAction="#filterAcademicProblems" prefWidth="200.0" />
+      <TextArea fx:id="taSolution" editable="false" layoutX="763.0" layoutY="42.0" prefHeight="447.0" prefWidth="234.0" wrapText="true" />
       <Label layoutX="763.0" layoutY="24.0" text="Solución de la problemática">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <TableView editable="true" layoutX="24.0" layoutY="79.0" prefHeight="410.0" prefWidth="722.0" tableMenuButtonVisible="true">
+      <TableView fx:id="tvAcademicProblems" editable="true" layoutX="24.0" layoutY="79.0" prefHeight="410.0" prefWidth="722.0" tableMenuButtonVisible="true">
          <columns>
-            <TableColumn fx:id="tcProblematica" prefWidth="246.39998626708984" text="Problemática académica" />
-            <TableColumn fx:id="tcDocente" prefWidth="248.800048828125" text="Docente" />
+            <TableColumn fx:id="tcAcademicProblem" prefWidth="246.39998626708984" text="Problemática académica" />
+            <TableColumn fx:id="tcTeacher" prefWidth="248.800048828125" text="Docente" />
             <TableColumn fx:id="tcEE" prefWidth="225.60001220703123" text="Experiencia Educativa" />
          </columns>
       </TableView>
-      <Button fx:id="btnCancelar" layoutX="764.0" layoutY="509.0" mnemonicParsing="false" text="Cancelar" />
-      <Button fx:id="btnEliminar" layoutX="938.0" layoutY="509.0" mnemonicParsing="false" text="Eliminar" />
-      <Button fx:id="btnModificar" layoutX="848.0" layoutY="509.0" mnemonicParsing="false" text="Modificar" />
+      <Button layoutX="764.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickCancel" text="Cancelar" />
+      <Button layoutX="938.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickDelete" text="Eliminar" />
+      <Button layoutX="848.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickModify" text="Modificar" />
    </children>
 </AnchorPane>

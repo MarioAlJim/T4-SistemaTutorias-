@@ -7,21 +7,23 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class App extends Application {
 
     private static Scene scene;
 
-
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
+<<<<<<< HEAD
         //scene = new Scene(loadFXML("Tutorship"));
         //scene = new Scene(loadFXML("ConsultAcademicProblems"));
         //scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
         scene = new Scene(loadFXML("RegisterProblem"));
+=======
+        scene = new Scene(loadFXML("AdminMenu"));
+>>>>>>> main
         stage.setScene(scene);
         stage.show();
     }
