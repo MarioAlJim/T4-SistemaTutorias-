@@ -1,6 +1,7 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
+import com.teamfour.sistutorias.domain.User;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +13,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     @Override
     public ArrayList<UserRoleProgram> getTutors() throws SQLException {
         ArrayList<UserRoleProgram> tutors = new ArrayList<>();
-        String query = "SELECT P.name, P.paternal_surname, P.maternal_surname FROM user_program_role UPR " +
+        String query = "SELECT P.name, P.paternal_surname, P.maternal_surname, P.person_id FROM user_program_role UPR " +
                 "INNER JOIN user U ON U.email = UPR.email " +
                 "INNER JOIN person P ON P.person_id = U.person_id " +
                 "WHERE UPR.role_id = 1";
@@ -33,6 +34,8 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
 
     private UserRoleProgram getTutor(ResultSet resultSet) throws SQLException {
         UserRoleProgram tutor = new UserRoleProgram();
+        int personId = resultSet.getInt("person_id");
+        tutor.setIdPerson(personId);
         String name = resultSet.getString("name");
         tutor.setName(name);
         String paternalSurname = resultSet.getString("paternal_surname");
@@ -107,6 +110,19 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         }
         dataBaseConnection.closeConection();
         return tutors;
+    }
+    public boolean modifyCounselor(UserRoleProgram userRoleProgram) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "UPDATE person SET name = ?, paternal_surname = ?, maternal_surname = ? WHERE person_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, userRoleProgram.getName());
+        statement.setString(2, userRoleProgram.getPaternalSurname());
+        statement.setString(3, userRoleProgram.getMaternalSurname());
+        statement.setInt(4, userRoleProgram.getIdPerson());
+        int rows = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return rows > 0;
     }
 
     public ArrayList<UserRoleProgram> getTutorsByProgramName(String searchedName,int idProgram) throws SQLException {

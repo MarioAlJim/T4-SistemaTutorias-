@@ -10,4 +10,5 @@ public interface IUserRoleProgramDAO {
     public ArrayList<UserRoleProgram> searchUser(String uvAcount, String password) throws SQLException;
     public ArrayList<UserRoleProgram> getTutorsByProgram(int idProgram) throws SQLException;
     public ArrayList<UserRoleProgram> getTutorsByProgramName(String name,int idProgram) throws SQLException;
+    public boolean modifyCounselor(UserRoleProgram userRoleProgram) throws SQLException;
 }

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class CounselorQueryController implements Initializable {
+public class CounselorModificationController implements Initializable {
 
     public ListView TutorsList;
     public TextField tbTutorsName;
@@ -78,7 +78,7 @@ public class CounselorQueryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            populateList();
+        populateList();
     }
 
 
@@ -96,6 +96,29 @@ public class CounselorQueryController implements Initializable {
             } else{
                 JOptionPane.showMessageDialog(null, "No se ha seleccionado un tutor");
             }
+        }
+    }
+
+    public void modifyAction(ActionEvent actionEvent) {
+        UserRoleProgram tutor = (UserRoleProgram) TutorsList.getSelectionModel().getSelectedItem();
+        if(tutor != null){
+            if(!tbTutorsName.getText().isEmpty() && !tbPaternalSurname.getText().isEmpty() && !tbMaternalSurname.getText().isEmpty()){
+                tutor.setName(tbTutorsName.getText());
+                tutor.setPaternalSurname(tbPaternalSurname.getText());
+                tutor.setMaternalSurname(tbMaternalSurname.getText());
+                UserRoleProgramDAO userRoleProgramDAO = new UserRoleProgramDAO();
+                try {
+                    userRoleProgramDAO.modifyCounselor(tutor);
+                    JOptionPane.showMessageDialog(null, "Tutor modificado correctamente");
+                    WindowManagement.closeWindow(actionEvent);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            } else{
+                JOptionPane.showMessageDialog(null, "No se han llenado todos los campos");
+            }
+        } else{
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado un tutor");
         }
     }
 }
