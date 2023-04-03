@@ -9,25 +9,25 @@
         <Label layoutX="312.0" layoutY="15.0" text="Tutoria" />
         <ComboBox fx:id="cbTutorship" focusTraversable="false" layoutX="312.0" layoutY="38.0" prefHeight="25.0" prefWidth="209.0" promptText="Seleccione una fecha de tutoria" />
         <ComboBox fx:id="cbPeriod" layoutX="59.0" layoutY="38.0" prefHeight="25.0" prefWidth="185.0" promptText="Seleccione un periodo" />
-        <TableView fx:id="tblProblems" layoutX="54.0" layoutY="98.0" prefHeight="177.0" prefWidth="488.0">
+        <TableView fx:id="tvProblems" layoutX="54.0" layoutY="98.0" prefHeight="177.0" prefWidth="488.0">
             <columns>
-                <TableColumn fx:id="colIdProblem" prefWidth="75.0" text="idProblematica" visible="false" />
+                <TableColumn fx:id="colProblem_id" prefWidth="75.0" text="idProblematica" visible="false" />
                 <TableColumn fx:id="colTitle" prefWidth="302.0" text="Titulo" />
                 <TableColumn fx:id="colNrc" minWidth="0.0" prefWidth="185.0" text="Experiencia Educativa" />
             </columns>
         </TableView>
         <Button fx:id="btnClose" layoutX="331.0" layoutY="617.0" mnemonicParsing="false" onAction="#close" text="Cerrar" />
-        <TextField fx:id="txtTutorados" disable="true" layoutX="180.0" layoutY="292.0" prefHeight="25.0" prefWidth="55.0" />
-        <TextField fx:id="txtGroup" disable="true" layoutX="180.0" layoutY="326.0" prefHeight="25.0" prefWidth="358.0" />
-        <TextField fx:id="txtSolution" disable="true" layoutX="55.0" layoutY="538.0" prefHeight="55.0" prefWidth="488.0" />
-        <TextField fx:id="txtTitle" disable="true" layoutX="52.0" layoutY="376.0" prefHeight="25.0" prefWidth="488.0" />
-        <TextField fx:id="txtDescription" disable="true" layoutX="54.0" layoutY="423.0" prefHeight="92.0" prefWidth="488.0" />
+        <TextField fx:id="tfTutorados" disable="true" layoutX="180.0" layoutY="292.0" prefHeight="25.0" prefWidth="55.0" />
+        <TextField fx:id="tfGroup" disable="true" layoutX="180.0" layoutY="326.0" prefHeight="25.0" prefWidth="358.0" />
+        <TextField fx:id="tfSolution" disable="true" layoutX="55.0" layoutY="538.0" prefHeight="55.0" prefWidth="488.0" />
+        <TextField fx:id="tfTitle" disable="true" layoutX="52.0" layoutY="376.0" prefHeight="25.0" prefWidth="488.0" />
+        <TextField fx:id="tfDescription" disable="true" layoutX="54.0" layoutY="423.0" prefHeight="92.0" prefWidth="488.0" />
         <Label fx:id="lblTutorados" layoutX="55.0" layoutY="292.0" text="Alumnos que reportan" />
         <Label fx:id="lblGroup" layoutX="55.0" layoutY="325.0" prefHeight="17.0" prefWidth="120.0" text="Docente reportado" />
         <Label fx:id="lblTitle" layoutX="54.0" layoutY="359.0" text="Titulo" />
         <Label fx:id="lblDescription" layoutX="55.0" layoutY="406.0" text="Descripción" />
-        <Button fx:id="btnDelete" disable="true" layoutX="400.0" layoutY="617.0" mnemonicParsing="false" onAction="#delete" text="Eliminar" />
-        <Button fx:id="btnModiify" disable="true" layoutX="476.0" layoutY="617.0" mnemonicParsing="false" onAction="#startModificate" text="Modificar" />
+        <Button fx:id="btnDelete" disable="true" layoutX="400.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteAcademicProblem" text="Eliminar" />
+        <Button fx:id="btnModiify" disable="true" layoutX="476.0" layoutY="617.0" mnemonicParsing="false" onAction="#launchModificate" text="Modificar" />
         <Label fx:id="lblSugerence" layoutX="54.0" layoutY="72.0" text="Seleccione una problemática de la tabla" />
       <Label fx:id="lblSolution" layoutX="55.0" layoutY="521.0" text="Solucion" />
     </children>

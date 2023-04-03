@@ -39,23 +39,25 @@ public class ConsultAcademicProblems implements Initializable{
     @javafx.fxml.FXML
     private ComboBox cbPeriod;
     @javafx.fxml.FXML
-    private TableView<AcademicProblem> tblProblems;
+    private TableView<AcademicProblem> tvProblems;
+    @FXML
+    private TableColumn<AcademicProblem, String> colTitle;
     @javafx.fxml.FXML
-    private TableColumn<AcademicProblem, String> colIdProblem;
+    private TableColumn<AcademicProblem, String> colProblem_id;
     @javafx.fxml.FXML
     private TableColumn<AcademicProblem, Integer> colNrc;
     @javafx.fxml.FXML
     private Button btnClose;
     @javafx.fxml.FXML
-    private TextField txtTutorados;
+    private TextField tfTutorados;
     @javafx.fxml.FXML
-    private TextField txtGroup;
+    private TextField tfGroup;
     @javafx.fxml.FXML
-    private TextField txtSolution;
+    private TextField tfSolution;
     @javafx.fxml.FXML
-    private TextField txtTitle;
+    private TextField tfTitle;
     @javafx.fxml.FXML
-    private TextField txtDescription;
+    private TextField tfDescription;
     @javafx.fxml.FXML
     private Label lblTutorados;
     @javafx.fxml.FXML
@@ -72,21 +74,24 @@ public class ConsultAcademicProblems implements Initializable{
     private Label lblSugerence;
     @javafx.fxml.FXML
     private Label lblSolution;
-    @FXML
-    private TableColumn<AcademicProblem, String> colTitle;
-    private ObservableList<AcademicProblem> showAcademicProblems;
+    private ObservableList<AcademicProblem> academicProblemData;
     private AcademicProblem academicProblem = new AcademicProblem();
-    Messages alerts = new Messages();
 
-    private void definePeriods() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setPeriods();
+        seeSelectedAcademicProblemListener();
+    }
+
+    private void setPeriods() {
         ArrayList<Period> periods;
         PeriodDAO periodDAO = new PeriodDAO();
-        ObservableList<Period> options;
-        options = FXCollections.observableArrayList();
+        ObservableList<Period> options = FXCollections.observableArrayList();
         try {
             periods = periodDAO.getPeriods();
             options.addAll(periods);
         } catch (SQLException ex){
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         cbPeriod.setItems(options);
@@ -94,81 +99,68 @@ public class ConsultAcademicProblems implements Initializable{
             cbTutorship.getSelectionModel().clearSelection();
             Period selectedPeriod;
             selectedPeriod = (Period) valorNuevo;
-            showTutorships(selectedPeriod);
+            setTutorships(selectedPeriod);
         });
     }
 
-    private void showTutorships(Period selectedPeriod) {
+    private void setTutorships(Period selectedPeriod) {
+        ArrayList<Tutorship> tutorships;
+        ObservableList<Tutorship> options = FXCollections.observableArrayList();
+        TutorshipDAO tutorshipDAO = new TutorshipDAO();
         try {
-            ObservableList<Tutorship> options;
-            options = FXCollections.observableArrayList();
-            TutorshipDAO tutorshipDAO = new TutorshipDAO();
-            ArrayList<Tutorship> tutorships = tutorshipDAO.getTutorshipByPeriod(selectedPeriod.getIdPeriod());
+            tutorships = tutorshipDAO.getTutorshipByPeriod(selectedPeriod.getIdPeriod());
             options.addAll(tutorships);
-            cbTutorship.setItems(options);
-            cbTutorship.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
-                tblProblems.getItems().clear();
-                if (valorNuevo != null) {
-                    Tutorship newTutorship = (Tutorship) valorNuevo;
-                    showProblems(newTutorship);
-                }
-            });
         }catch (SQLException exception){
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
+        cbTutorship.setItems(options);
+        cbTutorship.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
+            tvProblems.getItems().clear();
+            if (valorNuevo != null) {
+                Tutorship newTutorship = (Tutorship) valorNuevo;
+                setAcademicProblemsTable(newTutorship);
+            }
+        });
     }
 
-    private void showProblems(Tutorship tutorship) {
-        colIdProblem.setCellValueFactory(new PropertyValueFactory<>("idAcademicProblem"));
+    private void setAcademicProblemsTable(Tutorship tutorship) {
+        colProblem_id.setCellValueFactory(new PropertyValueFactory<>("idAcademicProblem"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colNrc.setCellValueFactory(new PropertyValueFactory <>("group"));
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         ArrayList<AcademicProblem> academicProblems;
-        showAcademicProblems = FXCollections.observableArrayList();
+        academicProblemData = FXCollections.observableArrayList();
         try {
-            academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(1, 1, "mario14");
-            showAcademicProblems.addAll(academicProblems);
+            //academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(), SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram(), SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
+            academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(),1, "mario14");
+            academicProblemData.addAll(academicProblems);
         } catch (SQLException exception) {
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
-        tblProblems.setItems(showAcademicProblems);
+        tvProblems.setItems(academicProblemData);
     }
 
-    private final ListChangeListener<AcademicProblem> selectProblem =
-            c -> loadDataProblem();
+    private void seeSelectedAcademicProblemListener() {
+        this.tvProblems.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if(newSelection != null) {
+                academicProblem = this.tvProblems.getSelectionModel().getSelectedItem();
+                tfDescription.setText(academicProblem.getDescription());
+                tfGroup.setText(academicProblem.getGroup() + " " + academicProblem.getTeacher() + " " + academicProblem.getEe());
+                tfSolution.setText(academicProblem.getSolution());
+                tfTitle.setText(academicProblem.getTitle());
+                tfTutorados.setText(academicProblem.getNumberTutorados() + "");
 
-    public AcademicProblem getproblem() {
-        if (tblProblems != null) {
-            List<AcademicProblem> tabla = tblProblems.getSelectionModel().getSelectedItems();
-            if (tabla.size() == 1) {
-                academicProblem = tabla.get(0);
+                btnDelete.setDisable(false);
+                btnModiify.setDisable(false);
             }
-        }
-        return academicProblem;
-    }
-
-    private void loadDataProblem(){
-        AcademicProblem academicProblem = getproblem();
-        txtDescription.setText(academicProblem.getDescription());
-        txtGroup.setText(academicProblem.getGroup() + " " + academicProblem.getTeacher() + " " + academicProblem.getEe());
-        txtSolution.setText(academicProblem.getSolution());
-        txtTitle.setText(academicProblem.getTitle());
-        txtTutorados.setText(academicProblem.getNumberTutorados() + "");
-
-        btnDelete.setDisable(false);
-        btnModiify.setDisable(false);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        definePeriods();
-        ObservableList<AcademicProblem> problems = tblProblems.getSelectionModel().getSelectedItems();
-        problems.addListener(selectProblem);
+        });
     }
 
     @FXML
-    public void delete(ActionEvent actionEvent) {
-        showAcademicProblems.remove(tblProblems.getSelectionModel().getSelectedIndex());
+    public void deleteAcademicProblem(ActionEvent actionEvent) {
+        academicProblemData.remove(tvProblems.getSelectionModel().getSelectedIndex());
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
@@ -189,7 +181,7 @@ public class ConsultAcademicProblems implements Initializable{
     }
 
     @javafx.fxml.FXML
-    public void startModificate(ActionEvent actionEvent) {
+    public void launchModificate(ActionEvent actionEvent) {
         Stage stageMenuTutor = new Stage();
         FXMLLoader loader = new FXMLLoader();
         try {
@@ -203,6 +195,7 @@ public class ConsultAcademicProblems implements Initializable{
             modifyAcademicProblem.recibeParameters(academicProblem);
             stageMenuTutor.show();
         } catch (IOException exception){
+            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
