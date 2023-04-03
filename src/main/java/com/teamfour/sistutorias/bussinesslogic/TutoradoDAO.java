@@ -165,4 +165,34 @@ public class TutoradoDAO implements ITutoradoDAO{
         dataBaseConnection.closeConection();
         return registeredAssignment;
     }
+
+    @Override
+    public ArrayList<Tutorado> getTutoradosWithTutor(int program_id) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        ArrayList<Tutorado> tutorados = new ArrayList<>();
+        String query = ("SELECT * FROM tutorado " +
+                "INNER JOIN person ON tutorado.person_id = person.person_id " +
+                "RIGHT JOIN tutorado_tutor on tutorado.registration_number = tutorado_tutor.registration_number " +
+                "WHERE program_id = ?;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, program_id);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()){
+            do {
+                String registrationNumber = resultSet.getString("registration_number");
+                String name = resultSet.getString("name");
+                String paternalSurname = resultSet.getString("paternal_surname");
+                String maternalSurname = resultSet.getString("maternal_surname");
+                Tutorado tutorado = new Tutorado();
+                tutorado.setRegistrationNumber(registrationNumber);
+                tutorado.setName(name);
+                tutorado.setPaternalSurname(paternalSurname);
+                tutorado.setMaternalSurname(maternalSurname);
+                tutorado.setFullName(name.trim() + " " + paternalSurname.trim() + " " + maternalSurname.trim());
+                tutorados.add(tutorado);
+            } while (resultSet.next());
+        }
+        return tutorados;
+    }
 }

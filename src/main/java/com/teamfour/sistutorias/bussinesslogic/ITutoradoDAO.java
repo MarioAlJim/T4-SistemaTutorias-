@@ -22,4 +22,6 @@ public interface ITutoradoDAO {
     public int updateTutor (Tutorado tutorado, String email) throws SQLException;
 
     public boolean assignTutor(Tutorado tutorado, UserRoleProgram tutor) throws SQLException;
+
+    public ArrayList<Tutorado> getTutoradosWithTutor(int program_id) throws SQLException;
 }
