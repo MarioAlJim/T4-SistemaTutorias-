@@ -112,11 +112,10 @@ public class ConsultGeneralTutorshipReport implements Initializable {
     }
 
     private void LoadTutorshipReports() {
-        List<Register> tutorshipReports = new ArrayList<Register>();
         RegisterDAO RegisterDAO = new RegisterDAO();
 
         try {
-            tutorshipReports.addAll(RegisterDAO.getTutorshipRegister(cbTutorship.getSelectionModel().getSelectedItem().getIdTutorShip()));
+            List<Register> tutorshipReports = new ArrayList<>(RegisterDAO.getTutorshipRegister(cbTutorship.getSelectionModel().getSelectedItem().getIdTutorShip()));
             tvAcademicProblems.setItems(FXCollections.observableArrayList(tutorshipReports));
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Error al cargar los reportes de tutoría").showAndWait();
