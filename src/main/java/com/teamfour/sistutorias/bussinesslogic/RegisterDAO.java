@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterDAO implements IRegisterDAO{
     @Override
@@ -87,20 +89,22 @@ public class RegisterDAO implements IRegisterDAO{
         return insertedFiles;
     }
 
-    public Register getTutorshipRegister(int tutorshipId) throws SQLException {
+    public List<Register> getTutorshipRegister(int tutorshipId) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Register register = new Register();
+        List<Register> registerList = new ArrayList<>();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM register WHERE tutorship_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, tutorshipId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                Register register = new Register();
                 register.setRegister_id(resultSet.getInt("register_id"));
                 register.setEmail(resultSet.getString("email"));
                 register.setTutorship_id(resultSet.getInt("tutorship_id"));
                 register.setEducative_program_id(resultSet.getInt("educative_program_id"));
+                registerList.add(register);
             }
-        return register;
+        return registerList;
     }
 }
