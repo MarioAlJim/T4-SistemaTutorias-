@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="488.0" prefWidth="858.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.TeachersAdministrationController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="299.0" layoutX="444.0" layoutY="28.0" stroke="#dddddd" strokeType="INSIDE" width="375.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="425.0" layoutX="34.0" layoutY="28.0" stroke="#dddddd" strokeType="INSIDE" width="375.0" />
+      <Button fx:id="btnCancel" layoutX="733.0" layoutY="413.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: darkgray;" text="Cancelar" />
+      <Label layoutX="455.0" layoutY="79.0" text="Numero de personal" />
+      <Label layoutX="456.0" layoutY="117.0" text="Nombre" />
+      <Label layoutX="456.0" layoutY="156.0" text="Apellido paterno" />
+      <Label layoutX="455.0" layoutY="195.0" text="Apellido materno" />
+      <Button fx:id="btnSaveTeacher" layoutX="733.0" layoutY="262.0" mnemonicParsing="false" onAction="#saveTeacher" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: royalblue;" text="Registra" />
+      <TextField fx:id="tfNumberPersonal" layoutX="584.0" layoutY="75.0" prefHeight="25.0" prefWidth="92.0" />
+      <TextField fx:id="tfName" layoutX="584.0" layoutY="113.0" prefHeight="25.0" prefWidth="224.0" />
+      <TextField fx:id="tfPaternalSurname" layoutX="584.0" layoutY="152.0" prefHeight="25.0" prefWidth="224.0" />
+      <TextField fx:id="tfMaternalSurname" layoutX="584.0" layoutY="191.0" prefHeight="25.0" prefWidth="224.0" />
+      <TableView fx:id="tvTeacher" layoutX="57.0" layoutY="85.0" prefHeight="290.0" prefWidth="329.0">
+        <columns>
+          <TableColumn fx:id="tcPersonalNum" prefWidth="113.0" text="Numero de personal" />
+          <TableColumn fx:id="tcName" prefWidth="215.0" text="Nombre" />
+        </columns>
+      </TableView>
+      <Button layoutX="57.0" layoutY="413.0" mnemonicParsing="false" onAction="#deleteTeacher" style="-fx-background-color: salmon;" text="Eliminar" />
+      <Button layoutX="319.0" layoutY="413.0" mnemonicParsing="false" onAction="#newModification" style="-fx-background-color: skyblue;" text="Modificar" />
+      <Label layoutX="57.0" layoutY="49.0" prefHeight="21.0" prefWidth="125.0" text="En el sistema">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_action" layoutX="456.0" layoutY="39.0" prefHeight="21.0" prefWidth="125.0" text="Registro">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnModifyTeacher" layoutX="639.0" layoutY="262.0" mnemonicParsing="false" onAction="#modifyTeacher" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: royalblue;" text="Guardar" />
+   </children>
+</AnchorPane>
