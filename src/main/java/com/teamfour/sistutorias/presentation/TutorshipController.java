@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+
+import java.sql.Date;
 import java.time.DayOfWeek;
 import javafx.util.StringConverter;
 import com.teamfour.sistutorias.bussinesslogic.TutorshipDAO;
@@ -79,23 +81,23 @@ public class TutorshipController implements Initializable {
             Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
             period.getIdPeriod();
             tutorship.setPeriodId(period.getIdPeriod());
-            tutorship.setStart(firstDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
-            tutorship.setEnd(endFirstDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
+            tutorship.setStart(Date.valueOf(firstDatePicker.getValue()));
+            tutorship.setEnd(Date.valueOf(endFirstDatePicker.getValue());
             tutorshipDAO.addTutorship(tutorship);
             Tutorship tutorship1 = new Tutorship();
             Period period1 = (Period) cbPeriod.getSelectionModel().getSelectedItem();
             period1.getIdPeriod();
             tutorship1.setPeriodId(period1.getIdPeriod());
-            tutorship1.setStart(secondDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
-            tutorship1.setEnd(endSecondDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
+            tutorship1.setStart(Date.valueOf(secondDatePicker.getValue()));
+            tutorship1.setEnd(Date.valueOf(endSecondDatePicker.getValue()));
             tutorshipDAO.addTutorship(tutorship1);
 
             Tutorship tutorship2 = new Tutorship();
             Period period2 = (Period) cbPeriod.getSelectionModel().getSelectedItem();
             period2.getIdPeriod();
             tutorship2.setPeriodId(period2.getIdPeriod());
-            tutorship2.setStart(thirdDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
-            tutorship2.setEnd(endThirdDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
+            tutorship2.setStart(Date.valueOf(thirdDatePicker.getValue()));
+            tutorship2.setEnd(Date.valueOf(endThirdDatePicker.getValue()));
             tutorshipDAO.addTutorship(tutorship2);
             if (tutorshipDAO.addTutorship(tutorship) && tutorshipDAO.addTutorship(tutorship1) && tutorshipDAO.addTutorship(tutorship2)) {
                 WindowManagement.showAlert("Sesiones de tutoría agregadas",

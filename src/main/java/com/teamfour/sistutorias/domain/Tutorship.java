@@ -1,9 +1,11 @@
 package com.teamfour.sistutorias.domain;
 
+import java.sql.Date;
+
 public class Tutorship {
     private int idTutorShip;
-    private String start;
-    private String end;
+    private Date start;
+    private Date end;
     private int periodId;
 
     public int getIdTutorShip() {
@@ -14,19 +16,19 @@ public class Tutorship {
         this.idTutorShip = idTutorShip;
     }
 
-    public String getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 
