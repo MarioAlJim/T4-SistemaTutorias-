@@ -18,8 +18,9 @@ public interface ITutoradoDAO {
 
     public ArrayList<Tutorado> getTutoradosByProgramTutor (int idProgram) throws SQLException;
 
-    public ArrayList<Tutorado> getTutoradosByNameProgramTutor(String searchedName, int idProgram) throws SQLException;
     public int updateTutor (Tutorado tutorado, String email) throws SQLException;
 
     public boolean assignTutor(Tutorado tutorado, UserRoleProgram tutor) throws SQLException;
+
+    public ArrayList<Tutorado> getTutoradosWithTutor (int program_id) throws SQLException;
 }

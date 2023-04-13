@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.TutorMenu">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.TutorMenu">
    <children>
-      <Label layoutX="47.0" layoutY="57.0" text="Hola Tutor" />
+      <Button fx:id="btnConsultAcademicProblems" layoutX="29.0" layoutY="87.0" mnemonicParsing="false" onAction="#clickConsultAcademicProblems" text="Consultar problematicas academicas" />
    </children>
 </AnchorPane>

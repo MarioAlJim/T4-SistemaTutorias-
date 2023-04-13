@@ -7,4 +7,8 @@ import java.util.ArrayList;
 
 public interface ITeacherDAO {
     public ArrayList<Teacher> getTeachersByProgram(int idProgram) throws SQLException;
+
+    ArrayList<Teacher> getAllTeachers() throws SQLException;
+
+    int registerTeacher(Teacher teacher) throws SQLException;
 }

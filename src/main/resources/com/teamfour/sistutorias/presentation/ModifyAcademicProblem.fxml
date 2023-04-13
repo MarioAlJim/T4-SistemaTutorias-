@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,9 +8,9 @@
             fx:controller="com.teamfour.sistutorias.presentation.ModifyAcademicProblem"
             prefHeight="400.0" prefWidth="600.0">
     <children>
-        <TextField fx:id="txtNumberTutorados" layoutX="199.0" layoutY="22.0" prefHeight="25.0" prefWidth="66.0" promptText="lblCantidadTutorados" />
-        <TextField fx:id="txtTitle" layoutX="37.0" layoutY="141.0" prefHeight="25.0" prefWidth="522.0" promptText="Titulo" />
-        <TextArea fx:id="txtDescription" layoutX="39.0" layoutY="195.0" prefHeight="178.0" prefWidth="522.0" promptText="Descripción de la problemática" />
+        <TextField fx:id="tfNumberTutorados" layoutX="199.0" layoutY="22.0" prefHeight="25.0" prefWidth="66.0" promptText="lblCantidadTutorados" />
+        <TextField fx:id="tfTitle" layoutX="37.0" layoutY="141.0" prefHeight="25.0" prefWidth="522.0" promptText="Titulo" />
+        <TextArea fx:id="tfDescription" layoutX="39.0" layoutY="195.0" prefHeight="178.0" prefWidth="522.0" promptText="Descripción de la problemática" />
         <Label layoutX="35.0" layoutY="26.0" text="No. Tutorados que reportan" />
         <Label layoutX="37.0" layoutY="124.0" text="Titulo" />
         <Label layoutX="36.0" layoutY="178.0" text="Descripción" />
