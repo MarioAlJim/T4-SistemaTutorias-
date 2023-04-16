@@ -105,7 +105,11 @@ public class ConsultGeneralTutorshipReport implements Initializable {
                 return;
             }
             cbTutorship.setItems(tutorships);
-            cbTutorship.addEventHandler(ActionEvent.ACTION, event -> LoadTutorshipReports());
+            cbTutorship.addEventHandler(ActionEvent.ACTION, event -> {
+                LoadTutorshipReports();
+                lbTutorshipDate.setText("Fecha de Tutoria: " +
+                        cbTutorship.getSelectionModel().getSelectedItem().getStart());
+            });
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Error al cargar las tutorías").showAndWait();
             e.printStackTrace();
@@ -116,6 +120,11 @@ public class ConsultGeneralTutorshipReport implements Initializable {
         RegisterDAO RegisterDAO = new RegisterDAO();
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         CommentDAO commentDAO = new CommentDAO();
+        AssistanceDAO assistanceDAO = new AssistanceDAO();
+
+        int totalAssistances = 0;
+        int totalRisks = 0;
+        int totalStudents = 0;
 
         try {
             List<Register> tutorshipReports = new ArrayList<>(RegisterDAO.getTutorshipRegister(cbTutorship.getSelectionModel().getSelectedItem().getIdTutorShip()));
@@ -125,7 +134,23 @@ public class ConsultGeneralTutorshipReport implements Initializable {
             for (Register tutorshipReport : tutorshipReports) {
                 tutorsComments.put(tutorshipReport.getEmail(), commentDAO.getCommentFromRegister(tutorshipReport.getRegister_id()).getDescription());
                 academicProblems.addAll(academicProblemDAO.getAcademicProblemsFromRegister(tutorshipReport.getRegister_id()));
+
+                List<Assistance> attendance = assistanceDAO.getAssistancesFromRegister(tutorshipReport.getRegister_id());
+                for (Assistance assistance : attendance) {
+                    totalStudents++;
+                    lbTutoredTotal.setText("Total de Tutorados: " + totalStudents);
+                    if (assistance.getAsistencia()) {
+                        totalAssistances++;
+
+                    }
+                    if (assistance.getRiesgo()) {
+                        totalRisks++;
+                    }
+                }
             }
+            lbTutoredAttendance.setText("Porcentaje de Asistencia: " + (totalAssistances * 100) / totalStudents + "%");
+            lbTutoredRisk.setText("Porcentaje en Riesgo: " + (totalRisks * 100) / totalStudents + "%");
+
             generateComments();
             tvAcademicProblems.setItems(FXCollections.observableArrayList(academicProblems));
         } catch (SQLException e) {
