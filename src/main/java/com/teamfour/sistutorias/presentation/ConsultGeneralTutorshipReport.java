@@ -1,11 +1,7 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
-import com.teamfour.sistutorias.bussinesslogic.RegisterDAO;
-import com.teamfour.sistutorias.bussinesslogic.TutorshipDAO;
-import com.teamfour.sistutorias.domain.Period;
-import com.teamfour.sistutorias.domain.Register;
-import com.teamfour.sistutorias.domain.Tutorship;
+import com.teamfour.sistutorias.bussinesslogic.*;
+import com.teamfour.sistutorias.domain.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -63,18 +60,21 @@ public class ConsultGeneralTutorshipReport implements Initializable {
     private TableColumn tcTutor;
 
     @FXML
-    private TableView tvAcademicProblems;
+    private TableView<AcademicProblem> tvAcademicProblems;
 
     @FXML
-    private TableView tvGeneralComment;
+    private TableView<Comment> tvGeneralComment;
 
     ObservableList<Period> periods;
     ObservableList<Tutorship> tutorships;
+    HashMap<String, String> tutorsComments;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tutorsComments = new HashMap<>();
         LoadPeriods();
         SetUpTables();
+        cbTutorship.setDisable(true);
     }
 
     private void LoadPeriods() {
@@ -84,8 +84,8 @@ public class ConsultGeneralTutorshipReport implements Initializable {
         try {
             periods.addAll(periodDAO.getPeriods());
             cbPeriod.setItems(periods);
-            cbPeriod.getSelectionModel().selectFirst();
             cbPeriod.addEventHandler(ActionEvent.ACTION, event -> {
+                cbTutorship.setDisable(false);
                 LoadTutorships();
             });
         } catch (SQLException e) {
@@ -100,11 +100,12 @@ public class ConsultGeneralTutorshipReport implements Initializable {
 
         try {
             tutorships.addAll(tutorshipDAO.getTutorshipByPeriod(cbPeriod.getSelectionModel().getSelectedItem().getIdPeriod()));
+            if (tutorships.isEmpty()) {
+                new Alert(Alert.AlertType.ERROR, "No hay tutorías en este periodo").showAndWait();
+                return;
+            }
             cbTutorship.setItems(tutorships);
-            cbTutorship.getSelectionModel().selectFirst();
-            cbTutorship.addEventHandler(ActionEvent.ACTION, event -> {
-                LoadTutorshipReports();
-            });
+            cbTutorship.addEventHandler(ActionEvent.ACTION, event -> LoadTutorshipReports());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Error al cargar las tutorías").showAndWait();
             e.printStackTrace();
@@ -113,24 +114,45 @@ public class ConsultGeneralTutorshipReport implements Initializable {
 
     private void LoadTutorshipReports() {
         RegisterDAO RegisterDAO = new RegisterDAO();
+        AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
+        CommentDAO commentDAO = new CommentDAO();
 
         try {
             List<Register> tutorshipReports = new ArrayList<>(RegisterDAO.getTutorshipRegister(cbTutorship.getSelectionModel().getSelectedItem().getIdTutorShip()));
-            tvAcademicProblems.setItems(FXCollections.observableArrayList(tutorshipReports));
+
+
+            List<AcademicProblem> academicProblems = new ArrayList<>();
+            for (Register tutorshipReport : tutorshipReports) {
+                tutorsComments.put(tutorshipReport.getEmail(), commentDAO.getCommentFromRegister(tutorshipReport.getRegister_id()).getDescription());
+                academicProblems.addAll(academicProblemDAO.getAcademicProblemsFromRegister(tutorshipReport.getRegister_id()));
+            }
+            generateComments();
+            tvAcademicProblems.setItems(FXCollections.observableArrayList(academicProblems));
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Error al cargar los reportes de tutoría").showAndWait();
             e.printStackTrace();
         }
     }
 
+    private void generateComments() {
+        List<Comment> comments = new ArrayList<>();
+        for (String tutor : tutorsComments.keySet()) {
+            Comment comment = new Comment();
+            comment.setTutor(tutor);
+            comment.setDescription(tutorsComments.get(tutor));
+            comments.add(comment);
+        }
+        tvGeneralComment.setItems(FXCollections.observableArrayList(comments));
+    }
+
     private void SetUpTables() {
         tcTutor.setCellValueFactory(new PropertyValueFactory<>("tutor"));
-        tcTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcComment.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        tcTeacher.setCellValueFactory(new PropertyValueFactory<>("docente"));
-        tcNumberStudents.setCellValueFactory(new PropertyValueFactory<>("numbertutorados"));
-        tcEducativeExperience.setCellValueFactory(new PropertyValueFactory<>("educativeExperience"));
+        tcTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcTeacher.setCellValueFactory(new PropertyValueFactory<>("teacher"));
+        tcNumberStudents.setCellValueFactory(new PropertyValueFactory<>("numberTutorados"));
+        tcEducativeExperience.setCellValueFactory(new PropertyValueFactory<>("ee"));
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        tcComment.setCellValueFactory(new PropertyValueFactory<>("comment"));
     }
 }
