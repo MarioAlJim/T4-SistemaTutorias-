@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.EEAdministrationController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="330.0" layoutX="28.0" layoutY="29.0" stroke="#dddddd" strokeType="INSIDE" width="277.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="163.0" layoutX="315.0" layoutY="29.0" stroke="#dddddd" strokeType="INSIDE" width="262.0" />
+      <Label layoutX="37.0" layoutY="36.0" text="En el sistema">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <TableView fx:id="eeTb" layoutX="37.0" layoutY="62.0" onMouseClicked="#selectEE" onSort="#eeTable" prefHeight="285.0" prefWidth="256.0">
+        <columns>
+          <TableColumn fx:id="nameEETb" prefWidth="254.66665649414062" text="Nombre" />
+        </columns>
+      </TableView>
+      <Button layoutX="323.0" layoutY="148.0" mnemonicParsing="false" onAction="#deleteEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: IndianRed;" text="Eliminar" textFill="WHITE" />
+      <Button layoutX="28.0" layoutY="366.0" mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: dimgrey;" text="Cancelar" textFill="WHITE" />
+      <Button layoutX="496.0" layoutY="148.0" mnemonicParsing="false" onAction="#addEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
+      <Button layoutX="409.0" layoutY="148.0" mnemonicParsing="false" onAction="#updateEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: Goldenrod;" text="Modificar" textFill="WHITE" />
+      <Label layoutX="323.0" layoutY="36.0" text="Registro">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="323.0" layoutY="90.0" prefHeight="17.0" prefWidth="52.0" text="Nombre" />
+      <TextField fx:id="eeTf" layoutX="376.0" layoutY="86.0" prefHeight="25.0" prefWidth="194.0" />
+   </children>
+</AnchorPane>

@@ -10,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import javafx.util.StringConverter;
 import com.teamfour.sistutorias.bussinesslogic.TutorshipDAO;
@@ -21,7 +24,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -72,30 +77,30 @@ public class TutorshipController implements Initializable {
 
         TutorshipDAO tutorshipDAO = new TutorshipDAO();
 
-        if (firstDatePicker.getValue() != null && endFirstDatePicker.getValue() != null &&
-                secondDatePicker.getValue() != null && endSecondDatePicker.getValue() != null &&
-                thirdDatePicker.getValue() != null && endThirdDatePicker.getValue() != null) {
+        if (validateDatePickers()) {
+
             Tutorship tutorship = new Tutorship();
             Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
             period.getIdPeriod();
+
             tutorship.setPeriodId(period.getIdPeriod());
-            tutorship.setStart(firstDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
-            tutorship.setEnd(endFirstDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
+            tutorship.setStart(firstDatePicker.getValue().toString());
+            tutorship.setEnd(endFirstDatePicker.getValue().toString());
+
             tutorshipDAO.addTutorship(tutorship);
+
             Tutorship tutorship1 = new Tutorship();
-            Period period1 = (Period) cbPeriod.getSelectionModel().getSelectedItem();
-            period1.getIdPeriod();
-            tutorship1.setPeriodId(period1.getIdPeriod());
-            tutorship1.setStart(secondDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
-            tutorship1.setEnd(endSecondDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
+            period.getIdPeriod();
+            tutorship1.setPeriodId(period.getIdPeriod());
+            tutorship1.setStart(secondDatePicker.getValue().toString());
+            tutorship1.setEnd(endSecondDatePicker.getValue().toString());
             tutorshipDAO.addTutorship(tutorship1);
 
             Tutorship tutorship2 = new Tutorship();
-            Period period2 = (Period) cbPeriod.getSelectionModel().getSelectedItem();
-            period2.getIdPeriod();
-            tutorship2.setPeriodId(period2.getIdPeriod());
-            tutorship2.setStart(thirdDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
-            tutorship2.setEnd(endThirdDatePicker.getValue().toString()/*.format("%y/%m/%d")*/);
+            period.getIdPeriod();
+            tutorship2.setPeriodId(period.getIdPeriod());
+            tutorship2.setStart(thirdDatePicker.getValue().toString());
+            tutorship2.setEnd(endThirdDatePicker.getValue().toString());
             tutorshipDAO.addTutorship(tutorship2);
             if (tutorshipDAO.addTutorship(tutorship) && tutorshipDAO.addTutorship(tutorship1) && tutorshipDAO.addTutorship(tutorship2)) {
                 WindowManagement.showAlert("Sesiones de tutoría agregadas",
@@ -114,6 +119,27 @@ public class TutorshipController implements Initializable {
         }
     }
 
+    public boolean validateDatePickers() {
+        if (firstDatePicker.getValue() != null && endFirstDatePicker.getValue() != null &&
+                secondDatePicker.getValue() != null && endSecondDatePicker.getValue() != null &&
+                thirdDatePicker.getValue() != null && endThirdDatePicker.getValue() != null) {
+            if (firstDatePicker.getValue().isBefore(endFirstDatePicker.getValue()) &&
+                    secondDatePicker.getValue().isBefore(endSecondDatePicker.getValue()) &&
+                    thirdDatePicker.getValue().isBefore(endThirdDatePicker.getValue())) {
+                if(endFirstDatePicker.getValue().isBefore(secondDatePicker.getValue()) &&
+                        endSecondDatePicker.getValue().isBefore(thirdDatePicker.getValue())){
+                    return true;
+                }else{
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void populateComboBox() throws SQLException {
         PeriodDAO periodDAO = new PeriodDAO();
         ObservableList<Period> periods = FXCollections.observableArrayList();
@@ -121,15 +147,16 @@ public class TutorshipController implements Initializable {
         this.cbPeriod.setItems(periods);
         this.cbPeriod.getSelectionModel().selectFirst();
         this.cbPeriod.setConverter(new StringConverter<Period>() {
-        @Override
-        public String toString(Period period) {
-            return period == null ? null : period.getStart() + " - " + period.getEnd();
-        }
-        @Override
-        public Period fromString(String s) {
-            return null;
-        }
-    });
+            @Override
+            public String toString(Period period) {
+                return period == null ? null : period.getStart() + " - " + period.getEnd();
+            }
+            @Override
+            public Period fromString(String s) {
+                return null;
+            }
+        });
+
     }
 
     @Override
@@ -144,21 +171,7 @@ public class TutorshipController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        Callback<DatePicker, DateCell> dayCellFactory = (DatePicker picker) -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate localDate, boolean isEmpty) {
-                super.updateItem(localDate, isEmpty);
-                if(isEmpty || localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                    setDisable(true);
-                }
-            }
-        };
-        firstDatePicker.setDayCellFactory(dayCellFactory);
-        endFirstDatePicker.setDayCellFactory(dayCellFactory);
-        secondDatePicker.setDayCellFactory(dayCellFactory);
-        endSecondDatePicker.setDayCellFactory(dayCellFactory);
-        thirdDatePicker.setDayCellFactory(dayCellFactory);
-        endThirdDatePicker.setDayCellFactory(dayCellFactory);
+       setDatePickers();
     }
 
     public void dateFormatter() {
@@ -169,5 +182,36 @@ public class TutorshipController implements Initializable {
         String date4 = endSecondDatePicker.getValue().format(formatter);
         String date5 = thirdDatePicker.getValue().format(formatter);
         String date6 = endThirdDatePicker.getValue().format(formatter);
+    }
+
+    public void setDatePickers() {
+        Callback<DatePicker, DateCell> dayCellFactory = (DatePicker picker) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate localDate, boolean isEmpty) {
+                super.updateItem(localDate, isEmpty);
+                if(isEmpty || localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                    setDisable(true);
+                }
+                Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
+                if (period != null) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
+                    try {
+                        Date date = dateFormat.parse(period.getStart());
+                        Date date2 = dateFormat.parse(period.getEnd());
+                        if (localDate.isBefore(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) || localDate.isAfter(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
+                            setDisable(true);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        firstDatePicker.setDayCellFactory(dayCellFactory);
+        endFirstDatePicker.setDayCellFactory(dayCellFactory);
+        secondDatePicker.setDayCellFactory(dayCellFactory);
+        endSecondDatePicker.setDayCellFactory(dayCellFactory);
+        thirdDatePicker.setDayCellFactory(dayCellFactory);
+        endThirdDatePicker.setDayCellFactory(dayCellFactory);
     }
 }
