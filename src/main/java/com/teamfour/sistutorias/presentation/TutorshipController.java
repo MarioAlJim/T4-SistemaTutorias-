@@ -74,35 +74,49 @@ public class TutorshipController implements Initializable {
 
     @javafx.fxml.FXML
     public void addAction(ActionEvent actionEvent) throws SQLException {
-
         TutorshipDAO tutorshipDAO = new TutorshipDAO();
+        Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
+        List<Tutorship> tutorships = tutorshipDAO.getTutorship(period.getIdPeriod());
 
         if (validateDatePickers()) {
-
-            Tutorship tutorship = new Tutorship();
-            Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
-            period.getIdPeriod();
-
-            tutorship.setPeriodId(period.getIdPeriod());
-            tutorship.setStart(firstDatePicker.getValue().toString());
-            tutorship.setEnd(endFirstDatePicker.getValue().toString());
-
-            tutorshipDAO.addTutorship(tutorship);
-
-            Tutorship tutorship1 = new Tutorship();
-            period.getIdPeriod();
-            tutorship1.setPeriodId(period.getIdPeriod());
-            tutorship1.setStart(secondDatePicker.getValue().toString());
-            tutorship1.setEnd(endSecondDatePicker.getValue().toString());
-            tutorshipDAO.addTutorship(tutorship1);
-
-            Tutorship tutorship2 = new Tutorship();
-            period.getIdPeriod();
-            tutorship2.setPeriodId(period.getIdPeriod());
-            tutorship2.setStart(thirdDatePicker.getValue().toString());
-            tutorship2.setEnd(endThirdDatePicker.getValue().toString());
-            tutorshipDAO.addTutorship(tutorship2);
-            if (tutorshipDAO.addTutorship(tutorship) && tutorshipDAO.addTutorship(tutorship1) && tutorshipDAO.addTutorship(tutorship2)) {
+            boolean isCorrect = true;
+            if (tutorships.size() >= 1) {
+                Tutorship tutorship = tutorships.get(0);
+                tutorship.setStart(firstDatePicker.getValue().toString());
+                tutorship.setEnd(endFirstDatePicker.getValue().toString());
+                isCorrect = isCorrect && tutorshipDAO.updateTutorship(tutorship);
+            } else {
+                Tutorship tutorship = new Tutorship();
+                tutorship.setPeriodId(period.getIdPeriod());
+                tutorship.setStart(firstDatePicker.getValue().toString());
+                tutorship.setEnd(endFirstDatePicker.getValue().toString());
+                isCorrect = isCorrect && tutorshipDAO.addTutorship(tutorship);
+            }
+            if (tutorships.size() >= 2) {
+                Tutorship tutorship1 = tutorships.get(1);
+                tutorship1.setStart(secondDatePicker.getValue().toString());
+                tutorship1.setEnd(endSecondDatePicker.getValue().toString());
+                isCorrect = isCorrect && tutorshipDAO.updateTutorship(tutorship1);
+            } else {
+                Tutorship tutorship1 = new Tutorship();
+                tutorship1.setPeriodId(period.getIdPeriod());
+                tutorship1.setStart(secondDatePicker.getValue().toString());
+                tutorship1.setEnd(endSecondDatePicker.getValue().toString());
+                isCorrect = isCorrect && tutorshipDAO.addTutorship(tutorship1);
+            }
+            if (tutorships.size() >= 3) {
+                Tutorship tutorship2 = tutorships.get(2);
+                tutorship2.setStart(thirdDatePicker.getValue().toString());
+                tutorship2.setEnd(endThirdDatePicker.getValue().toString());
+                isCorrect = isCorrect && tutorshipDAO.updateTutorship(tutorship2);
+            } else {
+                Tutorship tutorship2 = new Tutorship();
+                tutorship2.setPeriodId(period.getIdPeriod());
+                tutorship2.setStart(thirdDatePicker.getValue().toString());
+                tutorship2.setEnd(endThirdDatePicker.getValue().toString());
+                isCorrect = isCorrect && tutorshipDAO.addTutorship(tutorship2);
+            }
+            if (isCorrect) {
                 WindowManagement.showAlert("Sesiones de tutoría agregadas",
                         "Las sesiones de tutoría se han agregado correctamente",
                         Alert.AlertType.INFORMATION);
@@ -112,12 +126,13 @@ public class TutorshipController implements Initializable {
                         "Las sesiones de tutoría no se han agregado",
                         Alert.AlertType.INFORMATION);
             }
-        }else {
+        } else {
             WindowManagement.showAlert("Campos invalidos",
                     "Por favor, ingrese datos validos",
                     Alert.AlertType.INFORMATION);
         }
     }
+
 
     public boolean validateDatePickers() {
         if (firstDatePicker.getValue() != null && endFirstDatePicker.getValue() != null &&
@@ -126,10 +141,10 @@ public class TutorshipController implements Initializable {
             if (firstDatePicker.getValue().isBefore(endFirstDatePicker.getValue()) &&
                     secondDatePicker.getValue().isBefore(endSecondDatePicker.getValue()) &&
                     thirdDatePicker.getValue().isBefore(endThirdDatePicker.getValue())) {
-                if(endFirstDatePicker.getValue().isBefore(secondDatePicker.getValue()) &&
-                        endSecondDatePicker.getValue().isBefore(thirdDatePicker.getValue())){
+                if (endFirstDatePicker.getValue().isBefore(secondDatePicker.getValue()) &&
+                        endSecondDatePicker.getValue().isBefore(thirdDatePicker.getValue())) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             } else {
@@ -151,6 +166,7 @@ public class TutorshipController implements Initializable {
             public String toString(Period period) {
                 return period == null ? null : period.getStart() + " - " + period.getEnd();
             }
+
             @Override
             public Period fromString(String s) {
                 return null;
@@ -163,6 +179,7 @@ public class TutorshipController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             populateComboBox();
+            populateDatePicker();
             TutorshipDAO tutorship = new TutorshipDAO();
             List<Tutorship> tutorships = tutorship.getTutorship(1);
             for (Tutorship tutorship2 : tutorships) {
@@ -171,7 +188,7 @@ public class TutorshipController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-       setDatePickers();
+        setDatePickers();
     }
 
     public void dateFormatter() {
@@ -189,7 +206,7 @@ public class TutorshipController implements Initializable {
             @Override
             public void updateItem(LocalDate localDate, boolean isEmpty) {
                 super.updateItem(localDate, isEmpty);
-                if(isEmpty || localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                if (isEmpty || localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
                     setDisable(true);
                 }
                 Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
@@ -213,5 +230,47 @@ public class TutorshipController implements Initializable {
         endSecondDatePicker.setDayCellFactory(dayCellFactory);
         thirdDatePicker.setDayCellFactory(dayCellFactory);
         endThirdDatePicker.setDayCellFactory(dayCellFactory);
+    }
+
+    public void populateDatePicker() {
+        try {
+        Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
+        TutorshipDAO tutorshipDAO = new TutorshipDAO();
+        List<Tutorship> tutorships = tutorshipDAO.getTutorship(period.getIdPeriod());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+            if(tutorships.size() >= 1) {
+                Tutorship tutorship1 = tutorships.get(0);
+                date = dateFormat.parse(tutorship1.getStart());
+                firstDatePicker.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                date = dateFormat.parse(tutorship1.getEnd());
+                endFirstDatePicker.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            } else {
+                firstDatePicker.setValue(null);
+                endFirstDatePicker.setValue(null);
+            }
+            if (tutorships.size() >= 2) {
+                Tutorship tutorship2 = tutorships.get(1);
+                date = dateFormat.parse(tutorship2.getStart());
+                secondDatePicker.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                date = dateFormat.parse(tutorship2.getEnd());
+                endSecondDatePicker.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            } else {
+                secondDatePicker.setValue(null);
+                endSecondDatePicker.setValue(null);
+            }
+            if(tutorships.size() >= 3) {
+                Tutorship tutorship3 = tutorships.get(2);
+                date = dateFormat.parse(tutorship3.getStart());
+                thirdDatePicker.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                date = dateFormat.parse(tutorship3.getEnd());
+                endThirdDatePicker.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            } else {
+                thirdDatePicker.setValue(null);
+                endThirdDatePicker.setValue(null);
+            }
+        } catch (ParseException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

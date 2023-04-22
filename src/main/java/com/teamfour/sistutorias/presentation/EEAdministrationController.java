@@ -12,6 +12,7 @@ import com.teamfour.sistutorias.presentation.DataValidation;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -22,7 +23,7 @@ public class EEAdministrationController implements Initializable {
     private TableView<EE> eeTb;
     @FXML
     private TableColumn<EE, String> nameEETb;
-
+    private ArrayList<EE> ees;
     @FXML
     public void eeTable(SortEvent<TableView> tableViewSortEvent) {
 
@@ -64,6 +65,19 @@ public class EEAdministrationController implements Initializable {
                     "Por favor, no deje campos vacios",
                     Alert.AlertType.INFORMATION);
         if (DataValidation.textValidation(name, 50)) {
+            boolean eeExists = false;
+            for (EE ee : ees) {
+                if (ee.getName().equals(name)) {
+                    eeExists = true;
+                    break;
+                }
+            }
+            if (eeExists) {
+                WindowManagement.showAlert("EE ya registrada",
+                        "La EE ya se encuentra registrada",
+                        Alert.AlertType.INFORMATION);
+                return;
+            }
             EE ee = new EE();
             ee.setName(name);
             EEDAO eeDAO = new EEDAO();
@@ -90,6 +104,19 @@ public class EEAdministrationController implements Initializable {
                     "Por favor, no deje campos vacios",
                     Alert.AlertType.INFORMATION);
         if (DataValidation.textValidation(name, 50)) {
+            boolean eeExists = false;
+            for (EE ee : ees) {
+                if (ee.getName().equals(name)) {
+                    eeExists = true;
+                    break;
+                }
+            }
+            if (eeExists) {
+                WindowManagement.showAlert("EE ya registrada",
+                        "La EE ya se encuentra registrada",
+                        Alert.AlertType.INFORMATION);
+                return;
+            }
             EE ee = eeTb.getSelectionModel().getSelectedItem();
             ee.setName(name);
             EEDAO eeDAO = new EEDAO();
@@ -123,7 +150,8 @@ public class EEAdministrationController implements Initializable {
         EEDAO eeDAO = new EEDAO();
         try {
             eeTb.getItems().clear();
-            eeTb.getItems().addAll(eeDAO.getEEs());
+            ees = eeDAO.getEEs();
+            eeTb.getItems().addAll(ees);
         } catch (Exception e) {
             e.printStackTrace();
         }
