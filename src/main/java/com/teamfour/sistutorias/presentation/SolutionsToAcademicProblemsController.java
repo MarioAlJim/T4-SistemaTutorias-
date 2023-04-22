@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ModifySolutionToAcademicProblemController implements Initializable {
+public class SolutionsToAcademicProblemsController implements Initializable {
 
     @FXML
     private ComboBox<Teacher> cbTeacher;
