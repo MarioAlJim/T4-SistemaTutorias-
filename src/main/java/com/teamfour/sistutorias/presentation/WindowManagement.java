@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.Optional;
 
 public class WindowManagement {
-    private static FXMLLoader fxmlLoader;
     public static void showAlert(String title, String message, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -47,7 +46,7 @@ public class WindowManagement {
     }
 
     public static void changeScene(String title, URL resource) throws IOException {
-        fxmlLoader = new FXMLLoader(resource);
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
         stage.setTitle(title);
@@ -55,9 +54,5 @@ public class WindowManagement {
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
-    }
-
-    public static FXMLLoader getFxmlLoader() {
-        return fxmlLoader;
     }
 }
