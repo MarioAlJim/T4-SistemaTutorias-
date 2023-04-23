@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class RegisterSolutionToAcademicProblemController implements Initializable {
+public class ModifySolutionToAcademicProblemController implements Initializable {
 
     @FXML
     private ComboBox<EE> cbEE;
@@ -43,6 +43,16 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
 
     final int MAX_CHARS = 100;
     private final ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
+    private ArrayList<Integer> previouslySelectedAcademicProblems = new ArrayList<>();
+    private int solution;
+
+    public void setPreviouslySelectedAcademicProblems(ArrayList<Integer> previouslySelectedAcademicProblems) {
+        this.previouslySelectedAcademicProblems = previouslySelectedAcademicProblems;
+    }
+
+    public void setSolution(int solution) {
+        this.solution = solution;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,6 +76,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
         teachers.add(new Teacher());
         teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
         this.cbTeacher.setItems(teachers);
+        this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
             @Override
             public String toString(Teacher teacher) {
@@ -100,6 +111,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
     public void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
+
         for(AcademicProblem academicProblem : academicProblemsWithoutSolution) {
             AcademicProblemsTable academicProblemFromTable = new AcademicProblemsTable();
             academicProblemFromTable.setIdAcademicProblem(academicProblem.getIdAcademicProblem());
@@ -116,6 +128,25 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
         this.tcTeacher.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTeacher()));
         this.tcEE.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getEe()));
         this.tvAcademicProblems.setItems(tableAcademicProblems);
+    }
+
+    public void addSelectedElements() throws SQLException {
+        AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
+
+        for(Integer selectedAcademicProblemId : this.previouslySelectedAcademicProblems) {
+            AcademicProblem selectedAcademicProblem = academicProblemDAO.getAcademicProblemById(selectedAcademicProblemId.intValue());
+            AcademicProblemsTable academicProblemFromTable = new AcademicProblemsTable();
+            academicProblemFromTable.setIdAcademicProblem(selectedAcademicProblem.getIdAcademicProblem());
+            academicProblemFromTable.setTitle(selectedAcademicProblem.getTitle());
+            academicProblemFromTable.setEe(selectedAcademicProblem.getEe());
+            academicProblemFromTable.setTeacher(selectedAcademicProblem.getTeacher());
+            academicProblemFromTable.setDescription(selectedAcademicProblem.getDescription());
+            academicProblemFromTable.setPeriod(selectedAcademicProblem.getPeriod());
+            academicProblemFromTable.getCheckBox().setSelected(true);
+            tableAcademicProblems.add(0,academicProblemFromTable);
+        }
+        String solution = academicProblemDAO.getSolutionById(this.solution);
+        this.taSolution.setText(solution);
     }
 
     @FXML
@@ -150,29 +181,28 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
         } else {
             AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
             try {
-                int solution = academicProblemDAO.registerSolutionToAcademicProblem(this.taSolution.getText());
+                int solutionUpdated = academicProblemDAO.updateSolution(this.solution, this.taSolution.getText());
                 boolean solutionLinked = false;
-                if(solution != -1) {
-                    for(AcademicProblemsTable academicProblem : selectedAcademicProblems) {
-                        solutionLinked = academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
-                        if(solutionLinked) {
-                            this.taSolution.clear();
-                            this.tvAcademicProblems.getItems().remove(academicProblem);
-                        } else {
-                            break;
-                        }
+                if(solutionUpdated != 0) {
+                    for(Integer previouslySelectedAcademicProblem : this.previouslySelectedAcademicProblems) {
+                        solutionLinked = academicProblemDAO.unlinkSolutionToProblems(previouslySelectedAcademicProblem.intValue(), this.solution);
+                    }
+
+                    for(AcademicProblemsTable newAcademicProblemSelected : selectedAcademicProblems) {
+                        solutionLinked = academicProblemDAO.linkSolutionToProblems(newAcademicProblemSelected,this.solution);
                     }
                 }
 
                 if(solutionLinked) {
-                    this.taSolution.clear();
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
                             Alert.AlertType.CONFIRMATION);
+                    WindowManagement.closeWindow(event);
                 } else {
                     WindowManagement.showAlert("Solución no registrada",
                             "La solución no ha sido registrada",
                             Alert.AlertType.ERROR);
+                    WindowManagement.closeWindow(event);
                 }
 
             } catch (SQLException sqlException) {
@@ -182,9 +212,8 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
     }
 
     private boolean validateAProblemWasSelected(ArrayList<AcademicProblemsTable> selectedAcademicProblems) {
-        ObservableList<AcademicProblemsTable> academicProblemsShown = this.tableAcademicProblems;
         boolean noProblemsSelected = true;
-        for(AcademicProblemsTable academicProblem : academicProblemsShown) {
+        for(AcademicProblemsTable academicProblem : this.tableAcademicProblems) {
             if(academicProblem.getCheckBox().isSelected()) {
                 selectedAcademicProblems.add(academicProblem);
                 noProblemsSelected = false;

@@ -109,4 +109,41 @@ class AcademicProblemDAOTest {
     public void deleteSolution() throws SQLException {
         assertTrue(academicProblemDAO.deleteSolution(2));
     }
+
+
+    @Test
+    void updateAcademicProblem() {
+    }
+
+    @Test
+    void deleteAcademicProblem() {
+    }
+
+    @Test
+    public void getAcademicProblemById() throws SQLException {
+        academicProblem = academicProblemDAO.getAcademicProblemById(1);
+        assertTrue(academicProblem != null);
+    }
+
+    @Test
+    public void getSolutionById() throws SQLException {
+        String solution = academicProblemDAO.getSolutionById(10);
+        assertTrue(!solution.equals(""));
+    }
+
+    @Test
+    void getAcademicProblemsFromRegister() {
+    }
+
+    @Test
+    public void updateSolution() throws SQLException {
+        int updatedSolution = academicProblemDAO.updateSolution(10, "El profesor dedicara sesiones para resolver dudas");
+        assertTrue(updatedSolution == 1);
+    }
+
+    @Test
+    public void unlinkSolutionToProblems() throws SQLException {
+        boolean unlinkedSolution = academicProblemDAO.unlinkSolutionToProblems(1,10);
+        assertTrue(unlinkedSolution);
+    }
 }
