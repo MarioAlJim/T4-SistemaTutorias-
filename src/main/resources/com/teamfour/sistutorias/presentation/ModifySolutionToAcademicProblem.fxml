@@ -43,7 +43,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="839.0" layoutY="499.0" mnemonicParsing="false" onAction="#clickCancel" text="Cancelar" />
-      <Button layoutX="927.0" layoutY="499.0" mnemonicParsing="false" onAction="#clickSave" text="Guardar" />
+      <Button layoutX="839.0" layoutY="499.0" mnemonicParsing="false" onAction="#clickCancel" style="-fx-background-color: DimGray;" text="Cancelar" textFill="WHITE" />
+      <Button layoutX="927.0" layoutY="499.0" mnemonicParsing="false" onAction="#clickSave" style="-fx-background-color: ForestGreen;" text="Guardar" textFill="WHITE" />
    </children>
 </AnchorPane>
