@@ -70,7 +70,8 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
         ArrayList<Tutorado> tutorados = new ArrayList<>();
         tutoradosData = FXCollections.observableArrayList();
         try {
-            tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
+            //tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
+            tutorados = tutoradoDAO.getTutoradosWithTutor(1);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
@@ -86,7 +87,9 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
         ArrayList<UserRoleProgram> tutors = new ArrayList<>();
         tutorsData = FXCollections.observableArrayList();
         try {
-            tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
+            //tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
+            //
+            tutors = userRoleProgramDAO.getTutorsByProgram(1);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);

@@ -22,11 +22,17 @@ public class App extends Application {
         scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
 =======
         //scene = new Scene(loadFXML("Tutorship"));
-        scene = new Scene(loadFXML("ConsultAcademicProblems"));
         //scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
         //scene = new Scene(loadFXML("RegisterProblem"));
         //scene = new Scene(loadFXML("AdminMenu"));
+<<<<<<< HEAD
 >>>>>>> 5b27d1f5f2da5a91595b9505067e2c628c5c021c
+=======
+        //scene = new Scene(loadFXML("ConsultAcademicProblems"));
+        //scene = new Scene(loadFXML("Login"));
+        scene = new Scene(loadFXML("ManageEducationProgram"));
+        //scene = new Scene(loadFXML("RegisterSolutionToAcademicProblem"));
+>>>>>>> 213c881bd53062db1e1b68ce592fddcda840a334
         stage.setScene(scene);
         stage.show();
     }
@@ -43,5 +49,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

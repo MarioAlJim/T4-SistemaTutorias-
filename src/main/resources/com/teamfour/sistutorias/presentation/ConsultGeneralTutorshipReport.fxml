@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultGeneralTutorshipReport">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Periodo Escolar" />
+      <ComboBox fx:id="cbPeriod" layoutX="128.0" layoutY="10.0" prefWidth="150.0" />
+      <Label layoutX="14.0" layoutY="47.0" text="Sesion de Tutoria" />
+      <ComboBox fx:id="cbTutorship" layoutX="128.0" layoutY="43.0" prefWidth="150.0" />
+      <Label layoutX="14.0" layoutY="80.0" text="Problematicas Academicas" />
+      <TableView fx:id="tvAcademicProblems" layoutX="18.0" layoutY="100.0" prefHeight="364.0" prefWidth="922.0">
+        <columns>
+          <TableColumn fx:id="tcEducativeExperience" prefWidth="146.61371612548828" text="Experiencia Educativa" />
+          <TableColumn fx:id="tcTeacher" prefWidth="152.5979461669922" text="Docente" />
+            <TableColumn fx:id="tcTitle" prefWidth="186.50860595703125" text="Titulo" />
+            <TableColumn fx:id="tcDescription" prefWidth="344.09344482421875" text="Descripcion" />
+            <TableColumn fx:id="tcNumberStudents" prefWidth="92.755615234375" text="# Estudiantes" />
+        </columns>
+      </TableView>
+      <Label fx:id="lbTutorshipDate" layoutX="322.0" layoutY="14.0" text="Fecha de Tutoria:" />
+      <Label fx:id="lbTutoredTotal" layoutX="323.0" layoutY="47.0" text="Cantidad de Estudaintes Registrados:" />
+      <Label fx:id="lbTutoredAttendance" layoutX="680.0" layoutY="14.0" text="Porcentaje de Asistencia:" />
+      <Label fx:id="lbTutoredRisk" layoutX="680.0" layoutY="47.0" text="Porcentaje en Riesgo:" />
+      <TableView fx:id="tvGeneralComment" layoutX="18.0" layoutY="497.0" prefHeight="200.0" prefWidth="922.0">
+        <columns>
+          <TableColumn fx:id="tcTutor" prefWidth="265.30101776123047" text="Tutor" />
+          <TableColumn fx:id="tcComment" prefWidth="656.27099609375" text="Comentario" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="472.0" text="Comentarios Generales" />
+   </children>
+</AnchorPane>

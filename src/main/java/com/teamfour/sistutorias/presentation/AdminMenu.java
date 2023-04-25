@@ -13,9 +13,11 @@ public class AdminMenu implements Initializable {
 
     }
 
+    /*
     @FXML
     private void clickRegisterEducationProgram() throws IOException {
         WindowManagement.changeScene("Programa educativo",
                 getClass().getResource("EducationProgram.fxml"));
     }
+     */
 }
