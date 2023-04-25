@@ -38,7 +38,6 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
     public ArrayList<AcademicProblem> consultAcademicProblemsByTutor(int idTutorship, int idProgram, String uvAcount) throws SQLException {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        int tutorship = idTutorship;
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, r.register_id, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', maternal_surname) as teacher, s.description as solution " +
@@ -52,7 +51,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
                 "LEFT JOIN solution s on s.solution_id = ps.solution_id " +
                 "where r.tutorship_id = ? AND r.email = ? AND r.educative_program_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, tutorship);
+        statement.setInt(1, idTutorship);
         statement.setString(2, uvAcount);
         statement.setInt(3, idProgram);
         ResultSet resultSet = statement.executeQuery();
@@ -287,18 +286,26 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
-        String query = "SELECT * FROM academic_problems WHERE register_id = ?";
+        String query = "SELECT ap.title, ap.description, ap.numbertutorados, p.name, p.paternal_surname, " +
+                "p.maternal_surname, ee.name AS eename FROM academic_problems ap " +
+                "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
+                "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
+                "LEFT JOIN teacher t on t.personal_number = gp.personal_number " +
+                "LEFT JOIN person p on p.person_id = t.person_id " +
+                "WHERE register_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, registerId);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             AcademicProblem academicProblem = new AcademicProblem();
-            academicProblem.setIdAcademicProblem(resultSet.getInt("academic_problems_id"));
             academicProblem.setTitle(resultSet.getString("title"));
             academicProblem.setDescription(resultSet.getString("description"));
             academicProblem.setNumberTutorados(resultSet.getInt("numbertutorados"));
-            academicProblem.setGroup(resultSet.getInt("nrc"));
-            academicProblem.setRegister(resultSet.getInt("register_id"));
+            String teachername = resultSet.getString("name") + " " +
+                    resultSet.getString("paternal_surname") + " " +
+                    resultSet.getString("maternal_surname");
+            academicProblem.setTeacher(teachername);
+            academicProblem.setEe(resultSet.getString("eename"));
             boolean alreadyRegistered = false;
             for (AcademicProblem academicProblem1 : academicProblems) {
                 if (academicProblem1.getIdAcademicProblem() == academicProblem.getIdAcademicProblem()) {

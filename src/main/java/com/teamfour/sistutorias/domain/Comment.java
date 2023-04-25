@@ -5,12 +5,14 @@ public class Comment {
     private String description;
     private int register;
 
-    public Comment(String description) {
-        this.description = description;
-    }
+    private String tutor;
 
     public Comment() {
 
+    }
+
+    public Comment(String description) {
+        this.description = description;
     }
 
     public int getComment_id() {
@@ -35,4 +37,8 @@ public class Comment {
     public void setRegister(int register) {
         this.register = register;
     }
+
+    public String getTutor() { return tutor; }
+
+    public void setTutor(String tutor) { this.tutor = tutor; }
 }
