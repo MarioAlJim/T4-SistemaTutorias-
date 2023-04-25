@@ -319,4 +319,80 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         }
         return academicProblems;
     }
+
+    @Override
+    public AcademicProblem getAcademicProblemById(int academicProblemId) throws SQLException {
+        AcademicProblem academicProblem = new AcademicProblem();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+                "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, " +
+                "pd.start, pd.end " +
+                "FROM academic_problems ap " +
+                "INNER JOIN register r on ap.register_id = r.register_id " +
+                "INNER JOIN tutorship ts on ts.tutorship_id = r.tutorship_id " +
+                "INNER JOIN period pd on pd.period_id = ts.period_id " +
+                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN ee on ee.ee_id = gp.ee_id " +
+                "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
+                "INNER JOIN person p on p.person_id = t.person_id " +
+                "WHERE ap.academic_problems_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, academicProblemId);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next())
+            academicProblem = getAcademicProblemWithPeriod(resultSet);
+        dataBaseConnection.closeConection();
+        return academicProblem;
+    }
+
+    @Override
+    public String getSolutionById(int solutionId) throws SQLException {
+        String solution = "";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT s.description FROM solution s " +
+                "WHERE solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, solutionId);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next())
+            solution = resultSet.getString("description");
+        dataBaseConnection.closeConection();
+        return solution;
+    }
+
+    @Override
+    public int updateSolution(int solutionId, String solution) throws SQLException {
+        int solutionUpdated = 0;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "UPDATE solution " +
+                "SET description = ? " +
+                "WHERE solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, solution);
+        statement.setInt(2, solutionId);
+        solutionUpdated = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return solutionUpdated;
+    }
+
+    @Override
+    public boolean unlinkSolutionToProblems(int academicProblemId, int solutionId) throws SQLException {
+        boolean unlinkedSolution = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM problem_solution " +
+                "WHERE academic_problem_id = ? && solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, academicProblemId);
+        statement.setInt(2, solutionId);
+        if(statement.executeUpdate() != 0)
+            unlinkedSolution = true;
+        dataBaseConnection.closeConection();
+        return unlinkedSolution;
+    }
+
+
 }

@@ -4,6 +4,14 @@ public class EducationProgram {
     private int idEducationProgram;
     private String name;
 
+    public EducationProgram() {
+    }
+
+    public EducationProgram(int idEducationProgram, String name) {
+        this.idEducationProgram = idEducationProgram;
+        this.name = name;
+    }
+
     public int getIdEducationProgram() {
         return idEducationProgram;
     }

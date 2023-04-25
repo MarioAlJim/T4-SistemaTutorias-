@@ -7,5 +7,6 @@ import java.util.ArrayList;
 
 public interface IEducationProgramDAO {
     public ArrayList<EducationProgram> getEducationPrograms() throws SQLException;
-    public boolean register(EducationProgram educationProgram) throws SQLException;
+    public int register(EducationProgram educationProgram) throws SQLException;
+    public boolean updateEducationProgram(EducationProgram educationProgram) throws SQLException;
 }

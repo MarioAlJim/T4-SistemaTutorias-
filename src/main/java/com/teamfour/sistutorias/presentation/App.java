@@ -22,7 +22,8 @@ public class App extends Application {
         //scene = new Scene(loadFXML("AdminMenu"));
         //scene = new Scene(loadFXML("ConsultAcademicProblems"));
         //scene = new Scene(loadFXML("Login"));
-        scene = new Scene(loadFXML("ConsultGeneralTutorshipReport"));
+        scene = new Scene(loadFXML("ManageEducationProgram"));
+        //scene = new Scene(loadFXML("RegisterSolutionToAcademicProblem"));
         stage.setScene(scene);
         stage.show();
     }

@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="431.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.TutorAssignmentController">
    <children>
-      <Button layoutX="273.0" layoutY="341.0" mnemonicParsing="false" onAction="#assignTutor" prefHeight="27.0" prefWidth="124.0" text="Asignar Tutor" />
+      <Button layoutX="273.0" layoutY="341.0" mnemonicParsing="false" onAction="#assignTutor" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: ForestGreen;" text="Asignar Tutor" textFill="WHITE" />
       <TextField fx:id="tfNameTutor" layoutX="30.0" layoutY="38.0" prefHeight="26.0" prefWidth="292.0" promptText="Buscar tutor" />
       <TextField fx:id="tfNameTutorado" layoutX="345.0" layoutY="38.0" prefHeight="26.0" prefWidth="292.0" promptText="Buscar tutorado" />
       <TableView fx:id="tvTutorados" layoutX="345.0" layoutY="77.0" prefHeight="189.0" prefWidth="292.0">
@@ -24,7 +24,7 @@
             <TableColumn fx:id="tcNameTutor" prefWidth="201.0" text="Tutor" />
          </columns>
       </TableView>
-      <Button layoutX="592.0" layoutY="368.0" mnemonicParsing="false" onAction="#clickCancel" text="Cerrar" />
+      <Button layoutX="592.0" layoutY="368.0" mnemonicParsing="false" onAction="#clickCancel" style="-fx-background-color: DimGray;" text="Cerrar" textFill="WHITE" />
       <TextField fx:id="tfSelectedTutor" disable="true" layoutX="30.0" layoutY="303.0" prefHeight="25.0" prefWidth="292.0" />
       <TextField fx:id="tfSelectedTutorado" disable="true" layoutX="345.0" layoutY="303.0" prefHeight="25.0" prefWidth="292.0" />
       <Label layoutX="302.0" layoutY="276.0" text="Asignación" textAlignment="CENTER" />

@@ -3,8 +3,11 @@ package com.teamfour.sistutorias.presentation;
 import com.teamfour.sistutorias.domain.AcademicProblem;
 import javafx.scene.control.ComboBox;
 
+import java.util.ArrayList;
+
 public class SolutionsTable extends AcademicProblem {
-    ComboBox<String> cbAcademicProblems;
+    private ComboBox<String> cbAcademicProblems;
+    private ArrayList<Integer> relatedAcademicProblems = new ArrayList<>();
 
     public SolutionsTable() {
         this.cbAcademicProblems = new ComboBox<>();
@@ -17,5 +20,13 @@ public class SolutionsTable extends AcademicProblem {
 
     public void setCbAcademicProblems(ComboBox<String> cbAcademicProblems) {
         this.cbAcademicProblems = cbAcademicProblems;
+    }
+
+    public ArrayList<Integer> getRelatedAcademicProblems() {
+        return relatedAcademicProblems;
+    }
+
+    public void addRelatedAcademicProblems(Integer relatedAcademicProblem) {
+        this.relatedAcademicProblems.add(relatedAcademicProblem);
     }
 }
