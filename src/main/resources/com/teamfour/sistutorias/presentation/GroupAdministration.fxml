@@ -1,52 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.teamfour.sistutorias.presentation.GroupAdministrationController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="582.0" prefWidth="1081.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.GroupAdministrationController">
     <children>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="281.0" layoutX="444.0" layoutY="28.0" stroke="#dddddd" strokeType="INSIDE" width="375.0" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="386.0" layoutX="34.0" layoutY="28.0" stroke="#dddddd" strokeType="INSIDE" width="375.0" />
-        <Button fx:id="btnCancel" layoutX="57.0" layoutY="443.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: DimGray;" text="Cancelar" textFill="WHITE" />
-        <Label layoutX="455.0" layoutY="79.0" text="Numero de personal" />
-        <Label layoutX="456.0" layoutY="117.0" text="Nombre" />
-        <Label layoutX="456.0" layoutY="156.0" text="Apellido paterno" />
-        <Label layoutX="455.0" layoutY="195.0" text="Apellido materno" />
-        <Button fx:id="btnSaveTeacher" layoutX="733.0" layoutY="262.0" mnemonicParsing="false" onAction="#saveTeacher" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
-        <TextField fx:id="tfNumberPersonal" layoutX="584.0" layoutY="75.0" prefHeight="25.0" prefWidth="92.0" />
-        <TextField fx:id="tfName" layoutX="584.0" layoutY="113.0" prefHeight="25.0" prefWidth="224.0" />
-        <TextField fx:id="tfPaternalSurname" layoutX="584.0" layoutY="152.0" prefHeight="25.0" prefWidth="224.0" />
-        <TextField fx:id="tfMaternalSurname" layoutX="584.0" layoutY="191.0" prefHeight="25.0" prefWidth="224.0" />
-        <TableView fx:id="tvTeacher" layoutX="57.0" layoutY="85.0" prefHeight="290.0" prefWidth="329.0">
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="386.0" layoutX="456.0" layoutY="129.0" stroke="#dddddd" strokeType="INSIDE" width="611.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="386.0" layoutX="13.0" layoutY="129.0" stroke="#dddddd" strokeType="INSIDE" width="430.0" />
+        <Button fx:id="btnCancel" layoutX="51.0" layoutY="535.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: DimGray;" text="Cancelar" textFill="WHITE" />
+        <Label layoutX="468.0" layoutY="190.0" text="NRC" />
+        <Button fx:id="btnSaveGroup" layoutX="978.0" layoutY="474.0" mnemonicParsing="false" onAction="#saveGroups" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
+        <TextField fx:id="tfNRC" layoutX="519.0" layoutY="186.0" prefHeight="25.0" prefWidth="125.0" />
+        <TableView fx:id="tvGroup" layoutX="24.0" layoutY="186.0" prefHeight="290.0" prefWidth="407.0">
             <columns>
-                <TableColumn fx:id="tcPersonalNum" prefWidth="113.0" text="Numero de personal" />
-                <TableColumn fx:id="tcName" prefWidth="215.0" text="Nombre" />
+                <TableColumn fx:id="tcPersonalNum" prefWidth="61.0" text="NRC" />
+                <TableColumn fx:id="tcName" prefWidth="179.0" text="Docente" />
+            <TableColumn prefWidth="166.0" text="EE" />
             </columns>
         </TableView>
-        <Button fx:id="btnDelete" layoutX="581.0" layoutY="262.0" mnemonicParsing="false" onAction="#deleteTeacher" style="-fx-background-color: Indianred;" text="Eliminar" textFill="WHITE" />
-        <Button fx:id="btnModify" layoutX="653.0" layoutY="262.0" mnemonicParsing="false" onAction="#modifyTeacher" style="-fx-background-color: Goldenrod;" text="Modificar" textFill="WHITE" />
-        <Label layoutX="57.0" layoutY="49.0" prefHeight="21.0" prefWidth="159.0" text="Registros en el sistema">
+        <Button fx:id="btnDeleteGroup" layoutX="826.0" layoutY="474.0" mnemonicParsing="false" onAction="#deleteGroup" style="-fx-background-color: Indianred;" text="Eliminar" textFill="WHITE" />
+        <Button fx:id="btnModifyGroup" layoutX="898.0" layoutY="474.0" mnemonicParsing="false" onAction="#modifyGroup" style="-fx-background-color: Goldenrod;" text="Modificar" textFill="WHITE" />
+        <Label layoutX="24.0" layoutY="150.0" prefHeight="21.0" prefWidth="159.0" text="Grupos en el sistema">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <Label fx:id="lbl_action" layoutX="456.0" layoutY="39.0" prefHeight="21.0" prefWidth="125.0" text="Registro">
+        <Label fx:id="lbl_action" layoutX="469.0" layoutY="150.0" prefHeight="21.0" prefWidth="125.0" text="Registro">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <Label layoutX="57.0" layoutY="375.0" prefHeight="21.0" prefWidth="182.0" text="Seleccione para modificar">
+        <Label layoutX="24.0" layoutY="476.0" prefHeight="21.0" prefWidth="182.0" text="Seleccione para modificar">
             <font>
                 <Font size="10.0" />
             </font>
         </Label>
-        <Button fx:id="btnCancelModification" layoutX="456.0" layoutY="262.0" mnemonicParsing="false" onAction="#cancelModification" style="-fx-background-color: Indianred;" text="Cancelar" textFill="WHITE" />
+        <Button fx:id="btnCancelModification" layoutX="468.0" layoutY="474.0" mnemonicParsing="false" onAction="#cancelModification" style="-fx-background-color: Indianred;" text="Cancelar" textFill="WHITE" />
+      <TableView fx:id="tvTeacher" layoutX="469.0" layoutY="226.0" prefHeight="160.0" prefWidth="304.0">
+         <columns>
+            <TableColumn fx:id="tcPersonalNum" prefWidth="94.0" text="Numero de personal" />
+            <TableColumn fx:id="tcNameTeacher" prefWidth="234.0" text="Nombre" />
+         </columns>
+      </TableView>
+      <TableView fx:id="tvEE" layoutX="783.0" layoutY="226.0" prefHeight="160.0" prefWidth="270.0">
+         <columns>
+            <TableColumn fx:id="tcEE" prefWidth="265.0" text="EE" />
+         </columns>
+      </TableView>
+      <TextField fx:id="tfSelectedEE" layoutX="783.0" layoutY="401.0" prefHeight="25.0" prefWidth="270.0" />
+      <TextField fx:id="tfSelectedTeacher" layoutX="469.0" layoutY="401.0" prefHeight="25.0" prefWidth="304.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="75.0" layoutX="14.0" layoutY="20.0" stroke="#dddddd" strokeType="INSIDE" width="430.0" />
+      <Label layoutX="24.0" layoutY="44.0" prefHeight="21.0" prefWidth="159.0" text="Programa educativo">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbbAcademicProblem" layoutX="206.0" layoutY="42.0" prefHeight="25.0" prefWidth="182.0" promptText="Programa educativo" />
     </children>
 
 </AnchorPane>
