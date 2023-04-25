@@ -234,9 +234,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
         if(selectedSolution != null) {
             boolean deleteSolution = false;
-            deleteSolution = WindowManagement.showAlertWithConfirmation("Eliminar solución",
-                    "¿Desea eliminar la solución seleccionada?");
-
+            deleteSolution = WindowManagement.showAlertWithConfirmation("Eliminar solución", "¿Desea eliminar la solución seleccionada?");
             if(deleteSolution) {
                 try {
                     boolean deletedSolution = academicProblemDAO.deleteSolution(selectedSolution.getIdSolution());

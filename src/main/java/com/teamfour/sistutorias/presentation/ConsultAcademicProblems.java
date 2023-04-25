@@ -34,35 +34,35 @@ import javafx.stage.Stage;
 
 public class ConsultAcademicProblems implements Initializable{
 
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbTutorship;
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbPeriod;
-    @javafx.fxml.FXML
+    @FXML
     private TableView<AcademicProblem> tvProblems;
     @FXML
     private TableColumn<AcademicProblem, String> colTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TableColumn<AcademicProblem, String> colProblem_id;
-    @javafx.fxml.FXML
+    @FXML
     private TableColumn<AcademicProblem, Integer> colNrc;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnClose;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfGroup;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfSolution;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfDescription;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblGroup;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblTitle;
     @javafx.fxml.FXML
     private Label lblDescription;
