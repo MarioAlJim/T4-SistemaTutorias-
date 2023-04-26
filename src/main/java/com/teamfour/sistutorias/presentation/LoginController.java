@@ -25,15 +25,9 @@ import javafx.stage.Stage;
 import com.teamfour.sistutorias.bussinesslogic.*;
 import com.teamfour.sistutorias.domain.*;
 
-
-/**
- * FXML Controller class
- *
- * @author SILVERWOLF
- */
 public class LoginController implements Initializable {
 
-    @javafx.fxml.FXML
+    @FXML
     private Label lblPassword;
     @javafx.fxml.FXML
     private PasswordField txtPassword;
