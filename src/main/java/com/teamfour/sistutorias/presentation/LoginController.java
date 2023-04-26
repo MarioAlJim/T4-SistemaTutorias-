@@ -88,7 +88,7 @@ public class LoginController implements Initializable {
         int tipeUser = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdRole();
         switch (tipeUser) {
             case 4:
-                showMenu("AdminMenu.fxml", "Menu de administradores");
+                showMenu("MainMenu.fxml", "Menu de administradores");
                 break;
             case 3:
                 showMenu("TutoringCoordinatorMenu.fxml", "Menu de Jefe de carrera");
