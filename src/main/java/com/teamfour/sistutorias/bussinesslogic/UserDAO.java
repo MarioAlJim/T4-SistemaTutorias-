@@ -40,10 +40,11 @@ public class UserDAO implements IUserDAO{
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<User> users = new ArrayList<>();
 
-        String query = "SELECT * FROM user\n" +
+        String query = "SELECT *, ep.name AS education_program FROM user\n" +
                 "         JOIN user_program_role ON user.email = user_program_role.email\n" +
                 "         JOIN person ON user.person_id = person.person_id\n" +
-                "         JOIN sistem_role ON user_program_role.role_id = sistem_role.role_id;";
+                "         JOIN sistem_role ON user_program_role.role_id = sistem_role.role_id" +
+                "         JOIN education_program ep ON ep.education_program_id  = user_program_role.program_id;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
         while(resultSet.next()) {
@@ -54,6 +55,7 @@ public class UserDAO implements IUserDAO{
             user.setMaternalSurname(resultSet.getString("maternal_surname"));
             user.setIdPerson(resultSet.getInt("person_id"));
             user.addRole(resultSet.getString("description"));
+            user.setEducativeProgram(resultSet.getString("education_program"));
             users.add(user);
         }
         for (int i = 0; i < users.size(); i++) {

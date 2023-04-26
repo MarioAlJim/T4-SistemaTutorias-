@@ -4,6 +4,8 @@ import com.teamfour.sistutorias.bussinesslogic.UserDAO;
 import com.teamfour.sistutorias.domain.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,6 +37,9 @@ public class ManageUsers implements Initializable {
     private TableColumn<?, ?> tcRoles;
 
     @FXML
+    private TableColumn<?, ?> tcProgramaEducativo;
+
+    @FXML
     private TextField tfUserSearch;
 
     @FXML
@@ -46,29 +51,40 @@ public class ManageUsers implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupTable();
         loadUsers();
-        tfUserSearch.addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> filterTable());
+        filterTable();
     }
 
     private void filterTable() {
-        if (tfUserSearch.getText().equals("")) {
-            tvUsers.setItems(users);
-            return;
-        }
-        tvUsers.getItems().clear();
-        for(User user : users) {
-            if(user.getEmail().contains(tfUserSearch.getText())) {
-                tvUsers.getItems().add(user);
-            }
-            if(user.getName().contains(tfUserSearch.getText())) {
-                tvUsers.getItems().add(user);
-            }
-            if(user.getPaternalSurname().contains(tfUserSearch.getText())) {
-                tvUsers.getItems().add(user);
-            }
-            if(user.getMaternalSurname().contains(tfUserSearch.getText())) {
-                tvUsers.getItems().add(user);
-            }
-        }
+        FilteredList<User> filteredUsers = new FilteredList<>(this.users, b -> true);
+        this.tfUserSearch.textProperty().addListener((observable, oldValue, newValue) -> filteredUsers.setPredicate(
+                user -> {
+                    if(newValue == null || newValue.isEmpty())
+                        return true;
+
+                    String lowerCaseFilter = newValue.toLowerCase().replaceAll("\\s", "");
+                    boolean isInTable = user.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter);
+                    if(user.getPaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        isInTable = true;
+                    }
+                    if(user.getMaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        isInTable = true;
+                    }
+                    if(user.getEmail().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        isInTable = true;
+                    }
+                    if(user.getRoles().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        isInTable = true;
+                    }
+                    if(user.getEducativeProgram().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        isInTable = true;
+                    }
+
+                    return isInTable;
+                }
+        ));
+        SortedList<User> userSortedList = new SortedList<>(filteredUsers);
+        userSortedList.comparatorProperty().bind(this.tvUsers.comparatorProperty());
+        this.tvUsers.setItems(userSortedList);
     }
 
     private void setupTable() {
@@ -77,6 +93,7 @@ public class ManageUsers implements Initializable {
         tcMaternalSurname.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("maternalSurname"));
         tcEmail.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("email"));
         tcRoles.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("roles"));
+        tcProgramaEducativo.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("educativeProgram"));
     }
 
     private void loadUsers() {

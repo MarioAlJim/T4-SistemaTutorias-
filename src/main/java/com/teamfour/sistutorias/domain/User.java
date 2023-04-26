@@ -3,8 +3,8 @@ package com.teamfour.sistutorias.domain;
 public class User extends Person{
     private String email;
     private String password;
-
     private String roles;
+    private String educativeProgram;
 
     public String getEmail() {
         return email;
@@ -52,6 +52,14 @@ public class User extends Person{
                 }
             }
         }
+    }
+
+    public String getEducativeProgram() {
+        return educativeProgram;
+    }
+
+    public void setEducativeProgram(String educativeProgram) {
+        this.educativeProgram = educativeProgram;
     }
 
     @Override
