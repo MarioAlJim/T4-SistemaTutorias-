@@ -16,7 +16,7 @@ public class CareerManagerMenu implements Initializable {
     @FXML
     private void clickRegisterSolution() throws IOException {
         WindowManagement.changeScene("Problemáticas académicas sin solución",
-                getClass().getResource("AcademicProblemsWithoutSolution.fxml"));
+                getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
     }
 
     @FXML

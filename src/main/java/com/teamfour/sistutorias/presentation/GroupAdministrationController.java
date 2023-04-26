@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Array;
@@ -61,13 +62,14 @@ public class GroupAdministrationController implements Initializable {
     private TextField tfSelectedTeacher;
     @FXML
     private ComboBox cbbAcademicProblem;
-    private EducationProgram selectedEducationProgram;
-    private Teacher selectedTeacher;
-    private EE selectedEe;
     @FXML
     private TableColumn tcNrc;
     @FXML
     private TableColumn tcEeG;
+    private EducationProgram selectedEducationProgram;
+    private Teacher selectedTeacher;
+    private EE selectedEe;
+    private Group newGroup = new Group();
 
     private void lockModify(boolean lock) {
         if (lock) {
@@ -82,6 +84,16 @@ public class GroupAdministrationController implements Initializable {
             btnSaveGroup.setDisable(true);
         }
 
+    }
+
+    private void clearForm() {
+        tfNRC.setText("");
+        tfSelectedEE.setText("");
+        tfSelectedTeacher.setText("");
+    }
+
+    private boolean completedForm(){
+        return (!tfNRC.getText().isEmpty() && !tfSelectedEE.getText().isEmpty() && !tfSelectedTeacher.getText().isEmpty());
     }
 
     private void setEducationProgram() {
@@ -100,6 +112,8 @@ public class GroupAdministrationController implements Initializable {
             setTeachers();
             setEes();
             setGroups();
+            btnSaveGroup.setDisable(false);
+            newGroup.setEducationProgram(selectedEducationProgram);
         });
     }
 
@@ -133,7 +147,9 @@ public class GroupAdministrationController implements Initializable {
     }
 
     private void setGroups() {
-        tcEeG.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcEeG.setCellValueFactory(new PropertyValueFactory<>("experience"));
+        tcNrc.setCellValueFactory(new PropertyValueFactory<>("nrc"));
+        tcName.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
         ArrayList<Group> groups;
         ObservableList<Group> groupsList = FXCollections.observableArrayList();
         try {
@@ -147,25 +163,118 @@ public class GroupAdministrationController implements Initializable {
         tvGroup.setItems(groupsList);
     }
 
+    private void selectTeacherListener() {
+        this.tvTeacher.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                selectedTeacher = this.tvTeacher.getSelectionModel().getSelectedItem();
+                String teachersName = selectedTeacher.getPersonalNumber() + "";
+                this.tfSelectedTeacher.setText(teachersName);
+                newGroup.setTeacher(selectedTeacher);
+            }
+        });
+    }
+
+    private void selectEeListener() {
+        this.tvEE.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                selectedEe = this.tvEE.getSelectionModel().getSelectedItem();
+                String eesName = selectedEe.getIdEe() + "";
+                this.tfSelectedEE.setText(eesName);
+                newGroup.setEe(selectedEe);
+            }
+        });
+    }
+
+    private void selectGroup() {
+        this.tvGroup.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                newGroup = this.tvGroup.getSelectionModel().getSelectedItem();
+                this.tfNRC.setText(newGroup.getNrc() + "");
+                this.tfSelectedEE.setText(newGroup.getEe().getIdEe()+"");
+                this.tfSelectedTeacher.setText(newGroup.getTeacher().getPersonalNumber()+"");
+                lockModify(false);
+            }
+        });
+    }
     @FXML
     public void cancel(ActionEvent actionEvent) {
-
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     public void cancelModification(ActionEvent actionEvent) {
+        clearForm();
+        lockModify(true);
     }
 
     @FXML
     public void saveGroups(ActionEvent actionEvent) {
+        GroupDAO groupDAO = new GroupDAO();
+        int result;
+        if (completedForm()) {
+            try {
+                newGroup.setNrc(Integer.parseInt(tfNRC.getText()));
+                result = groupDAO.registerGroup(newGroup);
+                if (result == 1) {
+                    setGroups();
+                    WindowManagement.showAlert("Éxito", "Registro exitoso", Alert.AlertType.INFORMATION);
+                } else if (result == -1) {
+                    WindowManagement.showAlert("Error", "El grupo que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
+                }
+            } catch (SQLException sqlException) {
+                Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
+                WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+            }
+        } else {
+            WindowManagement.showAlert("Error", "Por favor seleccione todos los elementos para el registro", Alert.AlertType.INFORMATION);
+        }
     }
 
     @FXML
     public void deleteGroup(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Estas seguro de confirmar la eliminacion?");
+        Optional<ButtonType> action = alert.showAndWait();
+        if (action.get() == ButtonType.OK) {
+            GroupDAO groupDAO = new GroupDAO();
+            int result;
+            try {
+                result = groupDAO.deleteGroup(newGroup.getNrc());
+                if (result == 1) {
+                    setGroups();
+                    WindowManagement.showAlert("Éxito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
+                }
+            } catch (SQLException sqlException) {
+                Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
+                WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+            }
+        }
     }
 
     @FXML
     public void modifyGroup(ActionEvent actionEvent) {
+        GroupDAO groupDAO = new GroupDAO();
+        int result;
+        if (completedForm()) {
+            try {
+                int newNrc= Integer.parseInt(tfNRC.getText());
+                result = groupDAO.modifyGroup(newGroup, newNrc);
+                if (result == 1) {
+                    setGroups();
+                    WindowManagement.showAlert("Éxito", "Modificacion exitosa", Alert.AlertType.INFORMATION);
+                } else if (result == -1) {
+                    WindowManagement.showAlert("Error", "El grupo que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
+                }
+            } catch (SQLException sqlException) {
+                Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
+                WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+            }
+        } else {
+            WindowManagement.showAlert("Error", "Por favor llene todos los elementos para el registro", Alert.AlertType.INFORMATION);
+        }
     }
 
     @Override
@@ -173,5 +282,10 @@ public class GroupAdministrationController implements Initializable {
         setEducationProgram();
         lockModify(true);
         btnSaveGroup.setDisable(true);
+        tfSelectedTeacher.setDisable(true);
+        tfSelectedEE.setDisable(true);
+        selectTeacherListener();
+        selectEeListener();
+        selectGroup();
     }
 }

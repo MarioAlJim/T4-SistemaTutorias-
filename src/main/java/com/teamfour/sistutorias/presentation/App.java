@@ -16,6 +16,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
+        //scene = new Scene(loadFXML("ConsultAcademicProblems"));
+        //scene = new Scene(loadFXML("Login"));
         //scene = new Scene(loadFXML("Tutorship"));
         //scene = new Scene(loadFXML("ModifyAsignmentTutorTutorado"));
         //scene = new Scene(loadFXML("RegisterProblem"));
