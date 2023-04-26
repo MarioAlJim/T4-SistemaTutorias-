@@ -31,7 +31,7 @@ public class UserDAO implements IUserDAO{
             tutor.setIdPerson(resultSet.getInt("person_id"));
             tutors.add(tutor);
         }
-
+        dataBaseConnection.closeConection();
         return tutors;
     }
 
@@ -68,6 +68,30 @@ public class UserDAO implements IUserDAO{
                 }
             }
         }
+        dataBaseConnection.closeConection();
         return users;
+    }
+
+    @Override
+    public int insertUser(User user) throws SQLException {
+        PersonDAO personDAO = new PersonDAO();
+        int personId = personDAO.insertPerson(user);
+        user.setIdPerson(personId);
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "INSERT INTO user (email, password, person_id) VALUES (?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, user.getEmail());
+        statement.setString(2, user.getPassword());
+        statement.setInt(3, user.getIdPerson());
+        int columns = statement.executeUpdate();
+        int result;
+        if (columns == 1) {
+            result = personId;
+        } else {
+            result = -1;
+        }
+        dataBaseConnection.closeConection();
+        return result;
     }
 }

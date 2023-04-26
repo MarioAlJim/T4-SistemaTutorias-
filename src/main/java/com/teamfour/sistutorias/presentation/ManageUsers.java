@@ -8,13 +8,17 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -101,7 +105,7 @@ public class ManageUsers implements Initializable {
         try {
             users = FXCollections.observableArrayList(userDAO.getAllUsers());
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error al cargar los usuarios").show();
+            WindowManagement.showAlert("Error", "Error al cargar los usuarios", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
         tvUsers.setItems(users);
@@ -115,11 +119,29 @@ public class ManageUsers implements Initializable {
 
     @FXML
     void openModifyUserWindow(ActionEvent event) {
-        //TODO: Open modify user window
+        openUserWindow(tvUsers.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     void openRegisterUserWindow(ActionEvent event) {
-        //TODO: Open register user window
+        openUserWindow(null);
+    }
+
+    private void openUserWindow(User selectedItem) {
+        Stage stage = new Stage();
+        stage.setTitle("Usuario");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
+            stage.setScene(new Scene(loader.load()));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            UserWindow userWindow = loader.getController();
+            userWindow.setUser(selectedItem);
+            userWindow.setEdit(selectedItem != null);
+            userWindow.loadUser();
+            stage.showAndWait();
+            loadUsers();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

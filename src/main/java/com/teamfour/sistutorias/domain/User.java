@@ -40,7 +40,7 @@ public class User extends Person{
 
     public void removeRole(String role) {
         if (this.roles != null) {
-            String[] roles = this.roles.split(",");
+            String[] roles = this.roles.split(", ");
             this.roles = "";
             for (String s : roles) {
                 if (!s.equals(role)) {
