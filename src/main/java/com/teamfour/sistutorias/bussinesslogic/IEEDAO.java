@@ -7,4 +7,6 @@ import java.util.ArrayList;
 
 public interface IEEDAO {
     public ArrayList<EE> getEEsByProgram(int idProgram) throws SQLException;
+
+    ArrayList<EE> getAllEe() throws SQLException;
 }

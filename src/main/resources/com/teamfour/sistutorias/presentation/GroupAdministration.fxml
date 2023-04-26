@@ -16,9 +16,9 @@
         <TextField fx:id="tfNRC" layoutX="519.0" layoutY="186.0" prefHeight="25.0" prefWidth="125.0" />
         <TableView fx:id="tvGroup" layoutX="24.0" layoutY="186.0" prefHeight="290.0" prefWidth="407.0">
             <columns>
-                <TableColumn fx:id="tcPersonalNum" prefWidth="61.0" text="NRC" />
+                <TableColumn fx:id="tcNrc" prefWidth="61.0" text="NRC" />
                 <TableColumn fx:id="tcName" prefWidth="179.0" text="Docente" />
-            <TableColumn prefWidth="166.0" text="EE" />
+                <TableColumn fx:id="tcEeG" prefWidth="166.0" text="EE" />
             </columns>
         </TableView>
         <Button fx:id="btnDeleteGroup" layoutX="826.0" layoutY="474.0" mnemonicParsing="false" onAction="#deleteGroup" style="-fx-background-color: Indianred;" text="Eliminar" textFill="WHITE" />

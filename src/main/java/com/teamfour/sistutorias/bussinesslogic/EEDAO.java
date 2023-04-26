@@ -28,6 +28,21 @@ public class EEDAO implements IEEDAO {
         return ees;
     }
 
+    @Override
+    public ArrayList<EE> getAllEe() throws SQLException {
+        ArrayList<EE> ees = new ArrayList<>();
+        String query = "SELECT name FROM ee ";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            ees.add(getEE(resultSet));
+        }
+        dataBaseConnection.closeConection();
+        return ees;
+    }
+
     private EE getEE(ResultSet resultSet) throws SQLException {
         EE ee = new EE();
         String name = resultSet.getString("name");
