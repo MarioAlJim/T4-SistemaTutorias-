@@ -25,9 +25,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class ModifyAsignmentTutorTutoradoController implements Initializable {
-    @javafx.fxml.FXML
+    @FXML
     private TableView<Tutorado> tvTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private TableView<UserRoleProgram> tvTutors;
     @FXML
     private TableColumn<Tutorado, String> colNumberRegister;
