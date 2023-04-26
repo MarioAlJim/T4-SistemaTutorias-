@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,7 +24,7 @@ public class MainMenuController implements Initializable {
     }
 
     private void populateComboBox() {
-        
+
     }
 
     public void clickConsultTutorshipReport(ActionEvent event) {
@@ -53,15 +54,21 @@ public class MainMenuController implements Initializable {
     public void clickManageTutorado(ActionEvent event) {
     }
 
-    public void clickAssignTutor(ActionEvent event) {
+    public void clickAssignTutor(ActionEvent event) throws IOException {
+        WindowManagement.changeScene("Asignación de tutor académico",
+                getClass().getResource("TutorAssignment.fxml"));
     }
 
     public void clickModifyTutorAssignment(ActionEvent event) {
     }
 
-    public void clickRegisterSolution(ActionEvent event) {
+    public void clickRegisterSolution(ActionEvent event) throws IOException {
+        WindowManagement.changeScene("Registrar solución a problemática académica",
+                getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
     }
 
-    public void clickConsultSolution(ActionEvent event) {
+    public void clickConsultSolution(ActionEvent event) throws IOException {
+        WindowManagement.changeScene("Soluciones a problemáticas académicas",
+                getClass().getResource("SolutionsToAcademicProblems.fxml"));
     }
 }

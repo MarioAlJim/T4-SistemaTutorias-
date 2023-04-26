@@ -43,7 +43,7 @@
                   <Insets right="25.0" top="3.0" />
                </GridPane.margin>
             </Label>
-            <ComboBox fx:id="cbProgramasEducativos" prefHeight="26.0" prefWidth="226.0" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+            <ComboBox fx:id="cbEducationPrograms" prefHeight="26.0" prefWidth="226.0" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="3.0" right="25.0" />
                </GridPane.margin>
