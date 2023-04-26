@@ -205,8 +205,4 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5b27d1f5f2da5a91595b9505067e2c628c5c021c
