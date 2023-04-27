@@ -1,11 +1,9 @@
 package com.teamfour.sistutorias.presentation;
 
 import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
-import com.teamfour.sistutorias.bussinesslogic.PersonDAO;
 import com.teamfour.sistutorias.bussinesslogic.UserDAO;
 import com.teamfour.sistutorias.bussinesslogic.UserRoleProgramDAO;
 import com.teamfour.sistutorias.domain.EducationProgram;
-import com.teamfour.sistutorias.domain.Person;
 import com.teamfour.sistutorias.domain.User;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import javafx.collections.FXCollections;
@@ -13,10 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -26,14 +21,14 @@ import java.util.ResourceBundle;
 
 public class UserWindow implements Initializable {
 
-    private final HashMap<String, Integer> ROLE_MAP = new HashMap<String, Integer>() {{
+    private final HashMap<String, Integer> ROLE_MAP = new HashMap<>() {{
         put("Tutor Académico", 1);
         put("Coordinador", 2);
         put("Jefe de Carrera", 3);
         put("Administrador", 4);
     }};
 
-    private final HashMap<String, Integer> EDUCATIVE_PROGRAM_MAP = new HashMap<String, Integer>() {{
+    private final HashMap<String, Integer> EDUCATIVE_PROGRAM_MAP = new HashMap<>() {{
         put("Ingeniería de Software", 1);
     }};
 
@@ -62,13 +57,12 @@ public class UserWindow implements Initializable {
     private TextField tfName;
 
     @FXML
-    private TextField tfPassword;
+    private PasswordField pfPassword;
 
     @FXML
     private TextField tfPaternalSurname;
     private User user;
     private boolean isEdit;
-    private ObservableList<EducationProgram> educationPrograms;
 
 
     @Override
@@ -79,7 +73,7 @@ public class UserWindow implements Initializable {
     private void loadEducativePrograms() {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
         try {
-            educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
+            ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
             for (EducationProgram educationProgram : educationPrograms) {
                 cbEducativeProgram.getItems().add(educationProgram.getName());
             }
@@ -101,19 +95,23 @@ public class UserWindow implements Initializable {
     }
 
     private void checkFields() {
-        if (tfEmail.getText().isEmpty() || tfPassword.getText().isEmpty() || tfName.getText().isEmpty() || tfPaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().isEmpty() || cbEducativeProgram.getValue() == null) {
+        if (tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfName.getText().isEmpty() || tfPaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().isEmpty() || cbEducativeProgram.getValue() == null) {
             WindowManagement.showAlert("Error", "Por favor, llene todos los campos", Alert.AlertType.ERROR);
         } else {
             if (!tfEmail.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 WindowManagement.showAlert("Error", "Por favor, ingrese un correo electrónico válido", Alert.AlertType.ERROR);
                 return;
             }
-            if (tfPassword.getText().length() < 8) {
+            if (pfPassword.getText().length() < 8) {
                 WindowManagement.showAlert("Error", "Por favor, ingrese una contraseña de al menos 8 caracteres", Alert.AlertType.ERROR);
                 return;
             }
             if (chbAdmin.isSelected() || chbCareerManager.isSelected() || chbCoordinator.isSelected() || chbTutor.isSelected()) {
-                saveUser();
+                if (isEdit) {
+                    modifyUser();
+                } else {
+                    saveUser();
+                }
             } else {
                 WindowManagement.showAlert("Error", "Por favor, seleccione al menos un rol", Alert.AlertType.ERROR);
             }
@@ -125,20 +123,28 @@ public class UserWindow implements Initializable {
         user.setPaternalSurname(tfPaternalSurname.getText());
         user.setMaternalSurname(tfMaternalSurname.getText());
         user.setEmail(tfEmail.getText());
-        user.setPassword(tfPassword.getText());
+        user.setPassword(pfPassword.getText());
         user.setEducativeProgram(cbEducativeProgram.getValue());
         String roles = "";
         if (chbAdmin.isSelected()) {
             roles += "Administrador, ";
+        } else {
+            user.removeRole("Administrador");
         }
         if (chbCareerManager.isSelected()) {
             roles += "Jefe de carrera, ";
+        } else {
+            user.removeRole("Jefe de carrera");
         }
         if (chbCoordinator.isSelected()) {
             roles += "Coordinador, ";
+        } else {
+            user.removeRole("Coordinador");
         }
         if (chbTutor.isSelected()) {
             roles += "Tutor académico, ";
+        } else {
+            user.removeRole("Tutor académico");
         }
         if (roles.length() > 0) {
             roles = roles.substring(0, roles.length() - 2);
@@ -186,6 +192,88 @@ public class UserWindow implements Initializable {
         registerAnotherUserDialog();
     }
 
+    private void modifyUser() {
+        user.setName(tfName.getText());
+        user.setPaternalSurname(tfPaternalSurname.getText());
+        user.setMaternalSurname(tfMaternalSurname.getText());
+        user.setEmail(tfEmail.getText());
+        user.setPassword(pfPassword.getText());
+        user.setEducativeProgram(cbEducativeProgram.getValue());
+        user.setRoles("");
+        String roles = "";
+        if (chbAdmin.isSelected()) {
+            roles += "Administrador, ";
+        } else {
+            user.removeRole("Administrador");
+        }
+        if (chbCareerManager.isSelected()) {
+            roles += "Jefe de carrera, ";
+        } else {
+            user.removeRole("Jefe de carrera");
+        }
+        if (chbCoordinator.isSelected()) {
+            roles += "Coordinador, ";
+        } else {
+            user.removeRole("Coordinador");
+        }
+        if (chbTutor.isSelected()) {
+            roles += "Tutor académico, ";
+        } else {
+            user.removeRole("Tutor académico");
+        }
+        if (roles.length() > 0) {
+            roles = roles.substring(0, roles.length() - 2);
+        }
+        user.setRoles(roles);
+
+        UserDAO userDAO = new UserDAO();
+        UserRoleProgramDAO userRoleProgramDAO = new UserRoleProgramDAO();
+        try {
+            if(userDAO.updateUser(user) != 1) {
+                WindowManagement.showAlert("Error", "Error al modificar el usuario 1", Alert.AlertType.ERROR);
+            }
+            if(userRoleProgramDAO.deleteRoleProgram(user.getEmail()) < 1) {
+                WindowManagement.showAlert("Error", "Error al modificar el usuario 2", Alert.AlertType.ERROR);
+            }
+            UserRoleProgram userRoleProgram = new UserRoleProgram();
+            userRoleProgram.setIdPerson(user.getIdPerson());
+            userRoleProgram.setEmail(user.getEmail());
+            if (chbAdmin.isSelected()) {
+                userRoleProgram.setIdRole(ROLE_MAP.get("Administrador"));
+                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
+                if(userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
+                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
+                }
+            }
+            if (chbCareerManager.isSelected()) {
+                userRoleProgram.setIdRole(ROLE_MAP.get("Jefe de Carrera"));
+                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
+                if (userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
+                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
+                }
+            }
+            if (chbCoordinator.isSelected()) {
+                userRoleProgram.setIdRole(ROLE_MAP.get("Coordinador"));
+                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
+                if (userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
+                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
+                }
+            }
+            if (chbTutor.isSelected()) {
+                userRoleProgram.setIdRole(ROLE_MAP.get("Tutor Académico"));
+                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
+                if (userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
+                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
+                }
+            }
+        } catch (SQLException e) {
+            WindowManagement.showAlert("Error", "Error al modificar el usuario", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+        WindowManagement.showAlert("Éxito", "Usuario modificado con éxito", Alert.AlertType.INFORMATION);
+        closeWindow(null);
+    }
+
     private void registerAnotherUserDialog() {
         if (WindowManagement.showAlertWithConfirmation("Registro de usuario", "¿Desea registrar otro usuario?")) {
             clearFields();
@@ -199,7 +287,7 @@ public class UserWindow implements Initializable {
         tfName.clear();
         tfPaternalSurname.clear();
         tfMaternalSurname.clear();
-        tfPassword.clear();
+        pfPassword.clear();
         cbEducativeProgram.setValue(null);
         chbAdmin.setSelected(false);
         chbCareerManager.setSelected(false);
@@ -218,6 +306,7 @@ public class UserWindow implements Initializable {
     public void loadUser() {
         if (isEdit && user != null && user.getEmail() != null) {
             tfEmail.setText(user.getEmail());
+            tfEmail.setDisable(true);
             tfName.setText(user.getName());
             tfPaternalSurname.setText(user.getPaternalSurname());
             tfMaternalSurname.setText(user.getMaternalSurname());
@@ -230,7 +319,7 @@ public class UserWindow implements Initializable {
                     chbCareerManager.setSelected(true);
                 } else if (role.equalsIgnoreCase("coordinador")) {
                     chbCoordinator.setSelected(true);
-                } else if (role.equalsIgnoreCase("tutor académico")) {
+                } else if (role.equalsIgnoreCase("tutor académico") || role.equalsIgnoreCase("tutor academico") || role.equalsIgnoreCase("tutor")) {
                     chbTutor.setSelected(true);
                 }
             }

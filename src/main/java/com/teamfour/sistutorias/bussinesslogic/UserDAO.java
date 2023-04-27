@@ -94,4 +94,33 @@ public class UserDAO implements IUserDAO{
         dataBaseConnection.closeConection();
         return result;
     }
+
+    @Override
+    public int updateUser(User user) throws SQLException {
+        PersonDAO personDAO = new PersonDAO();
+        int personId = personDAO.updatePerson(user);
+        if (personId == -1) {
+            return -1;
+        } else {
+            DataBaseConnection dataBaseConnection = new DataBaseConnection();
+            Connection connection = dataBaseConnection.getConnection();
+            String query = "UPDATE user SET password = ? WHERE email = ?";
+            try {
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, user.getPassword());
+                statement.setString(2, user.getEmail());
+                int columns = statement.executeUpdate();
+                if (columns == 1) {
+                    return personId;
+                } else {
+                    return -1;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return -1;
+            } finally {
+                dataBaseConnection.closeConection();
+            }
+        }
+    }
 }

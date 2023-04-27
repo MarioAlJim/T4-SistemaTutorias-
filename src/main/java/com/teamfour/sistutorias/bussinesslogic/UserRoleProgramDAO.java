@@ -148,4 +148,16 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         dataBaseConnection.closeConection();
         return result;
     }
+
+    @Override
+    public int deleteRoleProgram(String email) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM user_program_role WHERE email = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, email);
+        int result = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return result;
+    }
 }

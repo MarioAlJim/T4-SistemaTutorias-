@@ -31,6 +31,21 @@ public class PersonDAO implements IPersonDAO {
         } else {
             result = -1;
         }
+        dataBaseConnection.closeConection();
         return result;
+    }
+
+    @Override
+    public int updatePerson(Person person) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        String query = "UPDATE person SET name = ?, paternal_surname = ?, maternal_surname = ? WHERE person_id = ?";
+        PreparedStatement statement = dataBaseConnection.getConnection().prepareStatement(query);
+        statement.setString(1, person.getName());
+        statement.setString(2, person.getPaternalSurname());
+        statement.setString(3, person.getMaternalSurname());
+        statement.setInt(4, person.getIdPerson());
+        int columns = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return columns;
     }
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -27,6 +28,6 @@
       <Button layoutX="505.0" layoutY="256.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
       <Button layoutX="425.0" layoutY="256.0" mnemonicParsing="false" onAction="#saveChanges" text="Guardar" />
       <Label layoutX="15.0" layoutY="48.0" text="Contraseña:" />
-      <TextField fx:id="tfPassword" layoutX="142.0" layoutY="43.0" prefHeight="28.0" prefWidth="427.0" />
+      <PasswordField fx:id="pfPassword" layoutX="143.0" layoutY="44.0" prefHeight="27.0" prefWidth="427.0" />
    </children>
 </AnchorPane>

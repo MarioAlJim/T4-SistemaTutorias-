@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IUserDAO {
-    public ArrayList<User> getAllUsers() throws SQLException;
+    ArrayList<User> getAllUsers() throws SQLException;
 
-    public int insertUser(User user) throws SQLException;
+    int insertUser(User user) throws SQLException;
+
+    int updateUser(User user) throws SQLException;
 }
