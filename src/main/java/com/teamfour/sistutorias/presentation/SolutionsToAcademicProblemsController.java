@@ -48,7 +48,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             // FOR DEMONSTRATION PURPOSES
-            SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
+            //SessionGlobalData.getSessionGlobalData().getActiveRole().;
             populateComboBoxes();
             populateTable();
             seeSolutionListener();
@@ -61,7 +61,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         TeacherDAO teacherDAO = new TeacherDAO();
         ObservableList<Teacher> teachers = FXCollections.observableArrayList();
         teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
+        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram()));
         this.cbTeacher.setItems(teachers);
         this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
@@ -79,7 +79,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram()));
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
@@ -97,7 +97,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     private void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
+        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram());
 
         int idSolution = 0;
         int positionSolution = 0;
