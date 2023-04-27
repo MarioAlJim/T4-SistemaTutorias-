@@ -60,28 +60,40 @@ public class MainMenuController implements Initializable {
         });
     }
 
-    public void clickConsultTutorshipReport(ActionEvent event) {
+    public void clickConsultTutorshipReport(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Reportes generales de tutorías académicas",
+                getClass().getResource(".fxml"));
     }
 
-    public void clickFillTutorshipReport(ActionEvent event) {
+    public void clickFillTutorshipReport(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Registrar reporte de tutoría académica",
+                getClass().getResource("FillTutorshipReport.fxml"));
     }
 
-    public void clickRegisterProblem(ActionEvent event) {
+    public void clickRegisterProblem(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Registrar problemática académica",
+                getClass().getResource(".fxml"));
     }
 
-    public void clickModifyProblem(ActionEvent event) {
+    public void clickModifyProblem(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Modificar problemática académica",
+                getClass().getResource(".fxml"));
     }
 
-    public void clickRegisterTutorship(ActionEvent event) {
+    public void clickRegisterTutorship(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Registrar sesión de tutoría académica",
+                getClass().getResource(".fxml"));
     }
 
-    public void clickModifyTutorship(ActionEvent event) {
+    public void clickModifyTutorship(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Modificar sesión de tutoría académica",
+                getClass().getResource(".fxml"));
     }
 
     public void clickConsultGeneralTutorshipReport(ActionEvent event) {
