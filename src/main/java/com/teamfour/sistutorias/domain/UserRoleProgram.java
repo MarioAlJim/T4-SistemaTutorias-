@@ -1,5 +1,6 @@
 package com.teamfour.sistutorias.domain;
 
+
 import java.util.ArrayList;
 
 public class UserRoleProgram extends User{

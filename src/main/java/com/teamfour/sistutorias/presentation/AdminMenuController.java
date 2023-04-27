@@ -13,27 +13,27 @@ public class AdminMenuController implements Initializable {
     }
 
     public void clickManageUsers() throws IOException {
-        WindowManagement.changeScene("",
+        WindowManagement.changeScene("Administrar usuarios",
                 getClass().getResource(""));
     }
 
     public void clickManageEducationProgram() throws IOException {
-        WindowManagement.changeScene("Administrar programa educativo",
+        WindowManagement.changeScene("Administrar programas educativos",
                 getClass().getResource("ManageEducationProgram.fxml"));
     }
 
     public void clickManageTeacher() throws IOException {
-        WindowManagement.changeScene("",
-                getClass().getResource(""));
+        WindowManagement.changeScene("Administrar docentes",
+                getClass().getResource("TeachersAdministration.fxml"));
     }
 
     public void clickManageEE() throws IOException {
-        WindowManagement.changeScene("",
+        WindowManagement.changeScene("Administrar EEs",
                 getClass().getResource(""));
     }
 
     public void clickManageGroups() throws IOException {
-        WindowManagement.changeScene("",
-                getClass().getResource(""));
+        WindowManagement.changeScene("Administrar grupos",
+                getClass().getResource("GroupAdministration.fxml"));
     }
 }

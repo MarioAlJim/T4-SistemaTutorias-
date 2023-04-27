@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="301.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.UserWindow">
+   <children>
+      <Label layoutX="16.0" layoutY="16.0" text="Email:" />
+      <Label layoutX="16.0" layoutY="79.0" text="Nombre:" />
+      <Label layoutX="17.0" layoutY="111.0" text="Apellido Paterno:" />
+      <Label layoutX="15.0" layoutY="144.0" text="Apellido Materno:" />
+      <Label layoutX="16.0" layoutY="187.0" text="Roles:" />
+      <TextField fx:id="tfEmail" layoutX="142.0" layoutY="10.0" prefHeight="30.0" prefWidth="427.0" />
+      <TextField fx:id="tfName" layoutX="141.0" layoutY="74.0" prefHeight="29.0" prefWidth="428.0" />
+      <TextField fx:id="tfPaternalSurname" layoutX="141.0" layoutY="106.0" prefHeight="29.0" prefWidth="427.0" />
+      <TextField fx:id="tfMaternalSurname" layoutX="141.0" layoutY="138.0" prefHeight="30.0" prefWidth="427.0" />
+      <CheckBox fx:id="chbTutor" layoutX="61.0" layoutY="184.0" mnemonicParsing="false" text="Tutor Academico" />
+      <CheckBox fx:id="chbCoordinator" layoutX="204.0" layoutY="184.0" mnemonicParsing="false" text="Coordinador" />
+      <CheckBox fx:id="chbCareerManager" layoutX="321.0" layoutY="183.0" mnemonicParsing="false" text="Jefe de Carrera" />
+      <CheckBox fx:id="chbAdmin" layoutX="456.0" layoutY="183.0" mnemonicParsing="false" text="Adminstrador" />
+      <ComboBox fx:id="cbEducativeProgram" layoutX="145.0" layoutY="216.0" prefHeight="29.0" prefWidth="426.0" />
+      <Label layoutX="16.0" layoutY="221.0" text="Programa Educativo:" />
+      <Button layoutX="505.0" layoutY="256.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
+      <Button layoutX="425.0" layoutY="256.0" mnemonicParsing="false" onAction="#saveChanges" text="Guardar" />
+      <Label layoutX="15.0" layoutY="48.0" text="Contraseña:" />
+      <PasswordField fx:id="pfPassword" layoutX="143.0" layoutY="44.0" prefHeight="27.0" prefWidth="427.0" />
+   </children>
+</AnchorPane>
