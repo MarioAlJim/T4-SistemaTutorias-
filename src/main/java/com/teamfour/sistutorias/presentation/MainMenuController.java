@@ -102,8 +102,10 @@ public class MainMenuController implements Initializable {
                 getClass().getResource("TutorAssignment.fxml"));
     }
 
-    public void clickModifyTutorAssignment(ActionEvent event) {
+    public void clickModifyTutorAssignment(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        WindowManagement.changeScene("Modificar asignación de tutor académico",
+                getClass().getResource("ModifyAsignmentTutorTutorado.fxml"));
     }
 
     public void clickRegisterSolution(ActionEvent event) throws IOException {

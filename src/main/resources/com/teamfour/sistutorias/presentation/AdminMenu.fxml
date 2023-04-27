@@ -64,9 +64,9 @@
                      </rowConstraints>
                      <children>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageUsers" prefHeight="26.0" prefWidth="230.0" text="Administrar usuarios" GridPane.halignment="CENTER" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEducationProgram" prefHeight="26.0" prefWidth="230.0" text="Administrar programa educativo" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTeacher" prefHeight="26.0" prefWidth="230.0" text="Administrar docente" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEE" prefHeight="26.0" prefWidth="230.0" text="Administrar EE" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEducationProgram" prefHeight="26.0" prefWidth="230.0" text="Administrar programas educativos" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTeacher" prefHeight="26.0" prefWidth="230.0" text="Administrar docentes" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEE" prefHeight="26.0" prefWidth="230.0" text="Administrar EEs" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageGroups" prefHeight="26.0" prefWidth="230.0" text="Administrar grupos" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                      </children>
                      <padding>
