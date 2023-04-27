@@ -123,4 +123,30 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         dataBaseConnection.closeConection();
         return tutors;
     }
+
+    @Override
+    public int insertRoleProgram(UserRoleProgram userRoleProgram) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "INSERT INTO user_program_role (email, program_id, role_id) VALUES (?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, userRoleProgram.getEmail());
+        statement.setInt(2, userRoleProgram.getIdProgram());
+        statement.setInt(3, userRoleProgram.getIdRole());
+        int result = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return result;
+    }
+
+    @Override
+    public int deleteRoleProgram(String email) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM user_program_role WHERE email = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, email);
+        int result = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return result;
+    }
 }
