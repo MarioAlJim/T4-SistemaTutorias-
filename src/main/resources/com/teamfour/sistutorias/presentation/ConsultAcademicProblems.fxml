@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="667.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblems">
+<AnchorPane prefHeight="667.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblemsController">
     <children>
         <Label layoutX="59.0" layoutY="15.0" text="Periodo" />
         <Label layoutX="312.0" layoutY="15.0" text="Tutoria" />

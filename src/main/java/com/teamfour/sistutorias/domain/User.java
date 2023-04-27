@@ -1,5 +1,7 @@
 package com.teamfour.sistutorias.domain;
 
+import java.util.ArrayList;
+
 public class User extends Person{
     private String email;
     private String password;

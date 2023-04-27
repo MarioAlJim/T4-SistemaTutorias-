@@ -97,10 +97,10 @@ public class FillTutorshipReport implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Registrar problema académico");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterProblem.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterAcademicProblem.fxml"));
             stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
-            RegisterProblem registerAcademicProblem = loader.getController();
+            RegisterAcademicProblemController registerAcademicProblem = loader.getController();
             registerAcademicProblem.setListAcademicProblems(academicProblems);
             stage.showAndWait();
             academicProblems = registerAcademicProblem.getListAcademicProblems();

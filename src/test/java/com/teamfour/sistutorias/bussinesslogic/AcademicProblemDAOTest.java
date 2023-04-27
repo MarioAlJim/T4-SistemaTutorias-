@@ -3,7 +3,7 @@ package com.teamfour.sistutorias.bussinesslogic;
 import com.teamfour.sistutorias.domain.AcademicProblem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.AfterEach;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;

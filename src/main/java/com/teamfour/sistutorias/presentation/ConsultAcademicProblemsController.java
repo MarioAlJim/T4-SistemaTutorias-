@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -17,7 +16,6 @@ import com.teamfour.sistutorias.domain.AcademicProblem;
 import com.teamfour.sistutorias.domain.Period;
 import com.teamfour.sistutorias.domain.Tutorship;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,37 +30,37 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class ConsultAcademicProblems implements Initializable{
+public class ConsultAcademicProblemsController implements Initializable{
 
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbTutorship;
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbPeriod;
-    @javafx.fxml.FXML
+    @FXML
     private TableView<AcademicProblem> tvProblems;
     @FXML
     private TableColumn<AcademicProblem, String> colTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TableColumn<AcademicProblem, String> colProblem_id;
-    @javafx.fxml.FXML
+    @FXML
     private TableColumn<AcademicProblem, Integer> colNrc;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnClose;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfGroup;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfSolution;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfDescription;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblGroup;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblTitle;
     @javafx.fxml.FXML
     private Label lblDescription;
@@ -191,7 +189,7 @@ public class ConsultAcademicProblems implements Initializable{
             stageMenuTutor.setTitle("Modificar problematica academica");
             stageMenuTutor.alwaysOnTopProperty();
             stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-            ModifyAcademicProblem modifyAcademicProblem = (ModifyAcademicProblem) loader.getController();
+            ModifyAcademicProblemController modifyAcademicProblem = (ModifyAcademicProblemController) loader.getController();
             modifyAcademicProblem.recibeParameters(academicProblem);
             stageMenuTutor.show();
         } catch (IOException exception){
