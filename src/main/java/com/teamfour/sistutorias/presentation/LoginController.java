@@ -81,6 +81,7 @@ public class LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
             stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
+            closeAux();
             stage.show();
         } catch (IOException exception){
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
