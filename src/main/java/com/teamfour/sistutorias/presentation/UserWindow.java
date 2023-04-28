@@ -4,6 +4,7 @@ import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.UserDAO;
 import com.teamfour.sistutorias.bussinesslogic.UserRoleProgramDAO;
 import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.RoleProgram;
 import com.teamfour.sistutorias.domain.User;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import javafx.collections.FXCollections;
@@ -20,17 +21,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class UserWindow implements Initializable {
-
-    private final HashMap<String, Integer> ROLE_MAP = new HashMap<>() {{
-        put("Tutor Académico", 1);
-        put("Coordinador", 2);
-        put("Jefe de Carrera", 3);
-        put("Administrador", 4);
-    }};
-
-    private final HashMap<String, Integer> EDUCATIVE_PROGRAM_MAP = new HashMap<>() {{
-        put("Ingeniería de Software", 1);
-    }};
 
     @FXML
     private ComboBox<String> cbEducativeProgram;
@@ -160,26 +150,29 @@ public class UserWindow implements Initializable {
                 UserRoleProgram userRoleProgram = new UserRoleProgram();
                 userRoleProgram.setIdPerson(user.getIdPerson());
                 userRoleProgram.setEmail(user.getEmail());
-                if (chbAdmin.isSelected()) {
-                    userRoleProgram.setIdRole(ROLE_MAP.get("Administrador"));
-                    userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                    userRoleProgramDAO.insertRoleProgram(userRoleProgram);
-                }
-                if (chbCareerManager.isSelected()) {
-                    userRoleProgram.setIdRole(ROLE_MAP.get("Jefe de Carrera"));
-                    userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                    userRoleProgramDAO.insertRoleProgram(userRoleProgram);
+                RoleProgram roleProgram = new RoleProgram();
+
+                if (chbTutor.isSelected()) {
+                    roleProgram.setRole(1);
+                    roleProgram.setEducationProgram(1);
+                    userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCoordinator.isSelected()) {
-                    userRoleProgram.setIdRole(ROLE_MAP.get("Coordinador"));
-                    userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                    userRoleProgramDAO.insertRoleProgram(userRoleProgram);
+                    roleProgram.setRole(2);
+                    roleProgram.setEducationProgram(1);
+                    userRoleProgram.addRole(roleProgram);
                 }
-                if (chbTutor.isSelected()) {
-                    userRoleProgram.setIdRole(ROLE_MAP.get("Tutor Académico"));
-                    userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                    userRoleProgramDAO.insertRoleProgram(userRoleProgram);
+                if (chbCareerManager.isSelected()) {
+                    roleProgram.setRole(3);
+                    roleProgram.setEducationProgram(1);
+                    userRoleProgram.addRole(roleProgram);
                 }
+                if (chbAdmin.isSelected()) {
+                    roleProgram.setRole(4);
+                    roleProgram.setEducationProgram(1);
+                    userRoleProgram.addRole(roleProgram);
+                }
+                userRoleProgramDAO.insertRoleProgram(userRoleProgram);
             }
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al guardar el usuario", Alert.AlertType.ERROR);
@@ -238,34 +231,29 @@ public class UserWindow implements Initializable {
             UserRoleProgram userRoleProgram = new UserRoleProgram();
             userRoleProgram.setIdPerson(user.getIdPerson());
             userRoleProgram.setEmail(user.getEmail());
-            if (chbAdmin.isSelected()) {
-                userRoleProgram.setIdRole(ROLE_MAP.get("Administrador"));
-                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                if(userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
-                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
-                }
-            }
-            if (chbCareerManager.isSelected()) {
-                userRoleProgram.setIdRole(ROLE_MAP.get("Jefe de Carrera"));
-                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                if (userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
-                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
-                }
+            RoleProgram roleProgram = new RoleProgram();
+
+            if (chbTutor.isSelected()) {
+                roleProgram.setRole(1);
+                roleProgram.setEducationProgram(1);
+                userRoleProgram.addRole(roleProgram);
             }
             if (chbCoordinator.isSelected()) {
-                userRoleProgram.setIdRole(ROLE_MAP.get("Coordinador"));
-                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                if (userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
-                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
-                }
+                roleProgram.setRole(2);
+                roleProgram.setEducationProgram(1);
+                userRoleProgram.addRole(roleProgram);
             }
-            if (chbTutor.isSelected()) {
-                userRoleProgram.setIdRole(ROLE_MAP.get("Tutor Académico"));
-                userRoleProgram.setIdProgram(EDUCATIVE_PROGRAM_MAP.get(cbEducativeProgram.getValue()));
-                if (userRoleProgramDAO.insertRoleProgram(userRoleProgram) != 1) {
-                    WindowManagement.showAlert("Error", "Error al modificar el usuario 3", Alert.AlertType.ERROR);
-                }
+            if (chbCareerManager.isSelected()) {
+                roleProgram.setRole(3);
+                roleProgram.setEducationProgram(1);
+                userRoleProgram.addRole(roleProgram);
             }
+            if (chbAdmin.isSelected()) {
+                roleProgram.setRole(4);
+                roleProgram.setEducationProgram(1);
+                userRoleProgram.addRole(roleProgram);
+            }
+            userRoleProgramDAO.insertRoleProgram(userRoleProgram);
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al modificar el usuario", Alert.AlertType.ERROR);
             e.printStackTrace();
