@@ -94,8 +94,7 @@
                                        <children>
                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte de tutoría académica" GridPane.halignment="CENTER" />
                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickFillTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Llenar reporte de tutoría académica" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterProblem" prefHeight="26.0" prefWidth="230.0" text="Registrar problemática académica" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyProblem" prefHeight="26.0" prefWidth="230.0" text="Consultar problemática académica" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyProblem" prefHeight="26.0" prefWidth="230.0" text="Consultar problemática académica" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                        </children>
                                        <padding>
                                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

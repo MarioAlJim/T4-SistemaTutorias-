@@ -1,6 +1,7 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
+import com.teamfour.sistutorias.domain.EducationProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import java.sql.Connection;
@@ -74,22 +75,24 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     private ArrayList<RoleProgram> getRoles(String email) throws SQLException {
         ArrayList<RoleProgram> rolePrograms = new ArrayList<>();
         String query = ("SELECT * FROM user_program_role UPR " +
-                        "INNER JOIN education_program EP ON UPR.program_id = EP.education_program_id " +
-                        "WHERE email = ?;");
+                "INNER JOIN education_program EP ON UPR.program_id = EP.education_program_id " +
+                "WHERE email = ?;");
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, email);
         ResultSet resultSet = statement.executeQuery();
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             do {
-               RoleProgram roleProgram = new RoleProgram();
-               roleProgram.setNameProgram(resultSet.getString("name"));
-               roleProgram.setEducationProgram(resultSet.getInt("program_id"));
-               roleProgram.setRole(resultSet.getInt("role_id"));
-               roleProgram.setIdRoleProgram(resultSet.getInt("user_program_id"));
-               rolePrograms.add(roleProgram);
-            }while (resultSet.next());
+                RoleProgram roleProgram = new RoleProgram();
+                EducationProgram educationProgram = new EducationProgram();
+                educationProgram.setIdEducationProgram(resultSet.getInt("program_id"));
+                educationProgram.setName(resultSet.getString("name"));
+                roleProgram.setRole(resultSet.getInt("role_id"));
+                roleProgram.setIdRoleProgram(resultSet.getInt("user_program_id"));
+                roleProgram.setEducationProgram(educationProgram);
+                rolePrograms.add(roleProgram);
+            } while (resultSet.next());
         }
         return rolePrograms;
     }
@@ -133,7 +136,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         for (int i = 0; i < userRoleProgram.getRolesPrograms().size(); i++) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, userRoleProgram.getEmail());
-            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram());
+            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram().getIdEducationProgram());
             statement.setInt(3, userRoleProgram.getRolesPrograms().get(i).getRole());
             result += statement.executeUpdate();
         }

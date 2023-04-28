@@ -65,7 +65,7 @@ public class TutorAssignmentController implements Initializable {
 
     private void populateTutorsTable() throws SQLException {
         UserRoleProgramDAO userRoleProgramDAO = new UserRoleProgramDAO();
-        ArrayList<UserRoleProgram> tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram());
+        ArrayList<UserRoleProgram> tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
         this.tableTutors.addAll(tutors);
 
         this.tcNumPersonal.setCellValueFactory(new PropertyValueFactory<>("email"));

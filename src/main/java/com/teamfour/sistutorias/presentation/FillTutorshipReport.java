@@ -50,7 +50,7 @@ public class FillTutorshipReport implements Initializable {
     private Tutorship tutorship;
     private Comment comment;
     private ArrayList<AcademicProblem> academicProblems;
-    private ObservableList<Assistance> tutorados;
+    private ObservableList<Assistance> tutorados = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -168,7 +168,6 @@ public class FillTutorshipReport implements Initializable {
         tcTutored.setCellValueFactory(new PropertyValueFactory<Assistance, String>("name"));
         tcAssistance.setCellValueFactory(new PropertyValueFactory<>("checkBoxAsistencia"));
         tcRisk.setCellValueFactory(new PropertyValueFactory<>("checkBoxRiesgo"));
-        tutorados = FXCollections.observableArrayList();
     }
 
     private void loadTutored() {
@@ -193,7 +192,7 @@ public class FillTutorshipReport implements Initializable {
     }
 
     private void updatePercentage() {
-        int total = tutorados.size();
+        int total = 1; tutorados.size();
         int assistance = 0;
         int risk = 0;
         for (Assistance tutored : tutorados) {

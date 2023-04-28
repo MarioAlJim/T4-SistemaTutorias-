@@ -92,7 +92,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram()));
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {

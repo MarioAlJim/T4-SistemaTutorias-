@@ -61,7 +61,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         TeacherDAO teacherDAO = new TeacherDAO();
         ObservableList<Teacher> teachers = FXCollections.observableArrayList();
         teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram()));
+        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
         this.cbTeacher.setItems(teachers);
         this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
@@ -79,7 +79,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram()));
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
@@ -97,7 +97,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     private void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram());
+        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
 
         int idSolution = 0;
         int positionSolution = 0;

@@ -154,22 +154,22 @@ public class UserWindow implements Initializable {
 
                 if (chbTutor.isSelected()) {
                     roleProgram.setRole(1);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducationProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCoordinator.isSelected()) {
                     roleProgram.setRole(2);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducationProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCareerManager.isSelected()) {
                     roleProgram.setRole(3);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducationProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbAdmin.isSelected()) {
                     roleProgram.setRole(4);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducationProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 userRoleProgramDAO.insertRoleProgram(userRoleProgram);
@@ -235,22 +235,22 @@ public class UserWindow implements Initializable {
 
             if (chbTutor.isSelected()) {
                 roleProgram.setRole(1);
-                roleProgram.setEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducationProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             if (chbCoordinator.isSelected()) {
                 roleProgram.setRole(2);
-                roleProgram.setEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducationProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             if (chbCareerManager.isSelected()) {
                 roleProgram.setRole(3);
-                roleProgram.setEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducationProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             if (chbAdmin.isSelected()) {
                 roleProgram.setRole(4);
-                roleProgram.setEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducationProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             userRoleProgramDAO.insertRoleProgram(userRoleProgram);

@@ -114,6 +114,7 @@ public class TeachersAdministrationController implements Initializable {
                 WindowManagement.showAlert("Exito", "Docente registrado", Alert.AlertType.INFORMATION);
                 setTeachers();
                 clearForm();
+
             } else {
                 WindowManagement.showAlert("Error", "El docente que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
             }
@@ -133,6 +134,7 @@ public class TeachersAdministrationController implements Initializable {
                 setTeachers();
                 clearForm();
                 lookButtons(true);
+                tvTeacher.refresh();
             } else {
                 WindowManagement.showAlert("Error", "El numero personal que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
             }
@@ -147,6 +149,7 @@ public class TeachersAdministrationController implements Initializable {
         tfMaternalSurname.clear();
         tfPaternalSurname.clear();
         tfNumberPersonal.clear();
+        tvTeacher.getSelectionModel().clearSelection();
     }
 
     private void lookButtons (boolean option){
