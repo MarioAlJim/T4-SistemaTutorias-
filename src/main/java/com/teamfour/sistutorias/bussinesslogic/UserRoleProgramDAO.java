@@ -129,11 +129,14 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO user_program_role (email, program_id, role_id) VALUES (?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, userRoleProgram.getEmail());
-        statement.setInt(2, userRoleProgram.getIdProgram());
-        statement.setInt(3, userRoleProgram.getIdRole());
-        int result = statement.executeUpdate();
+        int result = 0;
+        for (int i = 0; i < userRoleProgram.getRolesPrograms().size(); i++) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userRoleProgram.getEmail());
+            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram());
+            statement.setInt(3, userRoleProgram.getRolesPrograms().get(i).getRole());
+            result += statement.executeUpdate();
+        }
         dataBaseConnection.closeConection();
         return result;
     }
