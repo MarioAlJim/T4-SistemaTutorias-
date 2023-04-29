@@ -47,8 +47,6 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // FOR DEMONSTRATION PURPOSES
-            //SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
@@ -157,6 +155,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
                         solutionLinked = academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
                         if(solutionLinked) {
                             this.taSolution.clear();
+                            this.taAcademicProblem.clear();
                             this.tvAcademicProblems.getItems().remove(academicProblem);
                         } else {
                             break;
