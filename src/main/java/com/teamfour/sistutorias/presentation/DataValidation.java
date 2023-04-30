@@ -6,13 +6,11 @@ import java.util.regex.Pattern;
 
 public class DataValidation {
 
-    public static boolean textValidation(String text, int length) {
+    public static boolean textValidation(String text) {
         boolean valid = true;
-        for (int i = 0; i < text.length(); i++) {
-            char character = text.charAt(i);
-            int valorASCII = (int) character;
-            if (!((valorASCII >= 65 || valorASCII <= 90) || valorASCII != 32 || (valorASCII >= 97 || valorASCII <=122)))
-                valid = false; //Se ha encontrado un caracter que no es letra
+        String regex = "^[\\p{L} .'-]+$";
+        if (!text.matches(regex)) {
+            valid = false;
         }
         return valid;
     }

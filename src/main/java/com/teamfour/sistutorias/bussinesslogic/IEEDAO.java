@@ -11,4 +11,5 @@ public interface IEEDAO {
     public boolean update(EE ee) throws SQLException;
     public boolean delete(EE ee) throws SQLException;
     public ArrayList<EE> getEEs() throws SQLException;
+    ArrayList<EE> getAllEe() throws SQLException;
 }

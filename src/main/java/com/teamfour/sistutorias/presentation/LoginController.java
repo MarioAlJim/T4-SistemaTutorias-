@@ -7,141 +7,77 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import com.teamfour.sistutorias.bussinesslogic.*;
 import com.teamfour.sistutorias.domain.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-
-/**
- * FXML Controller class
- *
- * @author SILVERWOLF
- */
 public class LoginController implements Initializable {
 
-    @javafx.fxml.FXML
-    private Label lblPassword;
-    @javafx.fxml.FXML
+    @FXML
     private PasswordField txtPassword;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblUser;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtUser;
-    @javafx.fxml.FXML
-    private Button btnSignIn;
-    @javafx.fxml.FXML
-    private Label txtTitulo;
-    @javafx.fxml.FXML
-    private Button btnExit;
-    @javafx.fxml.FXML
-    private ImageView imgLogo;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblInvalidUser;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblInvalidPassword;
-    Messages alerts = new Messages();
-    @FXML
-    private ComboBox cbTipeUser;
-    @FXML
-    private Label lblTipeUser;
-    @FXML
-    private Button btnLoadUser;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    private void validateUser(String uvAcount, String password) {
-        ArrayList<UserRoleProgram> users;
-        try {
-            UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
-            users = userRoleProgram.searchUser(uvAcount, password);
-            if (users.size() == 1) {
-                SessionGlobalData.getSessionGlobalData().setUserRoleProgram(users.get(0));
-                invoqueWindow();
-            } else if (users.size() > 1) {
-                showSelectRol(users);
-            } else {
-                alerts.mostrarAlertaUsuarioIncorrecto();
-            }
-        }catch (SQLException exception) {
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
-            alerts.mostrarAlertaErrorConexionDB();
-        }
+    private boolean validateUser(String uvAcount) {
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        return pattern.matcher(uvAcount).find();
     }
 
     private void invoqueWindow() {
-        int tipeUser = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdRole();
+        int tipeUser = 1;
+        String window = "";
+        String title = "";
+        ArrayList<RoleProgram> roles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
+        for (RoleProgram roleProgram: roles) {
+            if(roleProgram.getRole() == 4) {
+                tipeUser = 2;
+            }
+        }
+
         switch (tipeUser) {
-            case 4:
-                showMenu("AdminMenu.fxml", "Menu de administradores");
-                break;
-            case 3:
-                showMenu("TutoringCoordinatorMenu.fxml", "Menu de Jefe de carrera");
-                break;
             case 2:
-                showMenu("TutoringCoordinatorMenu.fxml", "Menu de coordinadores");
+                window = "AdminMenu.fxml";
+                title = "Menu de administrador";
                 break;
             case 1:
-                showMenu("TutorMenu.fxml", "Menu de tutores");
+                window = "MainMenu.fxml";
+                title = "Menu principal";
                 break;
         }
-    }
 
-    private void showSelectRol(ArrayList<UserRoleProgram> users){
-        ObservableList<UserRoleProgram> roles = FXCollections.observableArrayList();
-        for(UserRoleProgram user : users){
-            roles.add(user);
-        }
-        cbTipeUser.setItems(roles);
-
-        cbTipeUser.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
-            btnLoadUser.setDisable(false);
-            SessionGlobalData.getSessionGlobalData().setUserRoleProgram((UserRoleProgram) valorNuevo);
-        });
-
-        lblPassword.setVisible(false);
-        lblUser.setVisible(false);
-        txtPassword.setVisible(false);
-        txtUser.setVisible(false);
-        btnSignIn.setVisible(false);
-        btnLoadUser.setVisible(true);
-        lblTipeUser.setVisible(true);
-        cbTipeUser.setVisible(true);
-    }
-
-    private void showMenu(String windowResource, String title){
-        Stage stageMenuTutor = new Stage();
-        FXMLLoader loader = new FXMLLoader();
+        Stage stage = new Stage();
+        stage.setTitle(title);
         try {
-            Parent root = loader.load(getClass().getResource(windowResource).openStream());
-            Scene scene = new Scene(root);
-            stageMenuTutor.setScene(scene);
-            stageMenuTutor.setTitle(title);
-            stageMenuTutor.alwaysOnTopProperty();
-            stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-            stageMenuTutor.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
+            stage.setScene(new Scene(loader.load()));
+            stage.initModality(Modality.APPLICATION_MODAL);
             closeAux();
+            stage.show();
         } catch (IOException exception){
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.showAlert("Error", "Error no se pudo cargar el menu", Alert.AlertType.INFORMATION);
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     private void signUp(ActionEvent event) {
         String uvAcount = txtUser.getText();
         String password = txtPassword.getText();
@@ -150,13 +86,30 @@ public class LoginController implements Initializable {
         }else if(password.isEmpty() || password.length() > 15){
             lblInvalidPassword.setVisible(true);
         }else {
-            lblInvalidUser.setVisible(false);
             lblInvalidPassword.setVisible(false);
-            validateUser(uvAcount, password);
+            lblInvalidUser.setVisible(false);
+            if (validateUser(uvAcount)) {
+                UserRoleProgram user;
+                try {
+                    UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
+                    user = userRoleProgram.searchUser(uvAcount, password);
+                    if (user.getEmail().equals(uvAcount)) {
+                        SessionGlobalData.getSessionGlobalData().setUserRoleProgram(user);
+                        invoqueWindow();
+                    } else {
+                        WindowManagement.showAlert("Error", "No se encontro el usuario, verifique la informacion", Alert.AlertType.INFORMATION);
+                    }
+                } catch (SQLException exception) {
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
+                    WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                }
+            } else {
+                WindowManagement.showAlert("Error", "El usuario ingresado no es valido", Alert.AlertType.INFORMATION);
+            }
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
@@ -169,8 +122,7 @@ public class LoginController implements Initializable {
         stage.close();
     }
 
-    @FXML
-    public void lauchSpecific(ActionEvent actionEvent) {
-        invoqueWindow();
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
     }
 }

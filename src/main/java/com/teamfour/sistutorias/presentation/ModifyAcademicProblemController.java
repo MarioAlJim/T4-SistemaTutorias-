@@ -14,25 +14,25 @@ import com.teamfour.sistutorias.domain.AcademicProblem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class ModifyAcademicProblem implements Initializable {
-    @javafx.fxml.FXML
+public class ModifyAcademicProblemController implements Initializable {
+    @FXML
     private TextField tfNumberTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TextArea tfDescription;
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbEe;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnSave;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnCancel;
-
     private AcademicProblem academicProblem;
     private Group ees;
     public void recibeParameters (AcademicProblem academicProblem){
@@ -110,14 +110,10 @@ public class ModifyAcademicProblem implements Initializable {
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void updateAcademicProblem(ActionEvent actionEvent) {
-        if (tfNumberTutorados.getText().isEmpty()) {
+        if (tfNumberTutorados.getText().isEmpty() || tfTitle.getText().isEmpty() || tfDescription.getText().isEmpty()) {
             WindowManagement.showAlert("Error", "Campos vacios detectados 1", Alert.AlertType.INFORMATION);
-        } else if (tfTitle.getText().isEmpty()) {
-            WindowManagement.showAlert("Error", "Campos vacios detectados 2", Alert.AlertType.INFORMATION);
-        } else if (tfDescription.getText().isEmpty()) {
-            WindowManagement.showAlert("Error", "Campos vacios detectados 3", Alert.AlertType.INFORMATION);
         } else if (ees == null) {
             WindowManagement.showAlert("Error", "Campos vacios detectados 4", Alert.AlertType.INFORMATION);
         } else {
@@ -130,7 +126,7 @@ public class ModifyAcademicProblem implements Initializable {
     }
 
 
-    @javafx.fxml.FXML
+    @FXML
     public void close(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

@@ -109,7 +109,7 @@ public class EEAdministrationController implements Initializable {
             WindowManagement.showAlert("Campos vacios",
                     "Por favor, no deje campos vacios",
                     Alert.AlertType.INFORMATION);
-        if (DataValidation.textValidation(name, 50)) {
+        if (DataValidation.textValidation(name, 50, true)) {
             boolean eeExists = false;
             for (EE ee : ees) {
                 if (ee.getName().equals(name)) {

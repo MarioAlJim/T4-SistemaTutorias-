@@ -8,4 +8,10 @@ import java.util.ArrayList;
 public interface IGroupDAO {
 
     public ArrayList<Group> groupsList (int idProgram) throws SQLException;
+
+   public int registerGroup(Group newGroup) throws SQLException;
+
+    int deleteGroup(int nrc) throws SQLException;
+
+    int modifyGroup(Group newGroup, int newNrc) throws SQLException;
 }

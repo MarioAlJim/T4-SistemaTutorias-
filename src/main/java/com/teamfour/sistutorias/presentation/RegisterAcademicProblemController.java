@@ -17,7 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-public class RegisterProblem implements Initializable{
+public class RegisterAcademicProblemController implements Initializable{
 
     @FXML
     private TextField txtNumberTutorados;
@@ -45,13 +45,13 @@ public class RegisterProblem implements Initializable{
     @FXML
     public void newRegister(ActionEvent event) {
         if(txtNumberTutorados.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados 1", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else if(txtTitle.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados 2", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else if(txtDescription.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados 3", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else if(ees == null){
-            WindowManagement.showAlert("Error", "Campos vacios detectados 4", Alert.AlertType.INFORMATION);
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }else {
             if(validateData() == 3){
                 saveProblem();

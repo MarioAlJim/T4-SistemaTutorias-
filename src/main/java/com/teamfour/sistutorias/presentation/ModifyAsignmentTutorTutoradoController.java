@@ -1,3 +1,4 @@
+
 package com.teamfour.sistutorias.presentation;
 
 import java.net.URL;
@@ -23,10 +24,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class ModifyAsignmentTutorTutorado implements Initializable {
-    @javafx.fxml.FXML
+public class ModifyAsignmentTutorTutoradoController implements Initializable {
+    @FXML
     private TableView<Tutorado> tvTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private TableView<UserRoleProgram> tvTutors;
     @FXML
     private TableColumn<Tutorado, String> colNumberRegister;
@@ -50,8 +51,9 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
     private Button btnClose;
     private ObservableList<Tutorado> tutoradosData;
     private ObservableList<UserRoleProgram> tutorsData;
-    private UserRoleProgram selectedTutor= new UserRoleProgram();
+    private UserRoleProgram selectedTutor = new UserRoleProgram();
     private Tutorado selectedTutorado = new Tutorado();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTutorsTable();
@@ -97,10 +99,9 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
         tvTutors.setItems(tutorsData);
     }
 
-
     private void seeSelectedTutorListener() {
         this.tvTutors.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if(newSelection != null) {
+            if (newSelection != null) {
                 selectedTutor = this.tvTutors.getSelectionModel().getSelectedItem();
                 String tutorsName = selectedTutor.getFullName();
                 this.tfSelectedTutor.setText(tutorsName);
@@ -112,7 +113,7 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
 
     private void seeSelectedTutoradoListener() {
         this.tvTutorados.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if(newSelection != null) {
+            if (newSelection != null) {
                 selectedTutorado = this.tvTutorados.getSelectionModel().getSelectedItem();
                 String tutoradosName = selectedTutorado.getFullName();
                 this.tfSelectedTutorado.setText(tutoradosName);
@@ -152,21 +153,21 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
 
     @FXML
     private void searchTutor() {
-        FilteredList<UserRoleProgram> filteredTutors = new FilteredList<>(tutorsData, b-> true);
+        FilteredList<UserRoleProgram> filteredTutors = new FilteredList<>(tutorsData, b -> true);
         tfNameTutor.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredTutors.setPredicate(
                     tutor -> {
-                        if(newValue == null || newValue.isEmpty())
+                        if (newValue == null || newValue.isEmpty())
                             return true;
                         String lowerCaseFilter = newValue.toLowerCase().replaceAll("\\s", "");
                         boolean itsInTable = false;
-                        if(tutor.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        if (tutor.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
                             itsInTable = true;
-                        } else if(tutor.getPaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        } else if (tutor.getPaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
                             itsInTable = true;
-                        } else if(tutor.getMaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        } else if (tutor.getMaternalSurname().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
                             itsInTable = true;
-                        } else if(tutor.getEmail().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
+                        } else if (tutor.getEmail().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
                             itsInTable = true;
                         }
                         return itsInTable;
@@ -182,13 +183,12 @@ public class ModifyAsignmentTutorTutorado implements Initializable {
     public void modifyAsignament(ActionEvent actionEvent) {
         TutoradoDAO tutoradoDAO = new TutoradoDAO();
         int result;
-        if (!tfSelectedTutorado.getText().isEmpty() && ! tfSelectedTutor.getText().isEmpty()){
+        if (!tfSelectedTutorado.getText().isEmpty() && !tfSelectedTutor.getText().isEmpty()) {
             try {
                 result = tutoradoDAO.updateTutor(selectedTutorado, selectedTutor.getEmail());
-                if (result == 1){
+                if (result == 1) {
                     WindowManagement.showAlert("Exito", "Asignacion actualizada", Alert.AlertType.INFORMATION);
-                }
-                else {
+                } else {
                     System.out.println(result);
                 }
             } catch (SQLException exception) {

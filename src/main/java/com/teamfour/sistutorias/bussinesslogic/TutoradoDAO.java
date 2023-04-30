@@ -140,9 +140,9 @@ public class TutoradoDAO implements ITutoradoDAO{
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<Tutorado> tutorados = new ArrayList<>();
         String query = ("SELECT * FROM tutorado " +
-                        "INNER JOIN person ON tutorado.person_id = person.person_id " +
-                        "RIGHT JOIN tutorado_tutor on tutorado.registration_number = tutorado_tutor.registration_number " +
-                        "WHERE program_id = ?;");
+                "INNER JOIN person ON tutorado.person_id = person.person_id " +
+                "RIGHT JOIN tutorado_tutor on tutorado.registration_number = tutorado_tutor.registration_number " +
+                "WHERE program_id = ?;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, program_id);
         ResultSet resultSet = statement.executeQuery();

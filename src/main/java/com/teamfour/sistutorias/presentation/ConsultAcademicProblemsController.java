@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -17,7 +16,6 @@ import com.teamfour.sistutorias.domain.AcademicProblem;
 import com.teamfour.sistutorias.domain.Period;
 import com.teamfour.sistutorias.domain.Tutorship;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,47 +30,47 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class ConsultAcademicProblems implements Initializable{
+public class ConsultAcademicProblemsController implements Initializable{
 
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbTutorship;
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbPeriod;
-    @javafx.fxml.FXML
+    @FXML
     private TableView<AcademicProblem> tvProblems;
     @FXML
     private TableColumn<AcademicProblem, String> colTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TableColumn<AcademicProblem, String> colProblem_id;
-    @javafx.fxml.FXML
+    @FXML
     private TableColumn<AcademicProblem, Integer> colNrc;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnClose;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfGroup;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfSolution;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfTitle;
-    @javafx.fxml.FXML
+    @FXML
     private TextField tfDescription;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblTutorados;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblGroup;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblTitle;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblDescription;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnDelete;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnModiify;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblSugerence;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblSolution;
     private ObservableList<AcademicProblem> academicProblemData;
     private AcademicProblem academicProblem = new AcademicProblem();
@@ -132,12 +130,15 @@ public class ConsultAcademicProblems implements Initializable{
         ArrayList<AcademicProblem> academicProblems;
         academicProblemData = FXCollections.observableArrayList();
         try {
-            //academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(), SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram(), SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
-            academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(),1, "mario14");
+            academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(
+                    tutorship.getIdTutorShip(),
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+                    SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
+            //academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(),1, "mario14");
             academicProblemData.addAll(academicProblems);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
         }
         tvProblems.setItems(academicProblemData);
     }
@@ -172,7 +173,7 @@ public class ConsultAcademicProblems implements Initializable{
             try {
                 result = academicProblemDAO.deleteAcademicProblem(academicProblem.getIdAcademicProblem());
             } catch (SQLException exception){
-                Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+                Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
             }
             if (result == 1) {
                 WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
@@ -180,8 +181,8 @@ public class ConsultAcademicProblems implements Initializable{
         }
     }
 
-    @javafx.fxml.FXML
-    public void launchModificate(ActionEvent actionEvent) {
+    @FXML
+    public void openModificationAcademicProblem(ActionEvent actionEvent) {
         Stage stageMenuTutor = new Stage();
         FXMLLoader loader = new FXMLLoader();
         try {
@@ -191,16 +192,16 @@ public class ConsultAcademicProblems implements Initializable{
             stageMenuTutor.setTitle("Modificar problematica academica");
             stageMenuTutor.alwaysOnTopProperty();
             stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-            ModifyAcademicProblem modifyAcademicProblem = (ModifyAcademicProblem) loader.getController();
+            ModifyAcademicProblemController modifyAcademicProblem = (ModifyAcademicProblemController) loader.getController();
             modifyAcademicProblem.recibeParameters(academicProblem);
             stageMenuTutor.show();
         } catch (IOException exception){
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

@@ -125,7 +125,7 @@ public class ConsultTutorshipReport implements Initializable {
         CommentDAO commentDAO = new CommentDAO();
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         try {
-            Register tutorshipReport = registerDAO.getTutorshipRegister(tutorshipId);
+            Register tutorshipReport = registerDAO.getTutorshipRegister(tutorshipId).get(0);
             if (tutorshipReport == null || tutorshipReport.getRegister_id() == 0) {
                 new Alert(Alert.AlertType.ERROR, "No se ha encontrado el reporte de tutoría").showAndWait();
             } else {

@@ -21,14 +21,8 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="546.0" layoutY="29.0" text="Periodo escolar">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
       <ComboBox fx:id="cbTeacher" layoutX="24.0" layoutY="46.0" onAction="#filterAcademicProblems" prefWidth="250.0" />
       <ComboBox fx:id="cbEE" layoutX="286.0" layoutY="47.0" onAction="#filterAcademicProblems" prefWidth="250.0" />
-      <ComboBox fx:id="cbPeriod" layoutX="546.0" layoutY="47.0" onAction="#filterAcademicProblems" prefWidth="200.0" />
       <TextArea fx:id="taSolution" editable="false" layoutX="763.0" layoutY="42.0" prefHeight="447.0" prefWidth="234.0" wrapText="true" />
       <Label layoutX="763.0" layoutY="24.0" text="Solución de la problemática">
          <font>
@@ -42,8 +36,8 @@
             <TableColumn fx:id="tcEE" prefWidth="225.60001220703123" text="Experiencia Educativa" />
          </columns>
       </TableView>
-      <Button layoutX="764.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickCancel" text="Cancelar" />
-      <Button layoutX="938.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickDelete" text="Eliminar" />
-      <Button layoutX="848.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickModify" text="Modificar" />
+      <Button layoutX="764.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickCancel" style="-fx-background-color: DimGray;" text="Cancelar" textFill="WHITE" />
+      <Button fx:id="btnDelete" layoutX="938.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickDelete" style="-fx-background-color: IndianRed;" text="Eliminar" textFill="WHITE" />
+      <Button fx:id="btnModify" layoutX="848.0" layoutY="509.0" mnemonicParsing="false" onAction="#clickModify" style="-fx-background-color: GoldenRod;" text="Modificar" textFill="#fafafa" />
    </children>
 </AnchorPane>

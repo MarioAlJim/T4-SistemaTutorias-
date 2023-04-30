@@ -24,25 +24,18 @@ public class FillTutorshipReport implements Initializable {
 
     @FXML
     private Label lbAssistantPercentage;
-
     @FXML
     private Label lbDate;
-
     @FXML
     private Label lbPeriod;
-
     @FXML
     private Label lbRiskPercentage;
-
     @FXML
     private TableColumn<Assistance, CheckBox> tcAssistance;
-
     @FXML
     private TableColumn<Assistance, CheckBox> tcRisk;
-
     @FXML
     private TableColumn tcTutored;
-
     @FXML
     private TableView<Assistance> tvTutored;
 
@@ -50,7 +43,7 @@ public class FillTutorshipReport implements Initializable {
     private Tutorship tutorship;
     private Comment comment;
     private ArrayList<AcademicProblem> academicProblems;
-    private ObservableList<Assistance> tutorados;
+    private ObservableList<Assistance> tutorados = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,10 +90,10 @@ public class FillTutorshipReport implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Registrar problema académico");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterProblem.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterAcademicProblem.fxml"));
             stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
-            RegisterProblem registerAcademicProblem = loader.getController();
+            RegisterAcademicProblemController registerAcademicProblem = loader.getController();
             registerAcademicProblem.setListAcademicProblems(academicProblems);
             stage.showAndWait();
             academicProblems = registerAcademicProblem.getListAcademicProblems();
@@ -168,7 +161,6 @@ public class FillTutorshipReport implements Initializable {
         tcTutored.setCellValueFactory(new PropertyValueFactory<Assistance, String>("name"));
         tcAssistance.setCellValueFactory(new PropertyValueFactory<>("checkBoxAsistencia"));
         tcRisk.setCellValueFactory(new PropertyValueFactory<>("checkBoxRiesgo"));
-        tutorados = FXCollections.observableArrayList();
     }
 
     private void loadTutored() {
@@ -193,7 +185,7 @@ public class FillTutorshipReport implements Initializable {
     }
 
     private void updatePercentage() {
-        int total = tutorados.size();
+        int total = 1; tutorados.size();
         int assistance = 0;
         int risk = 0;
         for (Assistance tutored : tutorados) {
