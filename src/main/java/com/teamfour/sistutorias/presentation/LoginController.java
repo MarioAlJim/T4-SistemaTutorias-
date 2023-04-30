@@ -86,6 +86,8 @@ public class LoginController implements Initializable {
         }else if(password.isEmpty() || password.length() > 15){
             lblInvalidPassword.setVisible(true);
         }else {
+            lblInvalidPassword.setVisible(false);
+            lblInvalidUser.setVisible(false);
             if (validateUser(uvAcount)) {
                 UserRoleProgram user;
                 try {
