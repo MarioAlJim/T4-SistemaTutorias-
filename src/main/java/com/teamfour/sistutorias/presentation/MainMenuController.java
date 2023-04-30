@@ -146,10 +146,6 @@ public class MainMenuController implements Initializable {
 
     public void clickRegisterSolution(ActionEvent event) throws IOException {
         setSessionGlobalDataRol(3);
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getRole());
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram());
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getName());
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
         SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().setIdEducationProgram(1);
         WindowManagement.changeScene("Registrar solución a problemática académica",
                 getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));

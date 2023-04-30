@@ -41,6 +41,10 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     private TableColumn<SolutionsTable, String> tcTeacher;
     @FXML
     private TableColumn<SolutionsTable, String> tcEE;
+    @FXML
+    private Button btnModify;
+    @FXML
+    private Button btnDelete;
 
     private final ObservableList<SolutionsTable> tableSolutions = FXCollections.observableArrayList();
 
@@ -50,9 +54,15 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             populateComboBoxes();
             populateTable();
             seeSolutionListener();
+            disableButtons(true);
         } catch (SQLException sqlException) {
             WindowManagement.connectionLostMessage();
         }
+    }
+
+    private void disableButtons(boolean isDisabled) {
+        this.btnModify.setDisable(isDisabled);
+        this.btnDelete.setDisable(isDisabled);
     }
 
     private void populateComboBoxes() throws SQLException {
@@ -102,7 +112,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         for(AcademicProblem academicProblem : academicProblemsWithSolution) {
             if(academicProblem.getIdSolution() != idSolution) {
                 SolutionsTable solutionsFromTable = new SolutionsTable();
-                //solutionsFromTable.setIdAcademicProblem(academicProblem.getIdAcademicProblem());
+                solutionsFromTable.setIdAcademicProblem(academicProblem.getIdAcademicProblem());
                 solutionsFromTable.setTitle(academicProblem.getTitle());
                 solutionsFromTable.setEe(academicProblem.getEe());
                 solutionsFromTable.setTeacher(academicProblem.getTeacher());
@@ -114,7 +124,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 solutionsFromTable.getCbAcademicProblems().getItems().add(academicProblem.getTitle());
                 solutionsFromTable.getCbAcademicProblems().getSelectionModel().selectFirst();
 
-                solutionsFromTable.addRelatedAcademicProblems(Integer.valueOf(academicProblem.getIdAcademicProblem()));
+                solutionsFromTable.addRelatedAcademicProblems(academicProblem.getIdAcademicProblem());
 
                 idSolution = academicProblem.getIdSolution();
                 positionSolution++;
@@ -122,7 +132,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             } else {
                 SolutionsTable solution = tableSolutions.get(positionSolution-1);
                 solution.getCbAcademicProblems().getItems().add(academicProblem.getTitle());
-                solution.addRelatedAcademicProblems(Integer.valueOf(academicProblem.getIdAcademicProblem()));
+                solution.addRelatedAcademicProblems(academicProblem.getIdAcademicProblem());
             }
         }
 
@@ -138,6 +148,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 AcademicProblem selectedSolutionToAcademicProblem = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
                 String solution = selectedSolutionToAcademicProblem.getSolution();
                 this.taSolution.setText(solution);
+                disableButtons(false);
             }
         });
     }
@@ -172,6 +183,9 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         }
 
         tvAcademicProblems.setItems(filteredAcademicProblems);
+
+        if(this.tvAcademicProblems.getSelectionModel().getSelectedItem() == null)
+            disableButtons(true);
     }
 
     @FXML
@@ -183,31 +197,25 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     private void clickModify(ActionEvent event) throws IOException {
         SolutionsTable selectedSolution = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
 
-        if(selectedSolution != null) {
-            Stage stage = new Stage();
-            stage.setTitle("Modificar solución a problemática académica");
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifySolutionToAcademicProblem.fxml"));
-                stage.setScene(new Scene(loader.load()));
-                stage.initModality(Modality.APPLICATION_MODAL);
-                ModifySolutionToAcademicProblemController modifySolutionController = loader.getController();
-                modifySolutionController.setPreviouslySelectedAcademicProblems(selectedSolution.getRelatedAcademicProblems());
-                modifySolutionController.setSolution(selectedSolution.getIdSolution());
-                modifySolutionController.addSelectedElements();
-                stage.showAndWait();
+        Stage stage = new Stage();
+        stage.setTitle("Modificar solución a problemática académica");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifySolutionToAcademicProblem.fxml"));
+            stage.setScene(new Scene(loader.load()));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            ModifySolutionToAcademicProblemController modifySolutionController = loader.getController();
+            modifySolutionController.setPreviouslySelectedAcademicProblems(selectedSolution.getRelatedAcademicProblems());
+            modifySolutionController.setSolution(selectedSolution.getIdSolution());
+            modifySolutionController.addSelectedElements();
+            stage.showAndWait();
 
-                //Reload data
-                this.tableSolutions.clear();
-                this.taSolution.clear();
-                populateTable();
-            } catch (SQLException sqlException) {
-                WindowManagement.connectionLostMessage();
-                WindowManagement.closeWindow(event);
-            }
-        } else {
-            WindowManagement.showAlert("No se ha seleccionado una solución",
-                    "Seleccione la solución a modificar",
-                    Alert.AlertType.WARNING);
+            //Reload data
+            this.tableSolutions.clear();
+            this.taSolution.clear();
+            populateTable();
+        } catch (SQLException sqlException) {
+            WindowManagement.connectionLostMessage();
+            WindowManagement.closeWindow(event);
         }
     }
 
@@ -216,31 +224,25 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         SolutionsTable selectedSolution = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
 
-        if(selectedSolution != null) {
-            boolean deleteSolution = false;
-            deleteSolution = WindowManagement.showAlertWithConfirmation("Eliminar solución", "¿Desea eliminar la solución seleccionada?");
-            if(deleteSolution) {
-                try {
-                    boolean deletedSolution = academicProblemDAO.deleteSolution(selectedSolution.getIdSolution());
-                    if(deletedSolution) {
-                        this.taSolution.clear();
-                        this.tvAcademicProblems.getItems().remove(selectedSolution);
-                        WindowManagement.showAlert("Solución eliminada",
-                                "La solución ha sido eliminada exitosamente",
-                                Alert.AlertType.CONFIRMATION);
-                    } else {
-                        WindowManagement.showAlert("Solución no eliminada",
-                                "La solución no ha sido eliminada",
-                                Alert.AlertType.ERROR);
-                    }
-                } catch (SQLException sqlException) {
-                    WindowManagement.connectionLostMessage();
+        boolean deleteSolution = false;
+        deleteSolution = WindowManagement.showAlertWithConfirmation("Eliminar solución", "¿Desea eliminar la solución seleccionada?");
+        if(deleteSolution) {
+            try {
+                boolean deletedSolution = academicProblemDAO.deleteSolution(selectedSolution.getIdSolution());
+                if(deletedSolution) {
+                    this.taSolution.clear();
+                    this.tvAcademicProblems.getItems().remove(selectedSolution);
+                    WindowManagement.showAlert("Solución eliminada",
+                            "La solución ha sido eliminada exitosamente",
+                            Alert.AlertType.CONFIRMATION);
+                } else {
+                    WindowManagement.showAlert("Solución no eliminada",
+                            "La solución no ha sido eliminada",
+                            Alert.AlertType.ERROR);
                 }
+            } catch (SQLException sqlException) {
+                WindowManagement.connectionLostMessage();
             }
-        } else {
-            WindowManagement.showAlert("No se ha seleccionado una solución",
-                    "Seleccione la solución a eliminar",
-                    Alert.AlertType.WARNING);
         }
     }
 }
