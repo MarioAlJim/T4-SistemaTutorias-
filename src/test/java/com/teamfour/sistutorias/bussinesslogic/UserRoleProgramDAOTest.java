@@ -44,4 +44,12 @@ class UserRoleProgramDAOTest {
         }
         assertTrue(isValid);
     }
+
+
+    @Test
+    public void getUser() throws SQLException{
+        UserRoleProgram userRoleProgram;
+        userRoleProgram = userRoleProgramDAO.searchUser("mario14@uv.mx", "majiji0104");
+        assertTrue(userRoleProgram.getEmail().equals("mario14@uv.mx"));
+    }
 }

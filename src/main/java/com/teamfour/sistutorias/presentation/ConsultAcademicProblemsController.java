@@ -62,15 +62,15 @@ public class ConsultAcademicProblemsController implements Initializable{
     private Label lblGroup;
     @FXML
     private Label lblTitle;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblDescription;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnDelete;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnModiify;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblSugerence;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblSolution;
     private ObservableList<AcademicProblem> academicProblemData;
     private AcademicProblem academicProblem = new AcademicProblem();
@@ -130,12 +130,15 @@ public class ConsultAcademicProblemsController implements Initializable{
         ArrayList<AcademicProblem> academicProblems;
         academicProblemData = FXCollections.observableArrayList();
         try {
-            //academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(), SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram(), SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
-            academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(),1, "mario14");
+            academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(
+                    tutorship.getIdTutorShip(),
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+                    SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
+            //academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(),1, "mario14");
             academicProblemData.addAll(academicProblems);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
         }
         tvProblems.setItems(academicProblemData);
     }
@@ -170,7 +173,7 @@ public class ConsultAcademicProblemsController implements Initializable{
             try {
                 result = academicProblemDAO.deleteAcademicProblem(academicProblem.getIdAcademicProblem());
             } catch (SQLException exception){
-                Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+                Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
             }
             if (result == 1) {
                 WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
@@ -178,8 +181,8 @@ public class ConsultAcademicProblemsController implements Initializable{
         }
     }
 
-    @javafx.fxml.FXML
-    public void launchModificate(ActionEvent actionEvent) {
+    @FXML
+    public void openModificationAcademicProblem(ActionEvent actionEvent) {
         Stage stageMenuTutor = new Stage();
         FXMLLoader loader = new FXMLLoader();
         try {
@@ -194,11 +197,11 @@ public class ConsultAcademicProblemsController implements Initializable{
             stageMenuTutor.show();
         } catch (IOException exception){
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

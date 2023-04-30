@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class DataValidation {
 
-    public static boolean textValidation(String text, int length) {
+    public static boolean textValidation(String text) {
         boolean valid = true;
         String regex = "^[\\p{L} .'-]+$";
         if (!text.matches(regex)) {
