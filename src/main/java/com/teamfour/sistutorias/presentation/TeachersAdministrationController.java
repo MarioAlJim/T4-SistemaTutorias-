@@ -86,15 +86,15 @@ public class TeachersAdministrationController implements Initializable {
 
     private int validateData() {
         int validData = 0;
-        if(DataValidation.textValidation(tfName.getText(), 30)) {
+        if(DataValidation.textValidation(tfName.getText())) {
             validData++;
             newTeacher.setName(tfName.getText());
         }
-        if(DataValidation.textValidation(tfMaternalSurname.getText(), 30)) {
+        if(DataValidation.textValidation(tfMaternalSurname.getText())) {
             validData++;
             newTeacher.setMaternalSurname(tfMaternalSurname.getText());
         }
-        if(DataValidation.textValidation(tfPaternalSurname.getText(), 30)){
+        if(DataValidation.textValidation(tfPaternalSurname.getText())){
            validData++;
            newTeacher.setPaternalSurname(tfPaternalSurname.getText());
         }

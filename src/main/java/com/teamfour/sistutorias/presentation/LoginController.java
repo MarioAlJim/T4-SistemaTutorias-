@@ -18,6 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import com.teamfour.sistutorias.bussinesslogic.*;
 import com.teamfour.sistutorias.domain.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
 
@@ -32,25 +34,11 @@ public class LoginController implements Initializable {
     @FXML
     private Label lblInvalidPassword;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    private void validateUser(String uvAcount, String password) {
-        UserRoleProgram user;
-        try {
-            UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
-            user = userRoleProgram.searchUser(uvAcount, password);
-            if (user.getName() != null) {
-                SessionGlobalData.getSessionGlobalData().setUserRoleProgram(user);
-                invoqueWindow();
-            } else {
-                WindowManagement.showAlert("Error", "No se encontro el usuario, verifique la informacion", Alert.AlertType.INFORMATION);
-            }
-        }catch (SQLException exception) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-        }
+    private boolean validateUser(String uvAcount) {
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        return pattern.matcher(uvAcount).find();
     }
 
     private void invoqueWindow() {
@@ -98,9 +86,24 @@ public class LoginController implements Initializable {
         }else if(password.isEmpty() || password.length() > 15){
             lblInvalidPassword.setVisible(true);
         }else {
-            lblInvalidUser.setVisible(false);
-            lblInvalidPassword.setVisible(false);
-            validateUser(uvAcount, password);
+            if (validateUser(uvAcount)) {
+                UserRoleProgram user;
+                try {
+                    UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
+                    user = userRoleProgram.searchUser(uvAcount, password);
+                    if (user.getEmail().equals(uvAcount)) {
+                        SessionGlobalData.getSessionGlobalData().setUserRoleProgram(user);
+                        invoqueWindow();
+                    } else {
+                        WindowManagement.showAlert("Error", "No se encontro el usuario, verifique la informacion", Alert.AlertType.INFORMATION);
+                    }
+                } catch (SQLException exception) {
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
+                    WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                }
+            } else {
+                WindowManagement.showAlert("Error", "El usuario ingresado no es valido", Alert.AlertType.INFORMATION);
+            }
         }
     }
 
@@ -117,4 +120,7 @@ public class LoginController implements Initializable {
         stage.close();
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    }
 }

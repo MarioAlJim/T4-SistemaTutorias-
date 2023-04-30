@@ -24,25 +24,18 @@ public class FillTutorshipReport implements Initializable {
 
     @FXML
     private Label lbAssistantPercentage;
-
     @FXML
     private Label lbDate;
-
     @FXML
     private Label lbPeriod;
-
     @FXML
     private Label lbRiskPercentage;
-
     @FXML
     private TableColumn<Assistance, CheckBox> tcAssistance;
-
     @FXML
     private TableColumn<Assistance, CheckBox> tcRisk;
-
     @FXML
     private TableColumn tcTutored;
-
     @FXML
     private TableView<Assistance> tvTutored;
 

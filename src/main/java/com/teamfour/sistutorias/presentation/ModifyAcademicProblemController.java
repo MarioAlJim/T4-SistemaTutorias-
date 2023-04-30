@@ -112,12 +112,8 @@ public class ModifyAcademicProblemController implements Initializable {
 
     @FXML
     public void updateAcademicProblem(ActionEvent actionEvent) {
-        if (tfNumberTutorados.getText().isEmpty()) {
+        if (tfNumberTutorados.getText().isEmpty() || tfTitle.getText().isEmpty() || tfDescription.getText().isEmpty()) {
             WindowManagement.showAlert("Error", "Campos vacios detectados 1", Alert.AlertType.INFORMATION);
-        } else if (tfTitle.getText().isEmpty()) {
-            WindowManagement.showAlert("Error", "Campos vacios detectados 2", Alert.AlertType.INFORMATION);
-        } else if (tfDescription.getText().isEmpty()) {
-            WindowManagement.showAlert("Error", "Campos vacios detectados 3", Alert.AlertType.INFORMATION);
         } else if (ees == null) {
             WindowManagement.showAlert("Error", "Campos vacios detectados 4", Alert.AlertType.INFORMATION);
         } else {
