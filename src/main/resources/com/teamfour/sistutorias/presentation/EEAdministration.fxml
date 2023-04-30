@@ -19,10 +19,10 @@
           <TableColumn fx:id="nameEETb" prefWidth="254.66665649414062" text="Nombre" />
         </columns>
       </TableView>
-      <Button layoutX="323.0" layoutY="148.0" mnemonicParsing="false" onAction="#deleteEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: IndianRed;" text="Eliminar" textFill="WHITE" />
+      <Button fx:id="delBttn" layoutX="323.0" layoutY="148.0" mnemonicParsing="false" onAction="#deleteEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: IndianRed;" text="Eliminar" textFill="WHITE" />
       <Button layoutX="28.0" layoutY="366.0" mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: dimgrey;" text="Cancelar" textFill="WHITE" />
-      <Button layoutX="496.0" layoutY="148.0" mnemonicParsing="false" onAction="#addEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
-      <Button layoutX="409.0" layoutY="148.0" mnemonicParsing="false" onAction="#updateEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: Goldenrod;" text="Modificar" textFill="WHITE" />
+      <Button fx:id="addBttn" layoutX="496.0" layoutY="148.0" mnemonicParsing="false" onAction="#addEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
+      <Button fx:id="modBttn" layoutX="409.0" layoutY="148.0" mnemonicParsing="false" onAction="#updateEE" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: Goldenrod;" text="Modificar" textFill="WHITE" />
       <Label layoutX="323.0" layoutY="36.0" text="Registro">
          <font>
             <Font name="Arial" size="14.0" />

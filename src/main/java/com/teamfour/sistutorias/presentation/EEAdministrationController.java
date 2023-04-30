@@ -25,6 +25,12 @@ public class EEAdministrationController implements Initializable {
     private TableColumn<EE, String> nameEETb;
     private ArrayList<EE> ees;
     @FXML
+    private Button addBttn;
+    @FXML
+    private Button modBttn;
+    @FXML
+    private Button delBttn;
+    @FXML
     public void eeTable(SortEvent<TableView> tableViewSortEvent) {
 
     }
@@ -64,7 +70,7 @@ public class EEAdministrationController implements Initializable {
             WindowManagement.showAlert("Campos vacios",
                     "Por favor, no deje campos vacios",
                     Alert.AlertType.INFORMATION);
-        if (DataValidation.textValidation(name, 50)) {
+        if (DataValidation.textValidation(name, 50, true)) {
             boolean eeExists = false;
             for (EE ee : ees) {
                 if (ee.getName().equals(name)) {
@@ -79,7 +85,7 @@ public class EEAdministrationController implements Initializable {
                 return;
             }
             EE ee = new EE();
-            ee.setName(name);
+            ee.setName(name.trim());
             EEDAO eeDAO = new EEDAO();
             try {
                 eeDAO.register(ee);
@@ -156,14 +162,18 @@ public class EEAdministrationController implements Initializable {
             e.printStackTrace();
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTableColumns();
         loadTable();
+        delBttn.setDisable(true);
+        modBttn.setDisable(true);
     }
     @FXML
     public void selectEE(MouseEvent mouseEvent) {
         eeTf.setText(eeTb.getSelectionModel().getSelectedItem().getName());
+        delBttn.setDisable(false);
+        modBttn.setDisable(false);
+        addBttn.setDisable(true);
     }
 }

@@ -64,7 +64,8 @@ public class TutorshipController implements Initializable {
     @javafx.fxml.FXML
     private DatePicker endThirdDatePicker;
     @javafx.fxml.FXML
-    private ComboBox cbPeriod;
+    private Label currentPeriod;
+
 
     @javafx.fxml.FXML
     public void cancelAction(ActionEvent actionEvent) {
@@ -75,7 +76,7 @@ public class TutorshipController implements Initializable {
     @javafx.fxml.FXML
     public void addAction(ActionEvent actionEvent) throws SQLException {
         TutorshipDAO tutorshipDAO = new TutorshipDAO();
-        Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
+        Period period = getCurrentPeriod();
         List<Tutorship> tutorships = tutorshipDAO.getTutorship(period.getIdPeriod());
 
         if (validateDatePickers()) {
@@ -118,12 +119,12 @@ public class TutorshipController implements Initializable {
             }
             if (isCorrect) {
                 WindowManagement.showAlert("Sesiones de tutoría agregadas",
-                        "Las sesiones de tutoría se han agregado correctamente",
+                        "Las sesiones de tutoría se han guardado correctamente",
                         Alert.AlertType.INFORMATION);
 
             } else {
                 WindowManagement.showAlert("Sesiones de tutoría no fueron agregadas",
-                        "Las sesiones de tutoría no se han agregado",
+                        "Las sesiones de tutoría no se han guardado",
                         Alert.AlertType.INFORMATION);
             }
         } else {
@@ -155,30 +156,11 @@ public class TutorshipController implements Initializable {
         }
     }
 
-    public void populateComboBox() throws SQLException {
-        PeriodDAO periodDAO = new PeriodDAO();
-        ObservableList<Period> periods = FXCollections.observableArrayList();
-        periods.addAll(periodDAO.getPeriods());
-        this.cbPeriod.setItems(periods);
-        this.cbPeriod.getSelectionModel().selectFirst();
-        this.cbPeriod.setConverter(new StringConverter<Period>() {
-            @Override
-            public String toString(Period period) {
-                return period == null ? null : period.getStart() + " - " + period.getEnd();
-            }
-
-            @Override
-            public Period fromString(String s) {
-                return null;
-            }
-        });
-
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            populateComboBox();
+            Period period = getCurrentPeriod();
+            currentPeriod.setText(period.toString());
             populateDatePicker();
             TutorshipDAO tutorship = new TutorshipDAO();
             List<Tutorship> tutorships = tutorship.getTutorship(1);
@@ -191,16 +173,6 @@ public class TutorshipController implements Initializable {
         setDatePickers();
     }
 
-    public void dateFormatter() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String date = firstDatePicker.getValue().format(formatter);
-        String date2 = endFirstDatePicker.getValue().format(formatter);
-        String date3 = secondDatePicker.getValue().format(formatter);
-        String date4 = endSecondDatePicker.getValue().format(formatter);
-        String date5 = thirdDatePicker.getValue().format(formatter);
-        String date6 = endThirdDatePicker.getValue().format(formatter);
-    }
-
     public void setDatePickers() {
         Callback<DatePicker, DateCell> dayCellFactory = (DatePicker picker) -> new DateCell() {
             @Override
@@ -209,7 +181,12 @@ public class TutorshipController implements Initializable {
                 if (isEmpty || localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
                     setDisable(true);
                 }
-                Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
+                Period period = null;
+                try {
+                    period = getCurrentPeriod();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 if (period != null) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
                     try {
@@ -232,9 +209,17 @@ public class TutorshipController implements Initializable {
         endThirdDatePicker.setDayCellFactory(dayCellFactory);
     }
 
+    public Period getCurrentPeriod() throws SQLException {
+        PeriodDAO periodDAO = new PeriodDAO();
+        ObservableList<Period> periods = FXCollections.observableArrayList();
+        periods.addAll(periodDAO.getPeriods());
+        Period period = periods.get(periods.size() - 1);
+        return period;
+    }
+
     public void populateDatePicker() {
         try {
-        Period period = (Period) cbPeriod.getSelectionModel().getSelectedItem();
+        Period period = getCurrentPeriod();
         TutorshipDAO tutorshipDAO = new TutorshipDAO();
         List<Tutorship> tutorships = tutorshipDAO.getTutorship(period.getIdPeriod());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

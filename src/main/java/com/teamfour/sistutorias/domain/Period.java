@@ -1,5 +1,9 @@
 package com.teamfour.sistutorias.domain;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Period {
     private int idPeriod;
     private String start;
@@ -49,5 +53,17 @@ public class Period {
         if(!startDate.isEmpty() && !endDate.isEmpty())
             fullPeriod = getStart() + " - " + getEnd();
         return fullPeriod;
+    }
+
+    public Date getStartDate() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(start);
+        return date;
+    }
+
+    public Date getEndDate() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(end);
+        return date;
     }
 }
