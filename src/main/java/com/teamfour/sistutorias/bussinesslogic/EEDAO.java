@@ -13,7 +13,7 @@ public class EEDAO implements IEEDAO {
     @Override
     public ArrayList<EE> getEEsByProgram(int idProgram) throws SQLException {
         ArrayList<EE> ees = new ArrayList<>();
-        String query = "SELECT DISTINCT name, ee_id FROM group_program gp " +
+        String query = "SELECT DISTINCT ee.name, ee.ee_id FROM group_program gp " +
                 "INNER JOIN ee ee ON ee.ee_id = gp.ee_id " +
                 "WHERE gp.program_id = ?";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();

@@ -47,8 +47,6 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // FOR DEMONSTRATION PURPOSES
-            //SessionGlobalData.getSessionGlobalData().getActiveRole().;
             populateComboBoxes();
             populateTable();
             seeSolutionListener();

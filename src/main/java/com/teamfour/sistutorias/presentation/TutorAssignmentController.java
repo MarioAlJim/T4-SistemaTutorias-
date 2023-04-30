@@ -49,8 +49,6 @@ public class TutorAssignmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // FOR DEMONSTRATION PURPOSES
-            //SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
             populateTutorsTable();
             populateTutoradosTable();
             seeSelectedTutorListener();
@@ -76,7 +74,7 @@ public class TutorAssignmentController implements Initializable {
 
     private void populateTutoradosTable() throws SQLException {
         TutoradoDAO tutoradoDAO = new TutoradoDAO();
-        ArrayList<Tutorado> tutorados = tutoradoDAO.getTutoradosByProgramTutor(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram());
+        ArrayList<Tutorado> tutorados = tutoradoDAO.getTutoradosByProgramTutor(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
         this.tableTutorados.addAll(tutorados);
 
         this.tcNameTurorado.setCellValueFactory(new PropertyValueFactory<>("fullName"));
