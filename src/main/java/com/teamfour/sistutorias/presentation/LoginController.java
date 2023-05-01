@@ -9,16 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import com.teamfour.sistutorias.bussinesslogic.*;
 import com.teamfour.sistutorias.domain.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
@@ -33,6 +31,12 @@ public class LoginController implements Initializable {
     private Label lblInvalidUser;
     @FXML
     private Label lblInvalidPassword;
+    @FXML
+    private Label lblPassword;
+    @FXML
+    private Button btnSignIn;
+    @FXML
+    private Button btnExit;
 
     private boolean validateUser(String uvAcount) {
         Pattern pattern = Pattern
@@ -43,35 +47,23 @@ public class LoginController implements Initializable {
 
     private void invoqueWindow() {
         int tipeUser = 1;
-        String window = "";
-        String title = "";
         ArrayList<RoleProgram> roles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
-        for (RoleProgram roleProgram: roles) {
-            if(roleProgram.getRole() == 4) {
+        for (RoleProgram roleProgram : roles) {
+            if (roleProgram.getRole() == 4) {
                 tipeUser = 2;
             }
         }
-
-        switch (tipeUser) {
-            case 2:
-                window = "AdminMenu.fxml";
-                title = "Menu de administrador";
-                break;
-            case 1:
-                window = "MainMenu.fxml";
-                title = "Menu principal";
-                break;
-        }
-
-        Stage stage = new Stage();
-        stage.setTitle(title);
+        closeAux();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
-            stage.setScene(new Scene(loader.load()));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            closeAux();
-            stage.show();
-        } catch (IOException exception){
+            switch (tipeUser) {
+                case 2:
+                    WindowManagement.changeScene("Menu de administrador", getClass().getResource("AdminMenuAdminMenu.fxml"));
+                    break;
+                case 1:
+                    WindowManagement.changeScene("Menu principal", getClass().getResource("MainMenu.fxml"));
+                    break;
+            }
+        } catch (IOException exception) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
             WindowManagement.showAlert("Error", "Error no se pudo cargar el menu", Alert.AlertType.INFORMATION);
         }
@@ -124,5 +116,12 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        URL linkImgUsers = getClass().getResource("/com/teamfour/sistutorias/images/users.png");
+        Image intSignIn = new Image(linkImgUsers.toString(),15,15,false,true);
+        btnSignIn.setGraphic(new ImageView(intSignIn));
+
+        URL linkImgOut = getClass().getResource("/com/teamfour/sistutorias/images/exit.png");
+        Image imgOut = new Image(linkImgOut.toString(),15,15,false,true);
+        btnExit.setGraphic(new ImageView(imgOut));
     }
 }
