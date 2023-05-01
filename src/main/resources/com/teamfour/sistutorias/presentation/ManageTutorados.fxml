@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ManageTutorados">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Buscar:" />
+      <TextField fx:id="tfTutoradoSearch" layoutX="59.0" layoutY="10.0" promptText="Introducir nombre..." />
+      <TableView fx:id="tvTutorados" layoutX="14.0" layoutY="49.0" prefHeight="796.0" prefWidth="1169.0">
+        <columns>
+          <TableColumn fx:id="tcMatricula" prefWidth="176.53490734100342" text="Matricula" />
+          <TableColumn fx:id="tcNombre" prefWidth="196.4823760986328" text="Nombre" />
+            <TableColumn fx:id="tcPaternalSurname" prefWidth="213.4376220703125" text="Apellido Paterno" />
+            <TableColumn fx:id="tcMaternalSurname" prefWidth="270.287841796875" text="Apellido Materno" />
+            <TableColumn fx:id="tcProgramaEducativo" prefWidth="312.17755126953125" text="ProgramaEducativo" />
+        </columns>
+      </TableView>
+      <Button layoutX="954.0" layoutY="855.0" mnemonicParsing="false" onAction="#openRegisterUserWindow" text="Registrar" />
+      <Button layoutX="1035.0" layoutY="855.0" mnemonicParsing="false" onAction="#openModifyUserWindow" text="Modificar" />
+      <Button layoutX="1119.0" layoutY="855.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
+   </children>
+</AnchorPane>
