@@ -125,7 +125,7 @@ public class MainMenuController implements Initializable {
     public void clickRegisterTutorship(ActionEvent event) throws IOException {
         SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
         WindowManagement.changeScene("Registrar sesión de tutoría académica",
-                getClass().getResource(".fxml"));
+                getClass().getResource("Tutorship.fxml"));
     }
 
     public void clickModifyTutorship(ActionEvent event) throws IOException {
@@ -160,10 +160,6 @@ public class MainMenuController implements Initializable {
 
     public void clickRegisterSolution(ActionEvent event) throws IOException {
         setSessionGlobalDataRol(3);
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getRole());
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram());
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getName());
-        System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
         SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().setIdEducationProgram(1);
         WindowManagement.changeScene("Registrar solución a problemática académica",
                 getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));

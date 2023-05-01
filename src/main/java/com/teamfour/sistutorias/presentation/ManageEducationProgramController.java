@@ -26,6 +26,8 @@ public class ManageEducationProgramController implements Initializable {
     private TableView<EducationProgram> tvEducationPrograms;
     @FXML
     private TableColumn<EducationProgram, String> tcName;
+    @FXML
+    private Button btnModify;
 
     private final int MAX_CHARS = 45;
     private final ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
@@ -40,19 +42,22 @@ public class ManageEducationProgramController implements Initializable {
                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
             this.tfNameEducationProgram.setTextFormatter(new TextFormatter<String>(change ->
                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
+            disableButtons(true);
         } catch(SQLException sqlException) {
             WindowManagement.connectionLostMessage();
             WindowManagement.closeWindow(new ActionEvent());
         }
     }
 
+    private void disableButtons(boolean isDisabled) {
+        this.btnModify.setDisable(isDisabled);
+    }
+
     private void populateTable() throws SQLException {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
         ArrayList<EducationProgram> registeredEducationPrograms = educationProgramDAO.getEducationPrograms();
 
-        for(EducationProgram educationProgram : registeredEducationPrograms) {
-            this.educationPrograms.add(educationProgram);
-        }
+        this.educationPrograms.addAll(registeredEducationPrograms);
 
         this.tcName.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getName()));
         this.tvEducationPrograms.setItems(educationPrograms);
@@ -66,13 +71,11 @@ public class ManageEducationProgramController implements Initializable {
                         if(newValue == null || newValue.isEmpty())
                             return true;
 
+                        disableButtons(true);
+                        this.tfNameEducationProgram.clear();
                         String lowerCaseFilter = newValue.toLowerCase().replaceAll("\\s", "");
-                        boolean isInTable = false;
-                        if(educationProgram.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter)) {
-                            isInTable = true;
-                        }
 
-                        return isInTable;
+                        return educationProgram.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter);
                     }
             );
         });
@@ -87,6 +90,7 @@ public class ManageEducationProgramController implements Initializable {
                 EducationProgram selectedEducationProgram = this.tvEducationPrograms.getSelectionModel().getSelectedItem();
                 String educationProgramName = selectedEducationProgram.getName();
                 this.tfNameEducationProgram.setText(educationProgramName);
+                disableButtons(false);
             } else {
                 this.tfNameEducationProgram.clear();
             }
@@ -103,36 +107,30 @@ public class ManageEducationProgramController implements Initializable {
         EducationProgram selectedEducationProgram = this.tvEducationPrograms.getSelectionModel().getSelectedItem();
         boolean emptyName = this.tfNameEducationProgram.getText().replaceAll("\\s","").isEmpty();
 
-        if(selectedEducationProgram != null) {
-            String newName = this.tfNameEducationProgram.getText().trim().replaceAll(" +"," ");
-            if(!emptyName) {
-                try {
-                    EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
-                    boolean educationProgramUpdated = educationProgramDAO.updateEducationProgram(new EducationProgram(selectedEducationProgram.getIdEducationProgram(), newName));
-                    if(educationProgramUpdated) {
-                        WindowManagement.showAlert("Programa educativo actualizado",
-                                "El programa educativo se ha actualizado exitosamente",
-                                Alert.AlertType.CONFIRMATION);
-                        selectedEducationProgram.setName(newName);
-                        this.tfNameEducationProgram.clear();
-                        this.tvEducationPrograms.refresh();
-                    } else {
-                        WindowManagement.showAlert("Programa educativo no actualizado",
-                                "El programa educativo no ha sido actualizado",
-                                Alert.AlertType.ERROR);
-                    }
-                } catch(SQLException sqlException) {
-                    WindowManagement.connectionLostMessage();
-                    WindowManagement.closeWindow(event);
+        String newName = this.tfNameEducationProgram.getText().trim().replaceAll(" +"," ");
+        if(!emptyName) {
+            try {
+                EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+                boolean educationProgramUpdated = educationProgramDAO.updateEducationProgram(new EducationProgram(selectedEducationProgram.getIdEducationProgram(), newName));
+                if(educationProgramUpdated) {
+                    WindowManagement.showAlert("Programa educativo actualizado",
+                            "El programa educativo se ha actualizado exitosamente",
+                            Alert.AlertType.CONFIRMATION);
+                    selectedEducationProgram.setName(newName);
+                    this.tfNameEducationProgram.clear();
+                    this.tvEducationPrograms.refresh();
+                } else {
+                    WindowManagement.showAlert("Programa educativo no actualizado",
+                            "El programa educativo no ha sido actualizado",
+                            Alert.AlertType.ERROR);
                 }
-            } else {
-                WindowManagement.showAlert("Campos vacíos",
-                        "No se ha ingresado un nombre de programa educativo",
-                        Alert.AlertType.WARNING);
+            } catch(SQLException sqlException) {
+                WindowManagement.connectionLostMessage();
+                WindowManagement.closeWindow(event);
             }
         } else {
-            WindowManagement.showAlert("No hay selección",
-                    "No se ha seleccionado un programa educativo",
+            WindowManagement.showAlert("Campos vacíos",
+                    "No se ha ingresado un nombre de programa educativo",
                     Alert.AlertType.WARNING);
         }
     }
@@ -149,8 +147,10 @@ public class ManageEducationProgramController implements Initializable {
             boolean isAlreadyRegistered = false;
 
             for(EducationProgram educationProgram : this.educationPrograms) {
-                if(educationProgram.getName().equals(educationProgramName))
+                if(educationProgram.getName().equals(educationProgramName)) {
                     isAlreadyRegistered = true;
+                    break;
+                }
             }
 
             if(isAlreadyRegistered) {

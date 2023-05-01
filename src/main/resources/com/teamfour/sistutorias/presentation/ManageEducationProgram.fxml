@@ -37,6 +37,6 @@
       </TableView>
       <Button layoutX="17.0" layoutY="378.0" mnemonicParsing="false" onAction="#clickCancel" style="-fx-background-color: DimGray;" text="Cancelar" textFill="WHITE" />
       <Button layoutX="594.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickRegister" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
-      <Button layoutX="493.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickModify" style="-fx-background-color: GoldenRod;" text="Modificar" textFill="WHITE" />
+      <Button fx:id="btnModify" layoutX="493.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickModify" style="-fx-background-color: GoldenRod;" text="Modificar" textFill="WHITE" />
    </children>
 </AnchorPane>
