@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class TutoradoWindow implements Initializable {

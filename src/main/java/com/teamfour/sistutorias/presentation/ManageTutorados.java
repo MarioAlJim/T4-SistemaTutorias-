@@ -2,7 +2,6 @@ package com.teamfour.sistutorias.presentation;
 
 import com.teamfour.sistutorias.bussinesslogic.TutoradoDAO;
 import com.teamfour.sistutorias.domain.Tutorado;
-import com.teamfour.sistutorias.domain.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
