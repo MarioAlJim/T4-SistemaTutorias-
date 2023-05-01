@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="497.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="497.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.LoginController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d47a1" height="48.0" layoutX="1.0" layoutY="280.0" stroke="#0d47a1" width="496.0" />
         <Label fx:id="lblPassword" layoutX="248.0" layoutY="133.0" prefHeight="20.0" prefWidth="86.0" text="Contraseña:">
@@ -28,7 +28,7 @@
          <font>
             <Font size="13.0" />
          </font></TextField>
-        <Button fx:id="btnSignIn" layoutX="326.0" layoutY="190.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-color: ForestGreen;" text="Iniciar Sesion" textFill="WHITE">
+        <Button fx:id="btnSignIn" layoutX="306.0" layoutY="188.0" mnemonicParsing="false" onAction="#signUp" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: ForestGreen;" text="Iniciar Sesion" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Button>
@@ -37,7 +37,7 @@
                 <Font name="System Bold" size="22.0" />
             </font>
         </Label>
-        <Button fx:id="btnExit" layoutX="351.0" layoutY="239.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: Indianred;" text="Salir" textFill="WHITE">
+        <Button fx:id="btnExit" layoutX="332.0" layoutY="231.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: Indianred;" text="Salir" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Button>

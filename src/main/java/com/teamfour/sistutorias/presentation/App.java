@@ -24,7 +24,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("Login"));
         //scene = new Scene(loadFXML("GroupAdministration"));
         //scene = new Scene(loadFXML("RegisterSolutionToAcademicProblem"));
-        stage.getIcons().add(new Image("https://www.uv.mx/veracruz/nutricion/files/2013/04/flor-azul.jpg"));
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("images/Flor_uv.png")));
         stage.setScene(scene);
         stage.show();
     }
@@ -40,5 +40,6 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+
     }
 }

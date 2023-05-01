@@ -74,7 +74,8 @@ public class ConsultAcademicProblemsController implements Initializable{
     private Label lblSolution;
     private ObservableList<AcademicProblem> academicProblemData;
     private AcademicProblem academicProblem = new AcademicProblem();
-
+    private Period selectedPeriod;
+    private Tutorship selectedTutorship;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setPeriods();
@@ -95,7 +96,6 @@ public class ConsultAcademicProblemsController implements Initializable{
         cbPeriod.setItems(options);
         cbPeriod.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
             cbTutorship.getSelectionModel().clearSelection();
-            Period selectedPeriod;
             selectedPeriod = (Period) valorNuevo;
             setTutorships(selectedPeriod);
         });
@@ -116,13 +116,13 @@ public class ConsultAcademicProblemsController implements Initializable{
         cbTutorship.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
             tvProblems.getItems().clear();
             if (valorNuevo != null) {
-                Tutorship newTutorship = (Tutorship) valorNuevo;
-                setAcademicProblemsTable(newTutorship);
+                selectedTutorship = (Tutorship) valorNuevo;
+                setAcademicProblemsTable();
             }
         });
     }
 
-    private void setAcademicProblemsTable(Tutorship tutorship) {
+    private void setAcademicProblemsTable() {
         colProblem_id.setCellValueFactory(new PropertyValueFactory<>("idAcademicProblem"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colNrc.setCellValueFactory(new PropertyValueFactory <>("group"));
@@ -131,7 +131,7 @@ public class ConsultAcademicProblemsController implements Initializable{
         academicProblemData = FXCollections.observableArrayList();
         try {
             academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(
-                    tutorship.getIdTutorShip(),
+                    selectedTutorship.getIdTutorShip(),
                     SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
                     SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
             //academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(tutorship.getIdTutorShip(),1, "mario14");
@@ -172,6 +172,7 @@ public class ConsultAcademicProblemsController implements Initializable{
             int result = 0;
             try {
                 result = academicProblemDAO.deleteAcademicProblem(academicProblem.getIdAcademicProblem());
+                setAcademicProblemsTable();
             } catch (SQLException exception){
                 Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
             }

@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +38,17 @@ public class MainMenuController implements Initializable {
         tabTutor.setDisable(true);
         tabCoordinator.setDisable(true);
         getEducationPrograms();
+
+
+        URL linkImgTutor = getClass().getResource("/com/teamfour/sistutorias/images/luzio_tutor.jpg");
+        Image imgTutor = new Image(linkImgTutor.toString(),20,20,false,true);
+        tabTutor.setGraphic(new ImageView(imgTutor));
+        URL linkImgcoordinator = getClass().getResource("/com/teamfour/sistutorias/images/luzio_coordinador.png");
+        Image imgCoordinator = new Image(linkImgcoordinator.toString(),20,20,false,true);
+        tabCoordinator.setGraphic(new ImageView(imgCoordinator));
+        URL linkImgHead = getClass().getResource("/com/teamfour/sistutorias/images/luzio_jefe.jpg");
+        Image imgHead = new Image(linkImgHead.toString(),20,20,false,true);
+        tabJefe.setGraphic(new ImageView(imgHead));
     }
 
     private void setSessionGlobalDataRol(int role) {
