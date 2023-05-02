@@ -16,25 +16,35 @@ public class TutoradoDAO implements ITutoradoDAO{
         DataBaseConnection db = new DataBaseConnection();
         int insertedFiles = 0;
         Connection connection = db.getConnection();
-        String registrationNumber = tutorado.getRegistrationNumber();
-        String name = tutorado.getName();
-        String paternalSurname = tutorado.getPaternalSurname();
-        String maternalSurname = tutorado.getMaternalSurname();
-        int programId = tutorado.getProgramId();
-        String query = "INSERT INTO tutorado (registration_number, name, paternal_surname, maternal_surname, program_id) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, registrationNumber);
-            statement.setString(2, name);
-            statement.setString(3, paternalSurname);
-            statement.setString(4, maternalSurname);
-            statement.setInt(5, programId);
-        insertedFiles = statement.executeUpdate();
+        PersonDAO personDAO = new PersonDAO();
+        int personId = personDAO.insertPerson(tutorado);
+        if (personId > 0) {
+            String query = "INSERT INTO tutorado (registration_number, person_id, program_id) VALUES (?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, tutorado.getRegistrationNumber());
+            statement.setInt(2, personId);
+            statement.setInt(3, tutorado.getProgramId());
+            insertedFiles = statement.executeUpdate();
+        }
         return insertedFiles;
     }
 
     @Override
     public int update(Tutorado tutorado) throws SQLException {
-        return 0;
+        DataBaseConnection db = new DataBaseConnection();
+        int updatedRows = 0;
+        Connection connection = db.getConnection();
+        PersonDAO personDAO = new PersonDAO();
+        int personId = personDAO.updatePerson(tutorado);
+        if (personId > 0) {
+            String query = "UPDATE tutorado SET registration_number = ?, program_id = ? WHERE person_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, tutorado.getRegistrationNumber());
+            statement.setInt(2, tutorado.getProgramId());
+            statement.setInt(3, personId);
+            updatedRows = statement.executeUpdate();
+        }
+        return updatedRows;
     }
 
     @Override
@@ -158,6 +168,38 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorado.setPaternalSurname(paternalSurname);
                 tutorado.setMaternalSurname(maternalSurname);
                 tutorado.setFullName(name.trim() + " " + paternalSurname.trim() + " " + maternalSurname.trim());
+                tutorados.add(tutorado);
+            } while (resultSet.next());
+        }
+        return tutorados;
+    }
+
+    @Override
+    public ArrayList<Tutorado> getAll() throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        ArrayList<Tutorado> tutorados = new ArrayList<>();
+        String query = "SELECT t.registration_number, p.name, p.paternal_surname, p.maternal_surname, p.person_id, ep.name AS program FROM tutorado t " +
+                "INNER JOIN person p ON t.person_id = p.person_id " +
+                "JOIN education_program ep ON t.program_id = ep.education_program_id;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()){
+            do {
+                String registrationNumber = resultSet.getString("registration_number");
+                String name = resultSet.getString("name");
+                String paternalSurname = resultSet.getString("paternal_surname");
+                String maternalSurname = resultSet.getString("maternal_surname");
+                String educativeProgram = resultSet.getString("program");
+                int personId = resultSet.getInt("person_id");
+                Tutorado tutorado = new Tutorado();
+                tutorado.setRegistrationNumber(registrationNumber);
+                tutorado.setName(name);
+                tutorado.setPaternalSurname(paternalSurname);
+                tutorado.setMaternalSurname(maternalSurname);
+                tutorado.setFullName(name.trim() + " " + paternalSurname.trim() + " " + maternalSurname.trim());
+                tutorado.setEducativeProgram(educativeProgram);
+                tutorado.setIdPerson(personId);
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
