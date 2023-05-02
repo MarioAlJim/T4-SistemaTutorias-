@@ -38,8 +38,6 @@ public class MainMenuController implements Initializable {
         tabTutor.setDisable(true);
         tabCoordinator.setDisable(true);
         getEducationPrograms();
-
-
         URL linkImgTutor = getClass().getResource("/com/teamfour/sistutorias/images/luzio_tutor.jpg");
         Image imgTutor = new Image(linkImgTutor.toString(),20,20,false,true);
         tabTutor.setGraphic(new ImageView(imgTutor));
