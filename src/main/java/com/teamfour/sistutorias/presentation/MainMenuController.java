@@ -28,7 +28,7 @@ public class MainMenuController implements Initializable {
     private Tab tabJefe;
 
     private ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
-    private ArrayList<RoleProgram> availableRoles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
+    private ArrayList<RoleProgram> availableRoles;
     private RoleProgram roleProgramSelected = new RoleProgram();
     private  EducationProgram programSelected;
 
@@ -58,13 +58,18 @@ public class MainMenuController implements Initializable {
     }
 
     private void getEducationPrograms() {
+        availableRoles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
         ArrayList<EducationProgram> educationPrograms = new ArrayList<>();
         for(RoleProgram roleProgram: availableRoles) {
-            if (educationPrograms.size() == 0) {
+            if (educationPrograms.isEmpty()) {
                 educationPrograms.add(roleProgram.getEducationProgram());
             } else {
+                boolean isInCombobox = false;
                 for (int i = 0; i < educationPrograms.size(); i++) {
-                    if (educationPrograms.get(i).getIdEducationProgram() != roleProgram.getEducationProgram().getIdEducationProgram()) {
+                    if (educationPrograms.get(i).getIdEducationProgram() == roleProgram.getEducationProgram().getIdEducationProgram()) {
+                        isInCombobox = true;
+                    }
+                    if(!isInCombobox) {
                         educationPrograms.add(roleProgram.getEducationProgram());
                     }
                 }
@@ -111,39 +116,48 @@ public class MainMenuController implements Initializable {
     }
 
     public void clickFillTutorshipReport(ActionEvent event) throws IOException {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        setSessionGlobalDataRol(1);
         WindowManagement.changeScene("Registrar reporte de tutoría académica",
                 getClass().getResource("FillTutorshipReport.fxml"));
     }
 
-    public void clickModifyProblem(ActionEvent event) throws IOException {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
-        WindowManagement.changeScene("Modificar problemática académica",
+    public void clickConsultAcademicProblem(ActionEvent event) throws IOException {
+        setSessionGlobalDataRol(1);
+        WindowManagement.changeScene("Problemáticas académicas",
                 getClass().getResource("ConsultAcademicProblems.fxml"));
     }
 
     public void clickRegisterTutorship(ActionEvent event) throws IOException {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Registrar sesión de tutoría académica",
                 getClass().getResource("Tutorship.fxml"));
     }
 
     public void clickModifyTutorship(ActionEvent event) throws IOException {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+        //TODO
+        setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Modificar sesión de tutoría académica",
                 getClass().getResource(".fxml"));
     }
 
-    public void clickConsultGeneralTutorshipReport(ActionEvent event) {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+    public void clickConsultGeneralTutorshipReport(ActionEvent event) throws IOException {
+        //TODO ???
+        setSessionGlobalDataRol(2);
+        WindowManagement.changeScene("Reporte General de Tutoría Académica",
+                getClass().getResource("ConsultGeneralTutorshipReport.fxml"));
     }
 
-    public void clickConsultReportByTutor(ActionEvent event) {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+    public void clickConsultReportByTutor(ActionEvent event) throws IOException {
+        setSessionGlobalDataRol(2);
+        WindowManagement.changeScene("Reporte de tutoría",
+                getClass().getResource("ConsultTutorshipReport.fxml"));
     }
 
-    public void clickManageTutorado(ActionEvent event) {
-        SessionGlobalData.getSessionGlobalData().setActiveRole(roleProgramSelected);
+    public void clickManageTutorado(ActionEvent event) throws IOException {
+        //TODO
+        setSessionGlobalDataRol(2);
+        WindowManagement.changeScene("",
+                getClass().getResource(""));
     }
 
     public void clickAssignTutor(ActionEvent event) throws IOException {
@@ -160,14 +174,12 @@ public class MainMenuController implements Initializable {
 
     public void clickRegisterSolution(ActionEvent event) throws IOException {
         setSessionGlobalDataRol(3);
-        SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().setIdEducationProgram(1);
         WindowManagement.changeScene("Registrar solución a problemática académica",
                 getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
     }
 
     public void clickConsultSolution(ActionEvent event) throws IOException {
         setSessionGlobalDataRol(3);
-        SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().setIdEducationProgram(1);
         WindowManagement.changeScene("Soluciones a problemáticas académicas",
                 getClass().getResource("SolutionsToAcademicProblems.fxml"));
     }

@@ -64,6 +64,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
         teachers.add(new Teacher());
         teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
         this.cbTeacher.setItems(teachers);
+        this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
             @Override
             public String toString(Teacher teacher) {
@@ -211,9 +212,9 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
 
     @FXML
     private void filterAcademicProblems(ActionEvent event) {
-        Teacher selectedTeacher = (Teacher) this.cbTeacher.getSelectionModel().getSelectedItem();
+        Teacher selectedTeacher = this.cbTeacher.getSelectionModel().getSelectedItem();
         String selectedTeacherName = selectedTeacher.getFullName().replaceAll("\\s", "");
-        EE selectedEE = (EE) this.cbEE.getSelectionModel().getSelectedItem();
+        EE selectedEE = this.cbEE.getSelectionModel().getSelectedItem();
         String selectedEEName = selectedEE.getName().replaceAll("\\s", "");
 
         ObservableList<AcademicProblemsTable> filteredAcademicProblems = FXCollections.observableArrayList();

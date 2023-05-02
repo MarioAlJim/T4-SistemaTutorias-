@@ -28,7 +28,7 @@
         <Label fx:id="lblTitle" layoutX="54.0" layoutY="359.0" text="Titulo" />
         <Label fx:id="lblDescription" layoutX="55.0" layoutY="406.0" text="Descripción" />
         <Button fx:id="btnDelete" disable="true" layoutX="400.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteAcademicProblem" style="-fx-background-color: Indianred;" text="Eliminar" textFill="WHITE" />
-        <Button fx:id="btnModiify" disable="true" layoutX="476.0" layoutY="617.0" mnemonicParsing="false" onAction="#launchModificate" style="-fx-background-color: Goldenrod;" text="Modificar" />
+        <Button fx:id="btnModiify" disable="true" layoutX="476.0" layoutY="617.0" mnemonicParsing="false" onAction="#openModificationAcademicProblem" style="-fx-background-color: Goldenrod;" text="Modificar" />
         <Label fx:id="lblSugerence" layoutX="54.0" layoutY="72.0" text="Seleccione una problemática de la tabla" />
       <Label fx:id="lblSolution" layoutX="55.0" layoutY="521.0" text="Solucion" />
     </children>

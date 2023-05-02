@@ -164,9 +164,6 @@ public class TutorshipController implements Initializable {
             populateDatePicker();
             TutorshipDAO tutorship = new TutorshipDAO();
             List<Tutorship> tutorships = tutorship.getTutorship(1);
-            for (Tutorship tutorship2 : tutorships) {
-                System.out.println(tutorship2.getPeriodId());
-            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
