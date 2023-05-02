@@ -60,7 +60,7 @@ public class ConsultReportController implements Initializable {
     private TableView<AcademicProblem> tvAcademicProblems;
 
     @FXML
-    private TableView<Tutorado> tvTutored;
+    private TableView<Assistance> tvTutored;
 
     private ObservableList<User> tutors;
     private ObservableList<Tutorship> tutorships;
@@ -70,10 +70,6 @@ public class ConsultReportController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Remove after testing
-        educationProgram = new EducationProgram();
-        educationProgram.setIdEducationProgram(1);
-
         tutors = FXCollections.observableArrayList();
         tutorships = FXCollections.observableArrayList();
         assistances = FXCollections.observableArrayList();
@@ -99,15 +95,22 @@ public class ConsultReportController implements Initializable {
         try {
             tutorships.addAll(tutorshipDAO.getTutorships());
             cbTutorship.setItems(tutorships);
-            cbTutorship.setOnAction(event -> LoadTutorshipReport());
+            this.cbTutorship.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
+                this.tvAcademicProblems.getItems().clear();
+                this.tvTutored.getItems().clear();
+                this.taComment.clear();
+                this.lbAssistance.setText("Porcentaje de asistencia:");
+                this.lbRisk.setText("Porcentaje en riesgo:");
+                LoadTutorshipReport(valorNuevo.getIdTutorShip());
+            });
         } catch (SQLException e) {
+            Logger.getLogger(ConsultReportController.class.getName()).log(Level.SEVERE, null, e);
             throw new RuntimeException(e);
         }
     }
 
-    private void LoadTutorshipReport() {
+    private void LoadTutorshipReport(int tutorshipId) {
         setPeriod(cbTutorship.getSelectionModel().getSelectedItem());
-        int tutorshipId = cbTutorship.getSelectionModel().getSelectedItem().getIdTutorShip();
         RegisterDAO registerDAO = new RegisterDAO();
         AssistanceDAO assistanceDAO = new AssistanceDAO();
         CommentDAO commentDAO = new CommentDAO();
@@ -125,31 +128,27 @@ public class ConsultReportController implements Initializable {
                 ArrayList<Assistance> assistancesArrayList = assistanceDAO.getAssistancesFromRegister(tutorshipReport.getRegister_id());
                 Comment comment = commentDAO.getCommentFromRegister(tutorshipReport.getRegister_id());
                 ArrayList<AcademicProblem> academicProblemsArrayList = academicProblemDAO.getAcademicProblemsFromRegister(tutorshipReport.getRegister_id());
-                for (AcademicProblem a : academicProblemsArrayList) {
-                    for (AcademicProblem b : academicProblems) {
-                        if (a.getIdAcademicProblem() == b.getIdAcademicProblem()) {
-                            academicProblems.add(a);
-                        }
-                    }
-                }
+
                 if (assistancesArrayList != null && !assistancesArrayList.isEmpty()) {
                     assistances.addAll(assistancesArrayList);
                     for (Assistance a : assistances) {
                         if (a.getAsistencia()) {
                             a.getCheckBoxAsistencia().setSelected(true);
+                            a.getCheckBoxAsistencia().setDisable(true);
                         }
                         if (a.getRiesgo()) {
                             a.getCheckBoxRiesgo().setSelected(true);
+                            a.getCheckBoxRiesgo().setDisable(true);
                         }
                     }
-                    tvTutored.setItems(FXCollections.observableArrayList(assistances));
+                    tvTutored.setItems(assistances);
                     SetPercentages();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "No se han encontrado asistencias").showAndWait();
                 }
                 if (academicProblemsArrayList != null && !academicProblemsArrayList.isEmpty()) {
                     academicProblems.addAll(academicProblemsArrayList);
-                    tvAcademicProblems.setItems(FXCollections.observableArrayList(academicProblems));
+                    tvAcademicProblems.setItems(academicProblems);
                 } else {
                     new Alert(Alert.AlertType.ERROR, "No se han encontrado problemas académicos").showAndWait();
                 }
