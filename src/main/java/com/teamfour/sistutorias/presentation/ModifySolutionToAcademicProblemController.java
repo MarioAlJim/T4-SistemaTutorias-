@@ -194,7 +194,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
                 if(solutionLinked) {
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
                     WindowManagement.closeWindow(event);
                 } else {
                     WindowManagement.showAlert("Solución no registrada",

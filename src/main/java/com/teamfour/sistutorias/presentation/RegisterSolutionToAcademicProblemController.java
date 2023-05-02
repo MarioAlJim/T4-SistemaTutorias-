@@ -168,7 +168,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
                     this.taSolution.clear();
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
                 } else {
                     WindowManagement.showAlert("Solución no registrada",
                             "La solución no ha sido registrada",
