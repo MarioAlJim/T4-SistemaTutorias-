@@ -286,8 +286,8 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
-        String query = "SELECT ap.title, ap.description, ap.numbertutorados, p.name, p.paternal_surname, " +
-                "p.maternal_surname, ee.name AS eename FROM academic_problems ap " +
+        String query = "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
+                "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
                 "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
                 "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
                 "LEFT JOIN teacher t on t.personal_number = gp.personal_number " +
@@ -300,12 +300,13 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             AcademicProblem academicProblem = new AcademicProblem();
             academicProblem.setTitle(resultSet.getString("title"));
             academicProblem.setDescription(resultSet.getString("description"));
-            academicProblem.setNumberTutorados(resultSet.getInt("numbertutorados"));
+            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
             String teachername = resultSet.getString("name") + " " +
                     resultSet.getString("paternal_surname") + " " +
                     resultSet.getString("maternal_surname");
             academicProblem.setTeacher(teachername);
             academicProblem.setEe(resultSet.getString("eename"));
+            academicProblem.setGroup(resultSet.getInt("nrc"));
             boolean alreadyRegistered = false;
             for (AcademicProblem academicProblem1 : academicProblems) {
                 if (academicProblem1.getIdAcademicProblem() == academicProblem.getIdAcademicProblem()) {

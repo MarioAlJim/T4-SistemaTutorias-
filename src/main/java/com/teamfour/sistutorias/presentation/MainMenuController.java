@@ -6,11 +6,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -60,18 +64,16 @@ public class MainMenuController implements Initializable {
     private void getEducationPrograms() {
         availableRoles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
         ArrayList<EducationProgram> educationPrograms = new ArrayList<>();
+        educationPrograms.add(availableRoles.get(0).getEducationProgram());
+
         for(RoleProgram roleProgram: availableRoles) {
-            if (educationPrograms.isEmpty()) {
-                educationPrograms.add(roleProgram.getEducationProgram());
-            } else {
-                boolean isInCombobox = false;
-                for (int i = 0; i < educationPrograms.size(); i++) {
-                    if (educationPrograms.get(i).getIdEducationProgram() == roleProgram.getEducationProgram().getIdEducationProgram()) {
-                        isInCombobox = true;
-                    }
-                    if(!isInCombobox) {
-                        educationPrograms.add(roleProgram.getEducationProgram());
-                    }
+            boolean isInCombobox = false;
+            for (int i = 0; i < educationPrograms.size(); i++) {
+                if (educationPrograms.get(i).getIdEducationProgram() == roleProgram.getEducationProgram().getIdEducationProgram()) {
+                    isInCombobox = true;
+                }
+                if(!isInCombobox) {
+                    educationPrograms.add(roleProgram.getEducationProgram());
                 }
             }
         }
@@ -110,9 +112,8 @@ public class MainMenuController implements Initializable {
 
     public void clickConsultTutorshipReport(ActionEvent event) throws IOException {
         setSessionGlobalDataRol(1);
-
-        /*WindowManagement.changeScene("Reportes generales de tutorías académicas",
-                getClass().getResource("ConsultTutorshipReport.fxml"));*/
+        WindowManagement.changeScene("Reporte de tutoria academica",
+                getClass().getResource("ConsultReport.fxml"));
     }
 
     public void clickFillTutorshipReport(ActionEvent event) throws IOException {
@@ -141,7 +142,6 @@ public class MainMenuController implements Initializable {
     }
 
     public void clickConsultGeneralTutorshipReport(ActionEvent event) throws IOException {
-        //TODO ???
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Reporte General de Tutoría Académica",
                 getClass().getResource("ConsultGeneralTutorshipReport.fxml"));
@@ -154,10 +154,9 @@ public class MainMenuController implements Initializable {
     }
 
     public void clickManageTutorado(ActionEvent event) throws IOException {
-        //TODO
         setSessionGlobalDataRol(2);
-        WindowManagement.changeScene("",
-                getClass().getResource(""));
+        WindowManagement.changeScene("Administrar tutorados",
+                getClass().getResource("ManageTutorados.fxml"));
     }
 
     public void clickAssignTutor(ActionEvent event) throws IOException {
