@@ -128,17 +128,10 @@ public class MainMenuController implements Initializable {
                 getClass().getResource("ConsultAcademicProblems.fxml"));
     }
 
-    public void clickRegisterTutorship(ActionEvent event) throws IOException {
+    public void clickManageTutorship(ActionEvent event) throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Registrar sesión de tutoría académica",
                 getClass().getResource("Tutorship.fxml"));
-    }
-
-    public void clickModifyTutorship(ActionEvent event) throws IOException {
-        //TODO
-        setSessionGlobalDataRol(2);
-        WindowManagement.changeScene("Modificar sesión de tutoría académica",
-                getClass().getResource(".fxml"));
     }
 
     public void clickConsultGeneralTutorshipReport(ActionEvent event) throws IOException {
