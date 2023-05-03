@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.List;
-import javax.swing.JOptionPane;
-
 
 public class TutorshipDAO implements ITutorshipDAO {
 
@@ -30,6 +28,7 @@ public class TutorshipDAO implements ITutorshipDAO {
             tutorship.setEnd(resultSet.getString("end"));
             tutorship.setPeriodId(resultSet.getInt("period_id"));
         }
+        db.closeConection();
         return tutorship;
     }
 
@@ -57,6 +56,7 @@ public class TutorshipDAO implements ITutorshipDAO {
                 tutorships.add(tutorship);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorships;
     }
     @Override
@@ -134,6 +134,7 @@ public class TutorshipDAO implements ITutorshipDAO {
             tutorship.setPeriodId(resultSet.getInt("period_id"));
             tutorships.add(tutorship);
         }
+        db.closeConection();
         return tutorships;
     }
      public List<Tutorship> getTutorship(int periodId) throws SQLException{

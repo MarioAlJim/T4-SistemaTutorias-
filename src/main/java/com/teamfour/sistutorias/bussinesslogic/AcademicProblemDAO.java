@@ -309,6 +309,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             academicProblem.setGroup(resultSet.getInt("nrc"));
             academicProblems.add(academicProblem);
         }
+        dataBaseConnection.closeConection();
         return academicProblems;
     }
     /* "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +

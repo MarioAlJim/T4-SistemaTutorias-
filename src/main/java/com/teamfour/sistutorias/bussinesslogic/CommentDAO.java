@@ -22,6 +22,7 @@ public class CommentDAO implements ICommentDAO {
             statement.setString(1, description);
             statement.setInt(2, register);
             insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -39,6 +40,7 @@ public class CommentDAO implements ICommentDAO {
             statement.setInt(2, register);
             statement.setInt(3, id);
             insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -52,6 +54,7 @@ public class CommentDAO implements ICommentDAO {
         PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -69,6 +72,7 @@ public class CommentDAO implements ICommentDAO {
             comment.setDescription(resultSet.getString("description"));
             comment.setRegister(resultSet.getInt("register"));
         }
+        dataBaseConnection.closeConection();
         return comment;
     }
 }

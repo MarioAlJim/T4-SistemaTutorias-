@@ -7,11 +7,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ManageUsers">
+<AnchorPane prefHeight="497.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ManageUsers">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Buscar:" />
       <TextField fx:id="tfUserSearch" layoutX="59.0" layoutY="10.0" promptText="Introducir nombre..." />
-      <TableView fx:id="tvUsers" layoutX="14.0" layoutY="49.0" prefHeight="796.0" prefWidth="1169.0">
+      <TableView fx:id="tvUsers" layoutX="14.0" layoutY="49.0" prefHeight="392.0" prefWidth="1170.0">
         <columns>
           <TableColumn fx:id="tcEmail" prefWidth="176.53490734100342" text="Email" />
           <TableColumn fx:id="tcNombre" prefWidth="110.70832824707031" text="Nombre" />
@@ -21,8 +21,8 @@
             <TableColumn fx:id="tcProgramaEducativo" prefWidth="204.46124267578125" text="ProgramaEducativo" />
         </columns>
       </TableView>
-      <Button layoutX="954.0" layoutY="855.0" mnemonicParsing="false" onAction="#openRegisterUserWindow" text="Registrar" />
-      <Button layoutX="1035.0" layoutY="855.0" mnemonicParsing="false" onAction="#openModifyUserWindow" text="Modificar" />
-      <Button layoutX="1119.0" layoutY="855.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
+      <Button layoutX="934.0" layoutY="450.0" mnemonicParsing="false" onAction="#openRegisterUserWindow" text="Registrar" />
+      <Button layoutX="1015.0" layoutY="450.0" mnemonicParsing="false" onAction="#openModifyUserWindow" text="Modificar" />
+      <Button layoutX="1099.0" layoutY="450.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
    </children>
 </AnchorPane>
