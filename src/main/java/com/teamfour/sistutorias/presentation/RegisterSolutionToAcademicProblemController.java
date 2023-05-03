@@ -41,7 +41,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
     @FXML
     private TextArea taSolution;
 
-    final int MAX_CHARS = 100;
+    final int MAX_CHARS = 200;
     private final ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
 
     @Override
