@@ -91,7 +91,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         int group = academicProblem.getGroup();
         int numberTutorados = academicProblem.getNumberTutorados();
         int register = academicProblem.getRegister();
-        String query = "INSERT INTO academic_problems (title, description, nrc, register_id, numbertutorados) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO academic_problems (title, description, nrc, register_id, number_tutorados) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
             statement.setString(2, description);
@@ -286,13 +286,13 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
-        String query = "SELECT ap.title, ap.description, ap.numbertutorados, p.name, p.paternal_surname, " +
+        String query = "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
                 "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
-                "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
-                "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
-                "LEFT JOIN teacher t on t.personal_number = gp.personal_number " +
-                "LEFT JOIN person p on p.person_id = t.person_id " +
-                "WHERE register_id = ?";
+                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN ee on ee.ee_id = gp.ee_id " +
+                "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
+                "INNER JOIN person p on p.person_id = t.person_id " +
+                "WHERE ap.register_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, registerId);
         ResultSet resultSet = statement.executeQuery();
@@ -300,7 +300,32 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             AcademicProblem academicProblem = new AcademicProblem();
             academicProblem.setTitle(resultSet.getString("title"));
             academicProblem.setDescription(resultSet.getString("description"));
-            academicProblem.setNumberTutorados(resultSet.getInt("numbertutorados"));
+            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
+            String teachername = resultSet.getString("name") + " " +
+                    resultSet.getString("paternal_surname") + " " +
+                    resultSet.getString("maternal_surname");
+            academicProblem.setTeacher(teachername);
+            academicProblem.setEe(resultSet.getString("eename"));
+            academicProblem.setGroup(resultSet.getInt("nrc"));
+            academicProblems.add(academicProblem);
+        }
+        return academicProblems;
+    }
+    /* "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
+                "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
+                "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
+                "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
+                "LEFT JOIN teacher t on t.personal_number = gp.personal_number " +
+                "LEFT JOIN person p on p.person_id = t.person_id " +
+                "WHERE register_id = ?";
+                        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, registerId);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            AcademicProblem academicProblem = new AcademicProblem();
+            academicProblem.setTitle(resultSet.getString("title"));
+            academicProblem.setDescription(resultSet.getString("description"));
+            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
             String teachername = resultSet.getString("name") + " " +
                     resultSet.getString("paternal_surname") + " " +
                     resultSet.getString("maternal_surname");
@@ -316,10 +341,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             }
             if (!alreadyRegistered) {
                 academicProblems.add(academicProblem);
-            }
-        }
-        return academicProblems;
-    }
+            }*/
 
     @Override
     public AcademicProblem getAcademicProblemById(int academicProblemId) throws SQLException {

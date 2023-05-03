@@ -75,9 +75,9 @@ public class AssistanceDAO implements IAssistanceDAO {
         DataBaseConnection db = new DataBaseConnection();
         Connection connection = db.getConnection();
         ArrayList<Assistance> tutoradosAsistencia = new ArrayList<>();
-        String query = "SELECT * FROM assistance \n" +
-                "JOIN tutorado ON assistance.registration_number_id = tutorado.registration_number\n" +
-                "JOIN person ON tutorado.person_id = person.person_id\n" +
+        String query = "SELECT * FROM assistance " +
+                "JOIN tutorado ON assistance.registration_number_id = tutorado.registration_number " +
+                "JOIN person ON tutorado.person_id = person.person_id " +
                 "WHERE register_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, registerId);

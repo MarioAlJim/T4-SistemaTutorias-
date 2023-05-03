@@ -58,11 +58,11 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageUsers" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: DarkGray;" text="Administrar usuarios" GridPane.halignment="CENTER" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEducationProgram" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: DarkGray;" text="Administrar programas educativos" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTeacher" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: DarkGray;" text="Administrar docentes" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEE" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: DarkGray;" text="Administrar EEs" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageGroups" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: DarkGray;" text="Administrar grupos" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageUsers" prefHeight="26.0" prefWidth="230.0" text="Administrar usuarios" GridPane.halignment="CENTER" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEducationProgram" prefHeight="26.0" prefWidth="230.0" text="Administrar programas educativos" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTeacher" prefHeight="26.0" prefWidth="230.0" text="Administrar docentes" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageEE" prefHeight="26.0" prefWidth="230.0" text="Administrar EEs" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageGroups" prefHeight="26.0" prefWidth="230.0" text="Administrar grupos" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                      </children>
                      <padding>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

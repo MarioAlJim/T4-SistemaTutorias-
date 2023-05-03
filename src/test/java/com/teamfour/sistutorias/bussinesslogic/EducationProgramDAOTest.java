@@ -54,7 +54,7 @@ class EducationProgramDAOTest {
     @Test
     public void updateEducationProgram() throws SQLException {
         educationProgram.setIdEducationProgram(1);
-        educationProgram.setName("Ingenieria de software");
+        educationProgram.setName("Ingenieria de Software");
         assertTrue(educationProgramDAO.updateEducationProgram(educationProgram));
     }
 }

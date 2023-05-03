@@ -6,7 +6,7 @@ public class Assistance extends Tutorado {
 
     private int assistance_id;
     private int registration_id;
-    private Boolean  asistencia = false;
+    private Boolean asistencia = false;
     private Boolean riesgo = false;
     private CheckBox checkBoxAsistencia;
     private CheckBox checkBoxRiesgo;
@@ -44,6 +44,9 @@ public class Assistance extends Tutorado {
 
     public void setAsistencia(Boolean asistencia) {
         this.asistencia = asistencia;
+        if(asistencia)
+            checkBoxAsistencia.setSelected(true);
+        checkBoxAsistencia.setDisable(true);
     }
 
     public Boolean getRiesgo() {
@@ -58,6 +61,9 @@ public class Assistance extends Tutorado {
 
     public void setRiesgo(Boolean riesgo) {
         this.riesgo = riesgo;
+        if(riesgo)
+            checkBoxRiesgo.setSelected(true);
+        checkBoxRiesgo.setDisable(true);
     }
 
     public CheckBox getCheckBoxAsistencia() {
