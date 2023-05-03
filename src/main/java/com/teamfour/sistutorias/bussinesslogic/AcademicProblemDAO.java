@@ -38,7 +38,6 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
     public ArrayList<AcademicProblem> consultAcademicProblemsByTutor(int idTutorship, int idProgram, String uvAcount) throws SQLException {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        int tutorship = idTutorship;
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, r.register_id, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', maternal_surname) as teacher, s.description as solution " +
@@ -52,7 +51,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
                 "LEFT JOIN solution s on s.solution_id = ps.solution_id " +
                 "where r.tutorship_id = ? AND r.email = ? AND r.educative_program_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, tutorship);
+        statement.setInt(1, idTutorship);
         statement.setString(2, uvAcount);
         statement.setInt(3, idProgram);
         ResultSet resultSet = statement.executeQuery();
@@ -92,7 +91,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         int group = academicProblem.getGroup();
         int numberTutorados = academicProblem.getNumberTutorados();
         int register = academicProblem.getRegister();
-        String query = "INSERT INTO academic_problems (title, description, nrc, register_id, numbertutorados) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO academic_problems (title, description, nrc, register_id, number_tutorados) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
             statement.setString(2, description);
@@ -287,18 +286,53 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
-        String query = "SELECT * FROM academic_problems WHERE register_id = ?";
+        String query = "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
+                "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
+                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN ee on ee.ee_id = gp.ee_id " +
+                "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
+                "INNER JOIN person p on p.person_id = t.person_id " +
+                "WHERE ap.register_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, registerId);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             AcademicProblem academicProblem = new AcademicProblem();
-            academicProblem.setIdAcademicProblem(resultSet.getInt("academic_problems_id"));
             academicProblem.setTitle(resultSet.getString("title"));
             academicProblem.setDescription(resultSet.getString("description"));
-            academicProblem.setNumberTutorados(resultSet.getInt("numbertutorados"));
+            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
+            String teachername = resultSet.getString("name") + " " +
+                    resultSet.getString("paternal_surname") + " " +
+                    resultSet.getString("maternal_surname");
+            academicProblem.setTeacher(teachername);
+            academicProblem.setEe(resultSet.getString("eename"));
             academicProblem.setGroup(resultSet.getInt("nrc"));
-            academicProblem.setRegister(resultSet.getInt("register_id"));
+            academicProblems.add(academicProblem);
+        }
+        dataBaseConnection.closeConection();
+        return academicProblems;
+    }
+    /* "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
+                "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
+                "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
+                "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
+                "LEFT JOIN teacher t on t.personal_number = gp.personal_number " +
+                "LEFT JOIN person p on p.person_id = t.person_id " +
+                "WHERE register_id = ?";
+                        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, registerId);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            AcademicProblem academicProblem = new AcademicProblem();
+            academicProblem.setTitle(resultSet.getString("title"));
+            academicProblem.setDescription(resultSet.getString("description"));
+            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
+            String teachername = resultSet.getString("name") + " " +
+                    resultSet.getString("paternal_surname") + " " +
+                    resultSet.getString("maternal_surname");
+            academicProblem.setTeacher(teachername);
+            academicProblem.setEe(resultSet.getString("eename"));
+            academicProblem.setGroup(resultSet.getInt("nrc"));
             boolean alreadyRegistered = false;
             for (AcademicProblem academicProblem1 : academicProblems) {
                 if (academicProblem1.getIdAcademicProblem() == academicProblem.getIdAcademicProblem()) {
@@ -308,8 +342,81 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             }
             if (!alreadyRegistered) {
                 academicProblems.add(academicProblem);
-            }
-        }
-        return academicProblems;
+            }*/
+
+    @Override
+    public AcademicProblem getAcademicProblemById(int academicProblemId) throws SQLException {
+        AcademicProblem academicProblem = new AcademicProblem();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+                "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, " +
+                "pd.start, pd.end " +
+                "FROM academic_problems ap " +
+                "INNER JOIN register r on ap.register_id = r.register_id " +
+                "INNER JOIN tutorship ts on ts.tutorship_id = r.tutorship_id " +
+                "INNER JOIN period pd on pd.period_id = ts.period_id " +
+                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN ee on ee.ee_id = gp.ee_id " +
+                "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
+                "INNER JOIN person p on p.person_id = t.person_id " +
+                "WHERE ap.academic_problems_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, academicProblemId);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next())
+            academicProblem = getAcademicProblemWithPeriod(resultSet);
+        dataBaseConnection.closeConection();
+        return academicProblem;
     }
+
+    @Override
+    public String getSolutionById(int solutionId) throws SQLException {
+        String solution = "";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT s.description FROM solution s " +
+                "WHERE solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, solutionId);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next())
+            solution = resultSet.getString("description");
+        dataBaseConnection.closeConection();
+        return solution;
+    }
+
+    @Override
+    public int updateSolution(int solutionId, String solution) throws SQLException {
+        int solutionUpdated = 0;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "UPDATE solution " +
+                "SET description = ? " +
+                "WHERE solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, solution);
+        statement.setInt(2, solutionId);
+        solutionUpdated = statement.executeUpdate();
+        dataBaseConnection.closeConection();
+        return solutionUpdated;
+    }
+
+    @Override
+    public boolean unlinkSolutionToProblems(int academicProblemId, int solutionId) throws SQLException {
+        boolean unlinkedSolution = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM problem_solution " +
+                "WHERE academic_problem_id = ? && solution_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, academicProblemId);
+        statement.setInt(2, solutionId);
+        if(statement.executeUpdate() != 0)
+            unlinkedSolution = true;
+        dataBaseConnection.closeConection();
+        return unlinkedSolution;
+    }
+
+
 }

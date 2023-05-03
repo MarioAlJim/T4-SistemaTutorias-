@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -52,6 +53,7 @@ public class WindowManagement {
         stage.setTitle(title);
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.getIcons().add(new Image(WindowManagement.class.getResourceAsStream("images/Flor_uv.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
     }

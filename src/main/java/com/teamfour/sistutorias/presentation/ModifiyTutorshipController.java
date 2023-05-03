@@ -1,54 +1,54 @@
 package com.teamfour.sistutorias.presentation;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 
-public class ModifiyTutorshipController implements Initializable {
-    @javafx.fxml.FXML
+public class ModifiyTutorshipController implements Initializable
+{
+    @FXML
     private Button cancelButton;
-    @javafx.fxml.FXML
+    @FXML
     private Button addButton;
-    @javafx.fxml.FXML
+    @FXML
     private Label periodLabel;
-    @javafx.fxml.FXML
+    @FXML
     private Label firstSessionLabel;
-    @javafx.fxml.FXML
+    @FXML
     private Label endFirstSessionLabel;
-    @javafx.fxml.FXML
+    @FXML
     private Label instructionsLabel;
-    @javafx.fxml.FXML
+    @FXML
     private DatePicker firstDatePicker;
-    @javafx.fxml.FXML
+    @FXML
     private DatePicker endFirstDatePicker;
-    @javafx.fxml.FXML
+    @FXML
     private Label secondSessionLabel;
-    @javafx.fxml.FXML
+    @FXML
     private Label endSecondSessionLabel;
-    @javafx.fxml.FXML
+    @FXML
     private DatePicker secondDatePicker;
-    @javafx.fxml.FXML
+    @FXML
     private DatePicker endSecondDatePicker;
-    @javafx.fxml.FXML
+    @FXML
     private Label thirdSessionLabel;
-    @javafx.fxml.FXML
+    @FXML
     private Label endThirdSessionLabel;
-    @javafx.fxml.FXML
+    @FXML
     private DatePicker thirdDatePicker;
-    @javafx.fxml.FXML
+    @FXML
     private DatePicker endThirdDatePicker;
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox cbPeriod;
+
+    @FXML
     public void cancelAction(ActionEvent actionEvent) {
-        WindowManagement.closeWindow(actionEvent);
     }
 
+    @FXML
     public void modifyAction(ActionEvent actionEvent) {
     }
 

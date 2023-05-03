@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Locale;
 
@@ -16,8 +16,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
-        scene = new Scene(loadFXML("TeachersAdministration"));
-
+        scene = new Scene(loadFXML("Login"));
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("images/Flor_uv.png")));
         stage.setScene(scene);
         stage.show();
     }
@@ -32,8 +32,5 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
-    }
-
+        launch();}
 }
-

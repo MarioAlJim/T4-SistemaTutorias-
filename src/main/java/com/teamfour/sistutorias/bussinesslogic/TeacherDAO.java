@@ -13,7 +13,7 @@ public class TeacherDAO implements ITeacherDAO {
     @Override
     public ArrayList<Teacher> getTeachersByProgram(int idProgram) throws SQLException {
         ArrayList<Teacher> teachers = new ArrayList<>();
-        String query = "SELECT DISTINCT t.personal_number, p.name, p.paternal_surname, p.maternal_surname FROM group_program gp " +
+        String query = "SELECT DISTINCT p.person_id, t.personal_number, p.name, p.paternal_surname, p.maternal_surname FROM group_program gp " +
                 "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
                 "INNER JOIN person p ON P.person_id = T.person_id " +
                 "WHERE gp.program_id = ?";
@@ -65,35 +65,94 @@ public class TeacherDAO implements ITeacherDAO {
 
     @Override
     public int registerTeacher(Teacher teacher) throws SQLException {
-        int result = 0;
-        String queryPerson = "INSERT INTO person (name, paternal_surname, maternal_surname) VALUES (?,?,?);";
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();
-        PreparedStatement statementPerson = connection.prepareStatement(queryPerson);
-        statementPerson.setString(1, teacher.getName());
-        statementPerson.setString(2, teacher.getPaternalSurname());
-        statementPerson.setString(3, teacher.getMaternalSurname());
-        result = statementPerson.executeUpdate();
-
-        if (result != 0) {
-            String queryGetPerson = "SELECT person.person_id FROM person WHERE name = ? AND paternal_surname = ? AND maternal_surname = ?";
-            PreparedStatement getPerson = connection.prepareStatement(queryGetPerson);
-            getPerson.setString(1, teacher.getName());
-            getPerson.setString(2, teacher.getPaternalSurname());
-            getPerson.setString(3, teacher.getMaternalSurname());
-            ResultSet resultSet = getPerson.executeQuery();
-            if (resultSet.next()) {
-                int person_id;
-                do {
-                    person_id = resultSet.getInt("person_id");
-                }while (resultSet.next());
-                String queryNewTeacher = "INSERT teacher (personal_number, person_id) VALUES (?, ?);";
-                PreparedStatement statementNewTeacher = connection.prepareStatement(queryNewTeacher);
-                statementNewTeacher.setInt(1, teacher.getPersonalNumber());
-                statementNewTeacher.setInt(2, person_id);
-                result = statementNewTeacher.executeUpdate();
+        int result = -1;
+        if (!duplicatedTeacher(teacher.getPersonalNumber())) {
+            String queryPerson = "INSERT INTO person (name, paternal_surname, maternal_surname) VALUES (?,?,?);";
+            DataBaseConnection dataBaseConnection = new DataBaseConnection();
+            Connection connection = dataBaseConnection.getConnection();
+            PreparedStatement statementPerson = connection.prepareStatement(queryPerson);
+            statementPerson.setString(1, teacher.getName());
+            statementPerson.setString(2, teacher.getPaternalSurname());
+            statementPerson.setString(3, teacher.getMaternalSurname());
+            result = statementPerson.executeUpdate();
+            if (result != 0) {
+                String queryGetPerson = "SELECT person.person_id FROM person WHERE name = ? AND paternal_surname = ? AND maternal_surname = ?";
+                PreparedStatement getPerson = connection.prepareStatement(queryGetPerson);
+                getPerson.setString(1, teacher.getName());
+                getPerson.setString(2, teacher.getPaternalSurname());
+                getPerson.setString(3, teacher.getMaternalSurname());
+                ResultSet resultSet = getPerson.executeQuery();
+                if (resultSet.next()) {
+                    int person_id;
+                    do {
+                        person_id = resultSet.getInt("person_id");
+                    }while (resultSet.next());
+                    String queryNewTeacher = "INSERT teacher (personal_number, person_id) VALUES (?, ?);";
+                    PreparedStatement statementNewTeacher = connection.prepareStatement(queryNewTeacher);
+                    statementNewTeacher.setInt(1, teacher.getPersonalNumber());
+                    statementNewTeacher.setInt(2, person_id);
+                    result = statementNewTeacher.executeUpdate();
+                }
             }
+            dataBaseConnection.closeConection();
         }
         return result;
+    }
+
+    @Override
+    public int modifyTeacher(Teacher updateTeacher, int oldPersonalNumber) throws SQLException {
+        int result = 0;
+        if ((oldPersonalNumber == updateTeacher.getPersonalNumber()) || (!duplicatedTeacher(updateTeacher.getPersonalNumber()))) {
+            String queryPerson = "UPDATE person SET name = ?, paternal_surname = ?, maternal_surname= ? WHERE (person_id = ?);";
+            String queryTeacher = "UPDATE teacher SET personal_number = ? WHERE (personal_number = ?);";
+            DataBaseConnection dataBaseConnection = new DataBaseConnection();
+            Connection connection = dataBaseConnection.getConnection();
+            PreparedStatement statementPerson = connection.prepareStatement(queryPerson);
+            statementPerson.setString(1, updateTeacher.getName());
+            statementPerson.setString(2, updateTeacher.getPaternalSurname());
+            statementPerson.setString(3, updateTeacher.getMaternalSurname());
+            statementPerson.setInt(4, updateTeacher.getIdPerson());
+            PreparedStatement statementTeacher = connection.prepareStatement(queryTeacher);
+            statementTeacher.setInt(1, updateTeacher.getPersonalNumber());
+            statementTeacher.setInt(2, oldPersonalNumber);
+            result += statementPerson.executeUpdate();
+            result += statementTeacher.executeUpdate();
+            dataBaseConnection.closeConection();
+        }
+        return result;
+    }
+
+    public int deleteTeacher(int personalNumber, int person_id) throws SQLException {
+        int result = 0;
+        String queryDeleteTeacher = "DELETE FROM teacher WHERE (personal_number = ?);";
+        String queryDeletePerson = "DELETE FROM person WHERE (person_id = ?);";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statementTeacher = connection.prepareStatement(queryDeleteTeacher);
+        statementTeacher.setInt(1, personalNumber);
+        PreparedStatement statementPerson = connection.prepareStatement(queryDeletePerson);
+        statementPerson.setInt(1, person_id);
+        result += statementTeacher.executeUpdate();
+        result += statementPerson.executeUpdate();
+        return result;
+    }
+
+    public boolean duplicatedTeacher(int personal_number) throws SQLException {
+        boolean duplicated = false;
+        int result = 0;
+        String query = "SELECT * FROM sistematutorias.teacher T WHERE T.personal_number = ?;";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, personal_number);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            result++;
+        }
+        if (result > 0) {
+            duplicated = true;
+        }
+        dataBaseConnection.closeConection();
+        return duplicated;
     }
 }

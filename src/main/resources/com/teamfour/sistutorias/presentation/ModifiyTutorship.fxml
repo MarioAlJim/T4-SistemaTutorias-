@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ModifiyTutorshipController">
+<AnchorPane prefHeight="400.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ModifiyTutorshipController">
     <children>
         <Button fx:id="cancelButton" layoutX="467.0" layoutY="350.0" mnemonicParsing="false" onAction="#cancelAction" text="Cancelar" />
         <Button fx:id="addButton" layoutX="534.0" layoutY="350.0" mnemonicParsing="false" onAction="#modifyAction" style="-fx-background-color: #A5C9FF;" text="Modificar" />

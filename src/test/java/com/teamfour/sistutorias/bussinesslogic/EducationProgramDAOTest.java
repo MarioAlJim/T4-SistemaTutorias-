@@ -48,6 +48,13 @@ class EducationProgramDAOTest {
     @Test
     public void register() throws SQLException {
         educationProgram.setName("Ingenieria de software");
-        assertTrue(educationProgramDAO.register(educationProgram));
+        assertTrue(educationProgramDAO.register(educationProgram) != -1);
+    }
+
+    @Test
+    public void updateEducationProgram() throws SQLException {
+        educationProgram.setIdEducationProgram(1);
+        educationProgram.setName("Ingenieria de Software");
+        assertTrue(educationProgramDAO.updateEducationProgram(educationProgram));
     }
 }

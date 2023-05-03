@@ -5,6 +5,7 @@ public class Tutorado extends Person{
     private String fullName;
     private int programId;
     private int tutor_tutorado_id;
+    private String educativeProgram;
 
     public Tutorado(String registrationNumber, String name, String paternalSurname, String maternalSurname, int programId) {
         this.registrationNumber = registrationNumber;
@@ -49,5 +50,13 @@ public class Tutorado extends Person{
 
     public void setTutor_tutorado_id(int tutor_tutorado_id) {
         this.tutor_tutorado_id = tutor_tutorado_id;
+    }
+
+    public void setEducativeProgram(String educativeProgram) {
+        this.educativeProgram = educativeProgram;
+    }
+
+    public String getEducativeProgram() {
+        return educativeProgram;
     }
 }

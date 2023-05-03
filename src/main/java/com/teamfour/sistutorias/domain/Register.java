@@ -10,6 +10,7 @@ public class Register {
     }
 
     public Register(String email, int tutorship_id, int educative_program_id) {
+        this.register_id = 0;
         this.email = email;
         this.tutorship_id = tutorship_id;
         this.educative_program_id = educative_program_id;
