@@ -93,6 +93,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
                 rolePrograms.add(roleProgram);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return rolePrograms;
     }
 

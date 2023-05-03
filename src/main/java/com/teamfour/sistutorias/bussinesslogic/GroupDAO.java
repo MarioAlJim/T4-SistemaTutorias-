@@ -84,6 +84,7 @@ public class GroupDAO implements IGroupDAO {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, nrc);
         result = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return result;
     }
 
