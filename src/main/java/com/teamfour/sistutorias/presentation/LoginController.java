@@ -46,18 +46,18 @@ public class LoginController implements Initializable {
     }
 
     private void invoqueWindow() {
-        int tipeUser = 1;
+        int typeUser = 1;
         ArrayList<RoleProgram> roles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
         for (RoleProgram roleProgram : roles) {
             if (roleProgram.getRole() == 4) {
-                tipeUser = 2;
+                typeUser = 2;
             }
         }
         closeAux();
         try {
-            switch (tipeUser) {
+            switch (typeUser) {
                 case 2:
-                    WindowManagement.changeScene("Menu de administrador", getClass().getResource("AdminMenuAdminMenu.fxml"));
+                    WindowManagement.changeScene("Menu de administrador", getClass().getResource("AdminMenu.fxml"));
                     break;
                 case 1:
                     WindowManagement.changeScene("Menu principal", getClass().getResource("MainMenu.fxml"));
@@ -73,9 +73,9 @@ public class LoginController implements Initializable {
     private void signUp(ActionEvent event) {
         String uvAcount = txtUser.getText().trim().replaceAll(" ","");
         String password = txtPassword.getText();
-        if(uvAcount.isEmpty() || uvAcount.length() > 15){
+        if(uvAcount.isEmpty() || uvAcount.length() > 50){
             lblInvalidUser.setVisible(true);
-        }else if(password.isEmpty() || password.length() > 15){
+        }else if(password.isEmpty() || password.length() > 50){
             lblInvalidPassword.setVisible(true);
         }else {
             lblInvalidPassword.setVisible(false);

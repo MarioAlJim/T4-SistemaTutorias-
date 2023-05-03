@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import com.teamfour.sistutorias.dataaccess.SHA512;
 
 public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     @Override
@@ -51,7 +52,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, uvAcount);
-        statement.setString(2, password);
+        statement.setString(2, SHA512.getSHA512(password));
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             String email = resultSet.getString("email");
@@ -62,10 +63,8 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
             user.setMaternalSurname(maternalSurname);
             user.setPaternalSurname(paternalSurname);
             user.setEmail(email);
-
             ArrayList<RoleProgram> rolePrograms;
             rolePrograms = getRoles(email);
-
             user.setRolesPrograms(rolePrograms);
         }
         dataBaseConnection.closeConection();

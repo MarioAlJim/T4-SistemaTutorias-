@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -209,6 +210,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             modifySolutionController.setPreviouslySelectedAcademicProblems(selectedSolution.getRelatedAcademicProblems());
             modifySolutionController.setSolution(selectedSolution.getIdSolution());
             modifySolutionController.addSelectedElements();
+            stage.getIcons().add(new Image(WindowManagement.class.getResourceAsStream("images/Flor_uv.png")));
             stage.showAndWait();
 
             //Reload data

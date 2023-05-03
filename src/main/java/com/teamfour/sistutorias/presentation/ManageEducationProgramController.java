@@ -115,7 +115,7 @@ public class ManageEducationProgramController implements Initializable {
                 if(educationProgramUpdated) {
                     WindowManagement.showAlert("Programa educativo actualizado",
                             "El programa educativo se ha actualizado exitosamente",
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
                     selectedEducationProgram.setName(newName);
                     this.tfNameEducationProgram.clear();
                     this.tvEducationPrograms.refresh();
@@ -169,7 +169,7 @@ public class ManageEducationProgramController implements Initializable {
                         this.tfNameEducationProgram.clear();
                         WindowManagement.showAlert("Programa educativo registrado exitosamente",
                                 "El programa educativo ha sido registrado exitosamente",
-                                Alert.AlertType.CONFIRMATION);
+                                Alert.AlertType.INFORMATION);
                     } else {
                         WindowManagement.showAlert("Programa educativo no registrado",
                                 "El programa educativo no se ha registrado",
