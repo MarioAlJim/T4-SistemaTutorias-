@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.util.ResourceBundle;
 public class MainMenuController implements Initializable {
     @FXML
     private ComboBox<EducationProgram> cbEducationPrograms;
+    @FXML
+    private TabPane tpRoles;
     @FXML
     private Tab tabTutor;
     @FXML
@@ -80,24 +83,30 @@ public class MainMenuController implements Initializable {
             tabTutor.setDisable(true);
             tabCoordinator.setDisable(true);
             tabJefe.setDisable(true);
-            programSelected = (EducationProgram) valorNuevo;
+            programSelected = (EducationProgram) valorNuevo;;
+
             for (RoleProgram roleProgram : availableRoles) {
                 if (roleProgram.getEducationProgram().getName().equals(programSelected.getName())) {
                     switch (roleProgram.getRole()) {
                         case 1:
                             tabTutor.setDisable(false);
-                            tabTutor.isSelected();
                             break;
                         case 2:
                             tabCoordinator.setDisable(false);
-                            tabCoordinator.isSelected();
                             break;
                         case 3:
                             tabJefe.setDisable(false);
-                            tabJefe.isSelected();
                             break;
                     }
                 }
+            }
+
+            if(!tabTutor.isDisable()) {
+                tpRoles.getSelectionModel().select(tabTutor);
+            } else if(!tabCoordinator.isDisable()) {
+                tpRoles.getSelectionModel().select(tabCoordinator);
+            } else if(!tabJefe.isDisable()) {
+                tpRoles.getSelectionModel().select(tabJefe);
             }
         });
         cbEducationPrograms.getSelectionModel().selectFirst();
