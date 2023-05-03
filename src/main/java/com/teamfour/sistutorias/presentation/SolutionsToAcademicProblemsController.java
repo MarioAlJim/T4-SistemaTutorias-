@@ -184,8 +184,10 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
         tvAcademicProblems.setItems(filteredAcademicProblems);
 
-        if(this.tvAcademicProblems.getSelectionModel().getSelectedItem() == null)
+        if(this.tvAcademicProblems.getSelectionModel().getSelectedItem() == null) {
             disableButtons(true);
+            this.taSolution.clear();
+        }
     }
 
     @FXML
@@ -235,7 +237,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                     this.tvAcademicProblems.getItems().remove(selectedSolution);
                     WindowManagement.showAlert("Solución eliminada",
                             "La solución ha sido eliminada exitosamente",
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
+                    disableButtons(true);
                 } else {
                     WindowManagement.showAlert("Solución no eliminada",
                             "La solución no ha sido eliminada",

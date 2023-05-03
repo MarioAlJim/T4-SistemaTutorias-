@@ -43,10 +43,10 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     @Override
     public UserRoleProgram searchUser(String uvAcount, String password) throws SQLException {
         UserRoleProgram user = new UserRoleProgram();
-        String query = ("SELECT U.email, p.name, p.paternal_surname, p.maternal_surname " +
+        String query = ("SELECT U.email, P.name, P.paternal_surname, P.maternal_surname " +
                 "FROM user U " +
                 "INNER JOIN person P ON P.person_id = U.person_id " +
-                "WHERE u.email = ? AND u.password = ?");
+                "WHERE U.email = ? AND U.password = ?");
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
