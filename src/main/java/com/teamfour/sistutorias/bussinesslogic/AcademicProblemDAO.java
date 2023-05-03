@@ -286,7 +286,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
-        String query = "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
+        String query = "SELECT ap.title, ap.description, ap.numbertutorados, p.name, p.paternal_surname, " +
                 "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
                 "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
                 "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
@@ -300,7 +300,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
             AcademicProblem academicProblem = new AcademicProblem();
             academicProblem.setTitle(resultSet.getString("title"));
             academicProblem.setDescription(resultSet.getString("description"));
-            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
+            academicProblem.setNumberTutorados(resultSet.getInt("numbertutorados"));
             String teachername = resultSet.getString("name") + " " +
                     resultSet.getString("paternal_surname") + " " +
                     resultSet.getString("maternal_surname");
