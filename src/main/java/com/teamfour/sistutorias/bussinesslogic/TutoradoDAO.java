@@ -26,6 +26,7 @@ public class TutoradoDAO implements ITutoradoDAO{
             statement.setInt(3, tutorado.getProgramId());
             insertedFiles = statement.executeUpdate();
         }
+        db.closeConection();
         return insertedFiles;
     }
 
@@ -44,6 +45,7 @@ public class TutoradoDAO implements ITutoradoDAO{
             statement.setInt(3, personId);
             updatedRows = statement.executeUpdate();
         }
+        db.closeConection();
         return updatedRows;
     }
 
@@ -80,6 +82,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                     tutorados.add(tutorado);
                 }
             }
+        db.closeConection();
         return tutorados;
     }
 
@@ -110,6 +113,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorados;
     }
 
@@ -171,6 +175,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorados;
     }
 
@@ -203,6 +208,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorados;
     }
 }

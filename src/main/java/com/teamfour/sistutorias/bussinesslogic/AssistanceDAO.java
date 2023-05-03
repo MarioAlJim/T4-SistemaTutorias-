@@ -26,6 +26,7 @@ public class AssistanceDAO implements IAssistanceDAO {
             statement.setBoolean(3, risk);
             statement.setInt(4, register);
             insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -67,6 +68,7 @@ public class AssistanceDAO implements IAssistanceDAO {
                 tutoradosAsistencia.add(tutorado);
             }
         }
+        db.closeConection();
         return tutoradosAsistencia;
     }
 
@@ -92,6 +94,7 @@ public class AssistanceDAO implements IAssistanceDAO {
             tutorado.setRiesgo(resultSet.getBoolean("risk"));
             tutoradosAsistencia.add(tutorado);
         }
+        db.closeConection();
         return tutoradosAsistencia;
     }
 }
