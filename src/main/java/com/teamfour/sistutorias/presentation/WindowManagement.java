@@ -53,7 +53,7 @@ public class WindowManagement {
         stage.setTitle(title);
         stage.setScene(scene);
         stage.setResizable(false);
-        //stage.getIcons().add(new Image(WindowManagement.class.getResourceAsStream("images/Flor_uv.png")));
+        stage.getIcons().add(new Image(WindowManagement.class.getResourceAsStream("images/Flor_uv.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
     }
