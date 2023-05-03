@@ -32,8 +32,6 @@ public class LoginController implements Initializable {
     @FXML
     private Label lblInvalidPassword;
     @FXML
-    private Label lblPassword;
-    @FXML
     private Button btnSignIn;
     @FXML
     private Button btnExit;
@@ -70,7 +68,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void signUp(ActionEvent event) {
+    private void signUp() {
         String uvAcount = txtUser.getText().trim().replaceAll(" ","");
         String password = txtPassword.getText();
         if(uvAcount.isEmpty() || uvAcount.length() > 50){

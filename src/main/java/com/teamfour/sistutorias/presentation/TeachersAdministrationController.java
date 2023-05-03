@@ -72,7 +72,7 @@ public class TeachersAdministrationController implements Initializable {
                 tfName.setText(newTeacher.getName());
                 tfPaternalSurname.setText(newTeacher.getPaternalSurname());
                 tfMaternalSurname.setText(newTeacher.getMaternalSurname());
-                tfNumberPersonal.setText(newTeacher.getPersonalNumber() + "");
+                tfNumberPersonal.setText(String.valueOf(newTeacher.getPersonalNumber()));
                 oldPersonalNumber = newTeacher.getPersonalNumber();
                 btnSaveTeacher.setDisable(true);
                 btnModify.setDisable(false);
@@ -85,21 +85,25 @@ public class TeachersAdministrationController implements Initializable {
     }
 
     private int validateData() {
+        String name = tfName.getText().trim().replaceAll(" +", " ");
+        String paternal = tfPaternalSurname.getText().trim().replaceAll(" +", "");
+        String maternal = tfMaternalSurname.getText().trim().replaceAll(" +", " ");
+        String numberRegister = tfNumberPersonal.getText().trim().replaceAll(" +", "");
         int validData = 0;
-        if(DataValidation.textValidation(tfName.getText())) {
+        if(DataValidation.textValidation(name) && name.length() <50) {
             validData++;
-            newTeacher.setName(tfName.getText());
+            newTeacher.setName(name);
         }
-        if(DataValidation.textValidation(tfMaternalSurname.getText())) {
+        if(DataValidation.textValidation(maternal) && maternal.length() <50) {
             validData++;
-            newTeacher.setMaternalSurname(tfMaternalSurname.getText());
+            newTeacher.setMaternalSurname(maternal);
         }
-        if(DataValidation.textValidation(tfPaternalSurname.getText())){
+        if(DataValidation.textValidation(paternal) && paternal.length() <50){
            validData++;
-           newTeacher.setPaternalSurname(tfPaternalSurname.getText());
+           newTeacher.setPaternalSurname(paternal);
         }
-        if(DataValidation.numberValidation(tfNumberPersonal.getText()) != -1) {
-            newTeacher.setPersonalNumber(DataValidation.numberValidation(tfNumberPersonal.getText()));
+        if(DataValidation.numberValidation(numberRegister) != -1) {
+            newTeacher.setPersonalNumber(DataValidation.numberValidation(numberRegister));
             validData++;
         }
         return validData;
@@ -114,7 +118,6 @@ public class TeachersAdministrationController implements Initializable {
                 WindowManagement.showAlert("Exito", "Docente registrado", Alert.AlertType.INFORMATION);
                 setTeachers();
                 clearForm();
-
             } else {
                 WindowManagement.showAlert("Error", "El docente que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
             }
@@ -134,7 +137,7 @@ public class TeachersAdministrationController implements Initializable {
                 setTeachers();
                 clearForm();
                 lookButtons(true);
-                tvTeacher.refresh();
+                setTeachers();
             } else {
                 WindowManagement.showAlert("Error", "El numero personal que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
             }
@@ -167,7 +170,20 @@ public class TeachersAdministrationController implements Initializable {
     }
 
     private boolean completedForm() {
-        return tfNumberPersonal.getText().isEmpty() || tfName.getText().isEmpty() || tfPaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().isEmpty();
+        boolean complete = true;
+        if (tfNumberPersonal.getText().isEmpty() || tfNumberPersonal.getText().trim().replaceAll(" +", "").length() == 1) {
+            complete = false;
+        }
+        if (tfName.getText().isEmpty() || tfName.getText().trim().replaceAll(" +", "").length() == 1) {
+            complete = false;
+        }
+        if (tfPaternalSurname.getText().isEmpty() || tfPaternalSurname.getText().trim().replaceAll(" +", "").length() == 1) {
+            complete = false;
+        }
+        if (tfMaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().trim().replaceAll(" +", "").length() == 1){
+            complete = false;
+        }
+        return complete;
     }
 
     @Override
@@ -178,45 +194,45 @@ public class TeachersAdministrationController implements Initializable {
     }
 
     @FXML
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    public void saveTeacher(ActionEvent actionEvent) {
+    public void saveTeacher() {
         if (completedForm()) {
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        } else {
             if (validateData() == 4) {
                 newSave();
             } else {
                 WindowManagement.showAlert("Error", "Caracteres invalidos detectados, verifique", Alert.AlertType.INFORMATION);
             }
+        } else {
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    public void modifyTeacher(ActionEvent actionEvent) {
+    public void modifyTeacher() {
         if (completedForm()) {
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        } else {
             if (validateData() == 4) {
                 newModification();
             } else {
-                WindowManagement.showAlert("Error", "Caracteres invalidos detectados, verifique", Alert.AlertType.INFORMATION);
+                WindowManagement.showAlert("Error", "Caracteres invalidos detectados o extencion de campo sobrepasada, verifique", Alert.AlertType.INFORMATION);
             }
+        } else {
+            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    public void cancelModification(ActionEvent actionEvent) {
+    public void cancelModification() {
         clearForm();
         lookButtons(true);
     }
 
     @FXML
-    public void deleteTeacher(ActionEvent actionEvent) {
+    public void deleteTeacher() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación");
