@@ -71,7 +71,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void signUp(ActionEvent event) {
-        String uvAcount = txtUser.getText();
+        String uvAcount = txtUser.getText().trim().replaceAll(" ","");
         String password = txtPassword.getText();
         if(uvAcount.isEmpty() || uvAcount.length() > 15){
             lblInvalidUser.setVisible(true);

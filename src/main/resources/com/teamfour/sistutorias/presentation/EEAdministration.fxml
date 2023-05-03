@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.EEAdministrationController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.EEAdministrationController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="330.0" layoutX="28.0" layoutY="29.0" stroke="#dddddd" strokeType="INSIDE" width="277.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="163.0" layoutX="315.0" layoutY="29.0" stroke="#dddddd" strokeType="INSIDE" width="262.0" />

@@ -39,7 +39,6 @@ public class FillTutorshipReport implements Initializable {
     @FXML
     private TableView<Assistance> tvTutored;
 
-    private User tutor;
     private Tutorship tutorship;
     private Comment comment;
     private ArrayList<AcademicProblem> academicProblems;
@@ -47,10 +46,6 @@ public class FillTutorshipReport implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Remove after testing
-        tutor = new User();
-        tutor.setEmail("test@test.com");
-
         setUpTable();
         loadTutored();
         updatePercentage();
@@ -105,9 +100,9 @@ public class FillTutorshipReport implements Initializable {
     @FXML
     void saveRegister(ActionEvent event) {
         Register register = new Register();
-        register.setEmail(tutor.getEmail());
+        register.setEmail(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
         register.setTutorship_id(tutorship.getIdTutorShip());
-        register.setEducative_program_id(1); //TODO: Change in order to avoid magic numbers
+        register.setEducative_program_id(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
 
         RegisterDAO registerDAO = new RegisterDAO();
         try {
@@ -166,7 +161,7 @@ public class FillTutorshipReport implements Initializable {
     private void loadTutored() {
         AssistanceDAO assistanceDAO = new AssistanceDAO();
         try {
-            ArrayList<Assistance> queryResult = new ArrayList<>(assistanceDAO.getAssistanceTutor(tutor.getEmail()));
+            ArrayList<Assistance> queryResult = new ArrayList<>(assistanceDAO.getAssistanceTutor(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail()));
             if(queryResult != null) {
                 tutorados.addAll(queryResult);
                 tvTutored.getItems().clear();

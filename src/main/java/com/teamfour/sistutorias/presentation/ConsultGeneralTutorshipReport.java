@@ -148,8 +148,15 @@ public class ConsultGeneralTutorshipReport implements Initializable {
                     }
                 }
             }
-            lbTutoredAttendance.setText("Porcentaje de Asistencia: " + (totalAssistances * 100) / totalStudents + "%");
-            lbTutoredRisk.setText("Porcentaje en Riesgo: " + (totalRisks * 100) / totalStudents + "%");
+            if (totalStudents != 0){
+                lbTutoredAttendance.setText("Porcentaje de Asistencia: " + (totalAssistances * 100) / totalStudents + "%");
+                lbTutoredRisk.setText("Porcentaje en Riesgo: " + (totalRisks * 100) / totalStudents + "%");
+            } else {
+                lbTutoredAttendance.setText("Porcentaje de Asistencia: 0%");
+                lbTutoredRisk.setText("Porcentaje en Riesgo: 0%");
+            }
+
+
 
             generateComments();
             tvAcademicProblems.setItems(FXCollections.observableArrayList(academicProblems));

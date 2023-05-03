@@ -31,7 +31,6 @@ public class RegisterAcademicProblemController implements Initializable{
     private Button btnSave;
     @FXML
     private Button btnCancel;
-    Messages alerts = new Messages();
     private Group ees;
     private ArrayList<AcademicProblem> listAcademicProblems;
 
@@ -82,7 +81,7 @@ public class RegisterAcademicProblemController implements Initializable{
                     educativeExperiencesObservableList.add(ee);
                 }
             } else {
-                alerts.mostrarAlertaNoHayExperienciasRegistradas();
+                WindowManagement.showAlert("Atencion", "No hay experiencias registradas", Alert.AlertType.INFORMATION);
             }
             cbEe.setItems(educativeExperiencesObservableList);
             cbEe.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {

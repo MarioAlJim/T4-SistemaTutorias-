@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="231.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.TutoradoWindow">
+   <children>
+      <Label layoutX="16.0" layoutY="16.0" text="Matricula:" />
+      <Label layoutX="14.0" layoutY="48.0" text="Nombre:" />
+      <Label layoutX="14.0" layoutY="78.0" text="Apellido Paterno:" />
+      <Label layoutX="13.0" layoutY="109.0" text="Apellido Materno:" />
+      <TextField fx:id="tfMatricula" layoutX="142.0" layoutY="10.0" prefHeight="30.0" prefWidth="427.0" />
+      <TextField fx:id="tfName" layoutX="141.0" layoutY="43.0" prefHeight="29.0" prefWidth="428.0" />
+      <TextField fx:id="tfPaternalSurname" layoutX="141.0" layoutY="73.0" prefHeight="29.0" prefWidth="427.0" />
+      <TextField fx:id="tfMaternalSurname" layoutX="141.0" layoutY="103.0" prefHeight="30.0" prefWidth="427.0" />
+      <ComboBox fx:id="cbEducativeProgram" layoutX="145.0" layoutY="143.0" prefHeight="29.0" prefWidth="426.0" />
+      <Label layoutX="16.0" layoutY="148.0" text="Programa Educativo:" />
+      <Button layoutX="505.0" layoutY="184.0" mnemonicParsing="false" onAction="#closeWindow" text="Cancelar" />
+      <Button layoutX="425.0" layoutY="184.0" mnemonicParsing="false" onAction="#saveChanges" text="Guardar" />
+   </children>
+</AnchorPane>

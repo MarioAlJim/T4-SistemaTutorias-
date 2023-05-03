@@ -213,6 +213,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             this.tableSolutions.clear();
             this.taSolution.clear();
             populateTable();
+            disableButtons(true);
         } catch (SQLException sqlException) {
             WindowManagement.connectionLostMessage();
             WindowManagement.closeWindow(event);

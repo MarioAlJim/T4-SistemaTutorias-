@@ -13,4 +13,5 @@ public interface IRegisterDAO {
     public int update(Register register) throws SQLException;
     public int delete(Register register) throws SQLException;
     public List<Register> getTutorshipRegister(int tutorshipId) throws SQLException;
+    public Register getSpecificRegister(Register register) throws SQLException;
 }
