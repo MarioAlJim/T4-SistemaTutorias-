@@ -37,6 +37,7 @@ public class TutoradoWindow implements Initializable {
 
     private Tutorado tutorado;
     private boolean isEditing;
+    private ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,7 +57,14 @@ public class TutoradoWindow implements Initializable {
             tutorado.setPaternalSurname(tfPaternalSurname.getText());
             tutorado.setMaternalSurname(tfMaternalSurname.getText());
             tutorado.setRegistrationNumber(tfMatricula.getText());
-            tutorado.setProgramId(1); //Provisional until a better solution is found
+
+            for(EducationProgram educationProgram : this.educationPrograms) {
+                if(educationProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
+                    tutorado.setProgramId(educationProgram.getIdEducationProgram());
+                    break;
+                }
+            }
+
             if (isEditing) {
                 updateTutorado();
             } else {
@@ -113,7 +121,7 @@ public class TutoradoWindow implements Initializable {
     private void loadEducativePrograms() {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
         try {
-            ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
+            educationPrograms.addAll(educationProgramDAO.getEducationPrograms());
             for (EducationProgram educationProgram : educationPrograms) {
                 cbEducativeProgram.getItems().add(educationProgram.getName());
             }

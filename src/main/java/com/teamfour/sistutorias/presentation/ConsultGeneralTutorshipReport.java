@@ -85,6 +85,8 @@ public class ConsultGeneralTutorshipReport implements Initializable {
             periods.addAll(periodDAO.getPeriods());
             cbPeriod.setItems(periods);
             cbPeriod.addEventHandler(ActionEvent.ACTION, event -> {
+                tvAcademicProblems.getItems().clear();
+                tvGeneralComment.getItems().clear();
                 cbTutorship.setDisable(false);
                 LoadTutorships();
             });
@@ -106,6 +108,8 @@ public class ConsultGeneralTutorshipReport implements Initializable {
             }
             cbTutorship.setItems(tutorships);
             cbTutorship.addEventHandler(ActionEvent.ACTION, event -> {
+                tvAcademicProblems.getItems().clear();
+                tvGeneralComment.getItems().clear();
                 LoadTutorshipReports();
                 lbTutorshipDate.setText("Fecha de Tutoria: " +
                         cbTutorship.getSelectionModel().getSelectedItem().getStart());

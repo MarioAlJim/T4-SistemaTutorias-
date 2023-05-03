@@ -26,6 +26,7 @@ public class TutoradoDAO implements ITutoradoDAO{
             statement.setInt(3, tutorado.getProgramId());
             insertedFiles = statement.executeUpdate();
         }
+        db.closeConection();
         return insertedFiles;
     }
 
@@ -36,14 +37,13 @@ public class TutoradoDAO implements ITutoradoDAO{
         Connection connection = db.getConnection();
         PersonDAO personDAO = new PersonDAO();
         int personId = personDAO.updatePerson(tutorado);
-        if (personId > 0) {
-            String query = "UPDATE tutorado SET registration_number = ?, program_id = ? WHERE person_id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, tutorado.getRegistrationNumber());
-            statement.setInt(2, tutorado.getProgramId());
-            statement.setInt(3, personId);
-            updatedRows = statement.executeUpdate();
-        }
+        String query = "UPDATE tutorado SET registration_number = ?, program_id = ? WHERE person_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, tutorado.getRegistrationNumber());
+        statement.setInt(2, tutorado.getProgramId());
+        statement.setInt(3, tutorado.getIdPerson());
+        updatedRows = statement.executeUpdate();
+        db.closeConection();
         return updatedRows;
     }
 
@@ -80,6 +80,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                     tutorados.add(tutorado);
                 }
             }
+        db.closeConection();
         return tutorados;
     }
 
@@ -110,6 +111,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorados;
     }
 
@@ -171,6 +173,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorados;
     }
 
@@ -203,6 +206,7 @@ public class TutoradoDAO implements ITutoradoDAO{
                 tutorados.add(tutorado);
             } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return tutorados;
     }
 }

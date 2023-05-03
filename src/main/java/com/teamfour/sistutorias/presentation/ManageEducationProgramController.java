@@ -29,7 +29,7 @@ public class ManageEducationProgramController implements Initializable {
     @FXML
     private Button btnModify;
 
-    private final int MAX_CHARS = 45;
+    private final int MAX_CHARS = 100;
     private final ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
 
     @Override
@@ -119,6 +119,8 @@ public class ManageEducationProgramController implements Initializable {
                     selectedEducationProgram.setName(newName);
                     this.tfNameEducationProgram.clear();
                     this.tvEducationPrograms.refresh();
+                    this.tvEducationPrograms.getSelectionModel().clearSelection();
+                    disableButtons(true);
                 } else {
                     WindowManagement.showAlert("Programa educativo no actualizado",
                             "El programa educativo no ha sido actualizado",
@@ -180,5 +182,7 @@ public class ManageEducationProgramController implements Initializable {
                 }
             }
         }
+        this.tvEducationPrograms.getSelectionModel().clearSelection();
+        disableButtons(true);
     }
 }
