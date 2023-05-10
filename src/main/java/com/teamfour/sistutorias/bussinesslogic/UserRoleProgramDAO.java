@@ -23,11 +23,15 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
-        do {
-            tutors.add(getTutor(resultSet));
-        } while (resultSet.next());
-        dataBaseConnection.closeConection();
-        return tutors;
+        if(!resultSet.next()) {
+            throw new SQLException("No se encontraron tutores");
+        } else {
+            do {
+                tutors.add(getTutor(resultSet));
+            } while (resultSet.next());
+            dataBaseConnection.closeConection();
+            return tutors;
+        }
     }
 
     private UserRoleProgram getTutor(ResultSet resultSet) throws SQLException {

@@ -23,6 +23,24 @@ public class PeriodDAO implements IPeriodDAO {
         return periods;
     }
 
+    @Override
+    public Period getCurrentPeriod() throws SQLException {
+        Period currentPeriod = new Period();
+        String query = "SELECT * " +
+                "FROM sistematutorias.period P " +
+                "WHERE CURDATE() " +
+                "BETWEEN P.start AND P.end";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()) {
+            currentPeriod = getPeriod(resultSet);
+        }
+        dataBaseConnection.closeConection();
+        return currentPeriod;
+    }
+
     private Period getPeriod(ResultSet resultSet) throws SQLException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
         Period period = new Period();

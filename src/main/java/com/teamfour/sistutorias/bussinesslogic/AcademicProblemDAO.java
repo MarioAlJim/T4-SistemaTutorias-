@@ -144,14 +144,14 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+        String query = "SELECT ap.academic_problems_id, ap.title, gp.nrc, ap.description, ap.number_tutorados, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, " +
-                "pd.start, pd.end " +
+                "pd.period_id, pd.start, pd.end " +
                 "FROM academic_problems ap " +
                 "INNER JOIN register r on ap.register_id = r.register_id " +
                 "INNER JOIN tutorship ts on ts.tutorship_id = r.tutorship_id " +
                 "INNER JOIN period pd on pd.period_id = ts.period_id " +
-                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN group_program gp on gp.group_id = ap.group_id " +
                 "INNER JOIN ee on ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
                 "INNER JOIN person p on p.person_id = t.person_id " +
@@ -204,14 +204,14 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+        String query = "SELECT ap.academic_problems_id, ap.title, gp.nrc, ap.description, ap.number_tutorados, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, " +
-                "pd.start, pd.end, s.solution_id, s.description AS solution_description " +
+                "pd.period_id, pd.start, pd.end, s.solution_id, s.description AS solution_description " +
                 "FROM academic_problems ap " +
                 "INNER JOIN register r on ap.register_id = r.register_id " +
                 "INNER JOIN tutorship ts on ts.tutorship_id = r.tutorship_id " +
                 "INNER JOIN period pd on pd.period_id = ts.period_id " +
-                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN group_program gp on gp.group_id = ap.group_id " +
                 "INNER JOIN ee on ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
                 "INNER JOIN person p on p.person_id = t.person_id " +
@@ -262,11 +262,13 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
 
     private AcademicProblem getAcademicProblemWithPeriod(ResultSet resultSet) throws SQLException{
         AcademicProblem academicProblem = getAcademicProblem(resultSet);
+        int idPeriod = resultSet.getInt("period_id");
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
         Date start = resultSet.getDate("start");
         String startWithFormat = dateFormat.format(start);
         Date end = resultSet.getDate("end");
         String endWithFormat = dateFormat.format(end);
+        academicProblem.getPeriod().setIdPeriod(idPeriod);
         academicProblem.getPeriod().setStart(startWithFormat);
         academicProblem.getPeriod().setEnd(endWithFormat);
         return academicProblem;
@@ -349,14 +351,14 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         AcademicProblem academicProblem = new AcademicProblem();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
+        String query = "SELECT ap.academic_problems_id, ap.title, gp.nrc, ap.description, ap.number_tutorados, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, " +
-                "pd.start, pd.end " +
+                "pd.period_id, pd.start, pd.end " +
                 "FROM academic_problems ap " +
                 "INNER JOIN register r on ap.register_id = r.register_id " +
                 "INNER JOIN tutorship ts on ts.tutorship_id = r.tutorship_id " +
                 "INNER JOIN period pd on pd.period_id = ts.period_id " +
-                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN group_program gp on gp.group_id = ap.group_id " +
                 "INNER JOIN ee on ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
                 "INNER JOIN person p on p.person_id = t.person_id " +

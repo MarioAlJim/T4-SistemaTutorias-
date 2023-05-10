@@ -2,9 +2,11 @@ package com.teamfour.sistutorias.presentation;
 
 import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
 import com.teamfour.sistutorias.bussinesslogic.EEDAO;
+import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
 import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
 import com.teamfour.sistutorias.domain.AcademicProblem;
 import com.teamfour.sistutorias.domain.EE;
+import com.teamfour.sistutorias.domain.Period;
 import com.teamfour.sistutorias.domain.Teacher;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -33,6 +35,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     @FXML
     private ComboBox<EE> cbEE;
     @FXML
+    private ComboBox<Period> cbPeriod;
+    @FXML
     private TextArea taSolution;
     @FXML
     private TableView<SolutionsTable> tvAcademicProblems;
@@ -48,6 +52,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     private Button btnDelete;
 
     private final ObservableList<SolutionsTable> tableSolutions = FXCollections.observableArrayList();
+    private Period currentPeriod;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,6 +60,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             populateComboBoxes();
             populateTable();
             seeSolutionListener();
+            filterAcademicProblems(new ActionEvent());
             disableButtons(true);
         } catch (SQLException sqlException) {
             WindowManagement.connectionLostMessage();
@@ -99,6 +105,27 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
             @Override
             public EE fromString(String s) {
+                return null;
+            }
+        });
+
+        PeriodDAO periodDAO = new PeriodDAO();
+        ObservableList<Period> periods = FXCollections.observableArrayList();
+        periods.addAll(periodDAO.getPeriods());
+
+        this.currentPeriod = periodDAO.getCurrentPeriod();
+
+        this.cbPeriod.setItems(periods);
+        this.cbPeriod.getSelectionModel().select(currentPeriod);
+
+        this.cbPeriod.setConverter(new StringConverter<Period>() {
+            @Override
+            public String toString(Period period) {
+                return period == null ? null : period.getFullPeriod();
+            }
+
+            @Override
+            public Period fromString(String s) {
                 return null;
             }
         });
@@ -149,7 +176,9 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 AcademicProblem selectedSolutionToAcademicProblem = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
                 String solution = selectedSolutionToAcademicProblem.getSolution();
                 this.taSolution.setText(solution);
-                disableButtons(false);
+                if(selectedSolutionToAcademicProblem.getPeriod().getIdPeriod() == currentPeriod.getIdPeriod()) {
+                    disableButtons(false);
+                }
             }
         });
     }
@@ -160,27 +189,34 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         String selectedTeacherName = selectedTeacher.getFullName().replaceAll("\\s", "");
         EE selectedEE = (EE) this.cbEE.getSelectionModel().getSelectedItem();
         String selectedEEName = selectedEE.getName().replaceAll("\\s", "");
+        Period selectedPeriod = this.cbPeriod.getSelectionModel().getSelectedItem();
 
         ObservableList<SolutionsTable> filteredAcademicProblems = FXCollections.observableArrayList();
 
         if(!selectedTeacherName.isEmpty() && !selectedEEName.isEmpty()) {
             for(SolutionsTable academicProblem : tableSolutions) {
                 if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
-                        && academicProblem.getEe().equals(selectedEE.getName()))
+                        && academicProblem.getEe().equals(selectedEE.getName())
+                        && academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
                     filteredAcademicProblems.add(academicProblem);
             }
         } else if(!selectedTeacherName.isEmpty()) {
             for(SolutionsTable academicProblem : tableSolutions) {
-                if(academicProblem.getTeacher().equals(selectedTeacher.getFullName()))
+                if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
+                        && academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
                     filteredAcademicProblems.add(academicProblem);
             }
         } else if(!selectedEEName.isEmpty()) {
             for(SolutionsTable academicProblem : tableSolutions) {
-                if(academicProblem.getEe().equals(selectedEE.getName()))
+                if(academicProblem.getEe().equals(selectedEE.getName())
+                        && academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
                     filteredAcademicProblems.add(academicProblem);
             }
         } else {
-            filteredAcademicProblems = tableSolutions;
+            for(SolutionsTable academicProblem : tableSolutions) {
+                if(academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
+                    filteredAcademicProblems.add(academicProblem);
+            }
         }
 
         tvAcademicProblems.setItems(filteredAcademicProblems);
