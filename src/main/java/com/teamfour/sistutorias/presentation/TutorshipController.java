@@ -1,31 +1,22 @@
 package com.teamfour.sistutorias.presentation;
 
 import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
-import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
-import com.teamfour.sistutorias.domain.Teacher;
 import javafx.event.ActionEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Callback;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import javafx.util.StringConverter;
 import com.teamfour.sistutorias.bussinesslogic.TutorshipDAO;
 import com.teamfour.sistutorias.domain.Tutorship;
 import com.teamfour.sistutorias.domain.Period;
-
-import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -167,7 +158,7 @@ public class TutorshipController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        setDatePickers();
+        //setDatePickers();
     }
 
     public void setDatePickers() {

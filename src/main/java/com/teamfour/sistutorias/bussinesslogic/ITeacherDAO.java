@@ -14,5 +14,5 @@ public interface ITeacherDAO {
 
     public int modifyTeacher(Teacher newTeacher, int oldPersonalNumber) throws SQLException;
 
-    public int deleteTeacher(int personalNumber, int preson_id) throws SQLException;
+    public int deleteTeacher(int personalNumber) throws SQLException;
 }

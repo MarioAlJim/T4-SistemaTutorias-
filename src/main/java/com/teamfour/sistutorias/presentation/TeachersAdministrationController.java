@@ -8,11 +8,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
-import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.Teacher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -35,9 +33,9 @@ public class TeachersAdministrationController implements Initializable {
     @FXML
     private TableView<Teacher> tvTeacher;
     @FXML
-    private TableColumn tcPersonalNum;
+    private TableColumn<Teacher, Integer> tcPersonalNum;
     @FXML
-    private TableColumn tcName;
+    private TableColumn<Teacher, String> tcName;
     @FXML
     private Label lbl_action;
     @FXML
@@ -46,7 +44,6 @@ public class TeachersAdministrationController implements Initializable {
     private Button btnCancelModification;
     @FXML
     private Button btnDelete;
-    private ObservableList<Teacher> teachersList;
     private Teacher newTeacher = new Teacher();
     private int oldPersonalNumber;
 
@@ -54,8 +51,8 @@ public class TeachersAdministrationController implements Initializable {
         tcName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         tcPersonalNum.setCellValueFactory(new PropertyValueFactory<>("personalNumber"));
         TeacherDAO teacherDAO = new TeacherDAO();
-        ArrayList<Teacher> teachers = new ArrayList<>();
-        this.teachersList = FXCollections.observableArrayList();
+        ArrayList<Teacher> teachers;
+        ObservableList<Teacher> teachersList = FXCollections.observableArrayList();
         try {
             teachers = teacherDAO.getAllTeachers();
             teachersList.addAll(teachers);
@@ -107,44 +104,6 @@ public class TeachersAdministrationController implements Initializable {
             validData++;
         }
         return validData;
-    }
-
-    private void newSave() {
-        int result = 0;
-        TeacherDAO teacherDAO = new TeacherDAO();
-        try {
-            result = teacherDAO.registerTeacher(newTeacher);
-            if(result == 1) {
-                WindowManagement.showAlert("Exito", "Docente registrado", Alert.AlertType.INFORMATION);
-                setTeachers();
-                clearForm();
-            } else {
-                WindowManagement.showAlert("Error", "El docente que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
-            }
-        } catch (SQLException sqlException) {
-            Logger.getLogger(TeachersAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
-            WindowManagement.showAlert("Error", "Error al conectar con la base de datos", Alert.AlertType.INFORMATION);
-        }
-    }
-
-    public void newModification() {
-        TeacherDAO teacherDAO = new TeacherDAO();
-        int result = 0;
-        try {
-            result = teacherDAO.modifyTeacher (newTeacher, oldPersonalNumber);
-            if(result == 2) {
-                WindowManagement.showAlert("Exito", "Docente modificado", Alert.AlertType.INFORMATION);
-                setTeachers();
-                clearForm();
-                lookButtons(true);
-                setTeachers();
-            } else {
-                WindowManagement.showAlert("Error", "El numero personal que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
-            }
-        } catch (SQLException sqlException) {
-            Logger.getLogger(TeachersAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
-            WindowManagement.showAlert("Error", "Error al conectar con la base de datos", Alert.AlertType.INFORMATION);
-        }
     }
 
     private void clearForm(){
@@ -203,7 +162,21 @@ public class TeachersAdministrationController implements Initializable {
     public void saveTeacher() {
         if (completedForm()) {
             if (validateData() == 4) {
-                newSave();
+                int result;
+                TeacherDAO teacherDAO = new TeacherDAO();
+                try {
+                    result = teacherDAO.registerTeacher(newTeacher);
+                    if(result == 1) {
+                        WindowManagement.showAlert("Exito", "Docente registrado", Alert.AlertType.INFORMATION);
+                        setTeachers();
+                        clearForm();
+                    } else {
+                        WindowManagement.showAlert("Error", "El docente que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
+                    }
+                } catch (SQLException sqlException) {
+                    Logger.getLogger(TeachersAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
+                    WindowManagement.showAlert("Error", "Error al conectar con la base de datos", Alert.AlertType.INFORMATION);
+                }
             } else {
                 WindowManagement.showAlert("Error", "Caracteres invalidos detectados, verifique", Alert.AlertType.INFORMATION);
             }
@@ -216,7 +189,23 @@ public class TeachersAdministrationController implements Initializable {
     public void modifyTeacher() {
         if (completedForm()) {
             if (validateData() == 4) {
-                newModification();
+                TeacherDAO teacherDAO = new TeacherDAO();
+                int result = 0;
+                try {
+                    result = teacherDAO.modifyTeacher (newTeacher, oldPersonalNumber);
+                    if(result == 2) {
+                        WindowManagement.showAlert("Exito", "Docente modificado", Alert.AlertType.INFORMATION);
+                        setTeachers();
+                        clearForm();
+                        lookButtons(true);
+                        setTeachers();
+                    } else {
+                        WindowManagement.showAlert("Error", "El numero personal que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
+                    }
+                } catch (SQLException sqlException) {
+                    Logger.getLogger(TeachersAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
+                    WindowManagement.showAlert("Error", "Error al conectar con la base de datos", Alert.AlertType.INFORMATION);
+                }
             } else {
                 WindowManagement.showAlert("Error", "Caracteres invalidos detectados o extencion de campo sobrepasada, verifique", Alert.AlertType.INFORMATION);
             }
@@ -226,23 +215,17 @@ public class TeachersAdministrationController implements Initializable {
     }
 
     @FXML
-    public void cancelModification() {
-        clearForm();
-        lookButtons(true);
-    }
-
-    @FXML
     public void deleteTeacher() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación");
         alert.setContentText("¿Estas seguro de confirmar la acción?");
         Optional<ButtonType> action = alert.showAndWait();
-        if (action.get() == ButtonType.OK) {
+        if (ButtonType.OK == action.get()) {
             int result = 0;
             TeacherDAO teacherDAO = new TeacherDAO();
             try {
-                result = teacherDAO.deleteTeacher(newTeacher.getPersonalNumber(), newTeacher.getIdPerson());
+                result = teacherDAO.deleteTeacher(newTeacher.getPersonalNumber());
                 if (result == 1) {
                     WindowManagement.showAlert("Exito", "El registro se borró con éxito", Alert.AlertType.INFORMATION);
                 }
@@ -254,5 +237,11 @@ public class TeachersAdministrationController implements Initializable {
                 WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
             }
         }
+    }
+
+    @FXML
+    public void cancelModification() {
+        clearForm();
+        lookButtons(true);
     }
 }
