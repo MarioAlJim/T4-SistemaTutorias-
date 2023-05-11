@@ -1,13 +1,7 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
-import com.teamfour.sistutorias.bussinesslogic.EEDAO;
-import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
-import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
-import com.teamfour.sistutorias.domain.AcademicProblem;
-import com.teamfour.sistutorias.domain.EE;
-import com.teamfour.sistutorias.domain.Period;
-import com.teamfour.sistutorias.domain.Teacher;
+import com.teamfour.sistutorias.bussinesslogic.*;
+import com.teamfour.sistutorias.domain.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,8 +44,11 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     private Button btnModify;
     @FXML
     private Button btnDelete;
-
+    private ArrayList<Group> groups = new ArrayList<>();
     private final ObservableList<SolutionsTable> tableSolutions = FXCollections.observableArrayList();
+    private final ObservableList<Period> periods = FXCollections.observableArrayList();
+    private final ObservableList<Teacher> teachers = FXCollections.observableArrayList();
+    private final ObservableList<EE> ees = FXCollections.observableArrayList();
     private Period currentPeriod;
 
     @Override
@@ -73,44 +70,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     }
 
     private void populateComboBoxes() throws SQLException {
-        TeacherDAO teacherDAO = new TeacherDAO();
-        ObservableList<Teacher> teachers = FXCollections.observableArrayList();
-        teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
-        this.cbTeacher.setItems(teachers);
-        this.cbTeacher.getSelectionModel().selectFirst();
-        this.cbTeacher.setConverter(new StringConverter<Teacher>() {
-            @Override
-            public String toString(Teacher teacher) {
-                return teacher == null ? null : teacher.getFullName();
-            }
-
-            @Override
-            public Teacher fromString(String s) {
-                return null;
-            }
-        });
-
-        EEDAO eedao = new EEDAO();
-        ObservableList<EE> ees = FXCollections.observableArrayList();
-        ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
-        this.cbEE.setItems(ees);
-        this.cbEE.getSelectionModel().selectFirst();
-        this.cbEE.setConverter(new StringConverter<EE>() {
-            @Override
-            public String toString(EE ee) {
-                return ee == null ? null : ee.getName();
-            }
-
-            @Override
-            public EE fromString(String s) {
-                return null;
-            }
-        });
-
         PeriodDAO periodDAO = new PeriodDAO();
-        ObservableList<Period> periods = FXCollections.observableArrayList();
+
         periods.addAll(periodDAO.getPeriods());
 
         this.currentPeriod = periodDAO.getCurrentPeriod();
@@ -126,6 +87,48 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
             @Override
             public Period fromString(String s) {
+                return null;
+            }
+        });
+
+        GroupDAO groupDAO = new GroupDAO();
+        this.groups = groupDAO.getGroupsByEducationProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+
+        this.teachers.add(new Teacher());
+        this.ees.add(new EE());
+
+        for(Group group : this.groups) {
+            if(group.getIdPeriod() == this.cbPeriod.getSelectionModel().getSelectedItem().getIdPeriod()) {
+                this.teachers.add(group.getTeacher());
+                this.ees.add(group.getEe());
+            }
+        }
+
+        this.cbTeacher.setItems(this.teachers);
+        this.cbEE.setItems(this.ees);
+        this.cbTeacher.getSelectionModel().selectFirst();
+        this.cbEE.getSelectionModel().selectFirst();
+
+        this.cbTeacher.setConverter(new StringConverter<Teacher>() {
+            @Override
+            public String toString(Teacher teacher) {
+                return teacher == null ? null : teacher.getFullName();
+            }
+
+            @Override
+            public Teacher fromString(String s) {
+                return null;
+            }
+        });
+
+        this.cbEE.setConverter(new StringConverter<EE>() {
+            @Override
+            public String toString(EE ee) {
+                return ee == null ? null : ee.getName();
+            }
+
+            @Override
+            public EE fromString(String s) {
                 return null;
             }
         });
@@ -156,9 +159,9 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
                 idSolution = academicProblem.getIdSolution();
                 positionSolution++;
-                tableSolutions.add(solutionsFromTable);
+                this.tableSolutions.add(solutionsFromTable);
             } else {
-                SolutionsTable solution = tableSolutions.get(positionSolution-1);
+                SolutionsTable solution = this.tableSolutions.get(positionSolution-1);
                 solution.getCbAcademicProblems().getItems().add(academicProblem.getTitle());
                 solution.addRelatedAcademicProblems(academicProblem.getIdAcademicProblem());
             }
@@ -167,7 +170,6 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         this.tcAcademicProblem.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCbAcademicProblems()));
         this.tcTeacher.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTeacher()));
         this.tcEE.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getEe()));
-        this.tvAcademicProblems.setItems(tableSolutions);
     }
 
     private void seeSolutionListener() throws SQLException {
@@ -185,9 +187,9 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     @FXML
     private void filterAcademicProblems(ActionEvent event) {
-        Teacher selectedTeacher = (Teacher) this.cbTeacher.getSelectionModel().getSelectedItem();
+        Teacher selectedTeacher = this.cbTeacher.getSelectionModel().getSelectedItem();
         String selectedTeacherName = selectedTeacher.getFullName().replaceAll("\\s", "");
-        EE selectedEE = (EE) this.cbEE.getSelectionModel().getSelectedItem();
+        EE selectedEE = this.cbEE.getSelectionModel().getSelectedItem();
         String selectedEEName = selectedEE.getName().replaceAll("\\s", "");
         Period selectedPeriod = this.cbPeriod.getSelectionModel().getSelectedItem();
 
@@ -219,7 +221,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             }
         }
 
-        tvAcademicProblems.setItems(filteredAcademicProblems);
+        this.tvAcademicProblems.setItems(filteredAcademicProblems);
 
         if(this.tvAcademicProblems.getSelectionModel().getSelectedItem() == null) {
             disableButtons(true);

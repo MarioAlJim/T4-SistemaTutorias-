@@ -14,4 +14,5 @@ public interface IGroupDAO {
     int deleteGroup(int nrc) throws SQLException;
 
     int modifyGroup(Group newGroup, int newNrc) throws SQLException;
+    public ArrayList<Group> getGroupsByEducationProgram(int idProgram) throws SQLException;
 }
