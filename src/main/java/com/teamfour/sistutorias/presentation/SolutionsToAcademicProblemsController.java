@@ -185,6 +185,26 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         });
     }
 
+    private void updateComboBoxes() {
+        this.cbTeacher.getSelectionModel().selectFirst();
+        this.cbEE.getSelectionModel().selectFirst();
+        this.teachers.removeIf(teacher -> !teacher.getFullName().equals(""));
+        this.ees.removeIf(ee -> !ee.getName().equals(""));
+
+        for(Group group : this.groups) {
+            if(group.getIdPeriod() == this.cbPeriod.getSelectionModel().getSelectedItem().getIdPeriod()) {
+                this.teachers.add(group.getTeacher());
+                this.ees.add(group.getEe());
+            }
+        }
+    }
+
+    @FXML
+    private void filterAcademicProblemsAndUpdateComboBoxes(ActionEvent event) {
+        updateComboBoxes();
+        filterAcademicProblems(event);
+    }
+
     @FXML
     private void filterAcademicProblems(ActionEvent event) {
         Teacher selectedTeacher = this.cbTeacher.getSelectionModel().getSelectedItem();
