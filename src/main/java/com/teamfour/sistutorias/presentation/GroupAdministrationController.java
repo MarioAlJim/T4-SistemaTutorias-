@@ -5,14 +5,9 @@ import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.GroupDAO;
 import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import com.teamfour.sistutorias.domain.EE;
-import com.teamfour.sistutorias.domain.EducationProgram;
-import com.teamfour.sistutorias.domain.Group;
-import com.teamfour.sistutorias.domain.Teacher;
+import com.teamfour.sistutorias.domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
@@ -37,35 +31,33 @@ public class GroupAdministrationController implements Initializable {
     @FXML
     private TableView<Group> tvGroup;
     @FXML
-    private TableColumn tcPersonalNum;
+    private TableColumn<Object, Object> tcPersonalNum;
     @FXML
-    private TableColumn tcName;
+    private TableColumn<Object, Object> tcName;
     @FXML
     private Button btnDeleteGroup;
     @FXML
     private Button btnModifyGroup;
     @FXML
-    private Label lbl_action;
-    @FXML
     private Button btnCancelModification;
     @FXML
     private TableView<Teacher> tvTeacher;
     @FXML
-    private TableColumn tcNameTeacher;
+    private TableColumn<Teacher, String> tcNameTeacher;
     @FXML
     private TableView<EE> tvEE;
     @FXML
-    private TableColumn tcEE;
+    private TableColumn<EE, String> tcEE;
     @FXML
     private TextField tfSelectedEE;
     @FXML
     private TextField tfSelectedTeacher;
     @FXML
-    private ComboBox cbbAcademicProblem;
+    private ComboBox<EducationProgram> cbEducationProgram;
     @FXML
-    private TableColumn tcNrc;
+    private TableColumn<Group, Integer> tcNrc;
     @FXML
-    private TableColumn tcEeG;
+    private TableColumn<Group, String> tcEeG;
     private EducationProgram selectedEducationProgram;
     private Teacher selectedTeacher;
     private EE selectedEe;
@@ -93,7 +85,17 @@ public class GroupAdministrationController implements Initializable {
     }
 
     private boolean completedForm(){
-        return (!tfNRC.getText().isEmpty() && !tfSelectedEE.getText().isEmpty() && !tfSelectedTeacher.getText().isEmpty());
+        boolean complete = true;
+        String nrc = tfNRC.getText().trim().replaceAll(" +","");
+        if(DataValidation.numberValidation(nrc) == -1) {
+            complete = false;
+            WindowManagement.showAlert("Atencion", "El NRC debe ser un numero", Alert.AlertType.INFORMATION);
+        }
+        if(tfSelectedEE.getText().isEmpty() || tfSelectedTeacher.getText().isEmpty()) {
+            complete = false;
+            WindowManagement.showAlert("Error", "Por favor seleccione todos los elementos para el registro", Alert.AlertType.INFORMATION);
+        }
+        return complete;
     }
 
     private void setEducationProgram() {
@@ -106,13 +108,14 @@ public class GroupAdministrationController implements Initializable {
         } catch (SQLException sqlException) {
             Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
         }
-        cbbAcademicProblem.setItems(educationProgramsList);
-        cbbAcademicProblem.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
-            selectedEducationProgram = (EducationProgram) valorNuevo;
+        cbEducationProgram.setItems(educationProgramsList);
+        cbEducationProgram.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
+            selectedEducationProgram = valorNuevo;
+            clearForm();
             setTeachers();
             setEes();
             setGroups();
-            btnSaveGroup.setDisable(false);
+            lockModify(true);
             newGroup.setEducationProgram(selectedEducationProgram);
         });
     }
@@ -167,7 +170,7 @@ public class GroupAdministrationController implements Initializable {
         this.tvTeacher.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 selectedTeacher = this.tvTeacher.getSelectionModel().getSelectedItem();
-                String teachersName = selectedTeacher.getPersonalNumber() + "";
+                String teachersName = String.valueOf(selectedTeacher.getPersonalNumber());
                 this.tfSelectedTeacher.setText(teachersName);
                 newGroup.setTeacher(selectedTeacher);
             }
@@ -178,7 +181,7 @@ public class GroupAdministrationController implements Initializable {
         this.tvEE.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 selectedEe = this.tvEE.getSelectionModel().getSelectedItem();
-                String eesName = selectedEe.getIdEe() + "";
+                String eesName = String.valueOf(selectedEe.getIdEe());
                 this.tfSelectedEE.setText(eesName);
                 newGroup.setEe(selectedEe);
             }
@@ -189,32 +192,32 @@ public class GroupAdministrationController implements Initializable {
         this.tvGroup.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 newGroup = this.tvGroup.getSelectionModel().getSelectedItem();
-                this.tfNRC.setText(newGroup.getNrc() + "");
-                this.tfSelectedEE.setText(newGroup.getEe().getIdEe()+"");
-                this.tfSelectedTeacher.setText(newGroup.getTeacher().getPersonalNumber()+"");
+                this.tfNRC.setText((String.valueOf(newGroup.getNrc())));
+                this.tfSelectedEE.setText(String.valueOf(newGroup.getEe().getIdEe()));
+                this.tfSelectedTeacher.setText(String.valueOf(newGroup.getTeacher().getPersonalNumber()));
                 lockModify(false);
             }
         });
     }
     @FXML
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    public void cancelModification(ActionEvent actionEvent) {
+    public void cancelModification() {
         clearForm();
         lockModify(true);
     }
 
     @FXML
-    public void saveGroups(ActionEvent actionEvent) {
+    public void saveGroups() {
         GroupDAO groupDAO = new GroupDAO();
         int result;
         if (completedForm()) {
             try {
-                newGroup.setNrc(Integer.parseInt(tfNRC.getText()));
+                newGroup.setNrc(Integer.parseInt(tfNRC.getText().trim().replaceAll(" ","")));
                 result = groupDAO.registerGroup(newGroup);
                 if (result == 1) {
                     setGroups();
@@ -226,13 +229,11 @@ public class GroupAdministrationController implements Initializable {
                 Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
                 WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             }
-        } else {
-            WindowManagement.showAlert("Error", "Por favor seleccione todos los elementos para el registro", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    public void deleteGroup(ActionEvent actionEvent) {
+    public void deleteGroup() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación");
@@ -255,12 +256,12 @@ public class GroupAdministrationController implements Initializable {
     }
 
     @FXML
-    public void modifyGroup(ActionEvent actionEvent) {
+    public void modifyGroup() {
         GroupDAO groupDAO = new GroupDAO();
         int result;
         if (completedForm()) {
             try {
-                int newNrc= Integer.parseInt(tfNRC.getText());
+                int newNrc= Integer.parseInt(tfNRC.getText().trim().replaceAll(" +",""));
                 result = groupDAO.modifyGroup(newGroup, newNrc);
                 if (result == 1) {
                     setGroups();
