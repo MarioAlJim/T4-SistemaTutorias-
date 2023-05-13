@@ -1,12 +1,28 @@
 package com.teamfour.sistutorias.domain;
 
 public class Group {
+    int group_id;
     private int nrc;
     private EE ee;
     private Teacher teacher;
     private EducationProgram educationProgram;
     private String teacherName;
     private String experience;
+    private int period;
+
+    public Group() {
+        this.nrc = 0;
+        this.teacherName = "";
+        this.experience = "";
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
 
     public int getNrc() {
         return nrc;
@@ -54,6 +70,14 @@ public class Group {
 
     public void setExperience(String experience) {
         this.experience = experience;
+    }
+
+    public int getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(int group_id) {
+        this.group_id = group_id;
     }
 
     @Override

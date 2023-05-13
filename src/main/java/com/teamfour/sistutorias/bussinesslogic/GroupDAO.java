@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GroupDAO implements IGroupDAO {
 
     @Override
-    public ArrayList<Group> groupsList(int idProgram) throws SQLException {
+    public ArrayList<Group> groupsList(int idProgram, int idPeriod) throws SQLException {
         ArrayList<Group> groups = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -25,9 +25,10 @@ public class GroupDAO implements IGroupDAO {
                 "INNER JOIN ee ON ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
                 "INNER JOIN person p ON p.person_id = t.person_id " +
-                "WHERE gp.program_id = ? ;");
+                "WHERE gp.program_id = ? AND period_id = ? ;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, idProgram);
+        statement.setInt(2, idPeriod);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             do {
@@ -58,10 +59,10 @@ public class GroupDAO implements IGroupDAO {
     @Override
     public int registerGroup(Group newGroup) throws SQLException {
         int result = 0;
-        if (checkAvailability(newGroup.getNrc())) {
+        if (checkAvailability(newGroup)) {
             DataBaseConnection dataBaseConnection = new DataBaseConnection();
             Connection connection = dataBaseConnection.getConnection();
-            String query = "INSERT INTO group_program (nrc, ee_id, personal_number, program_id) VALUES (?,?,?,?);";
+            String query = "INSERT INTO group_program (nrc, ee_id, personal_number, program_id, period_id) VALUES (?,?,?,?,?);";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, newGroup.getNrc());
             statement.setInt(2, newGroup.getEe().getIdEe());
@@ -76,13 +77,13 @@ public class GroupDAO implements IGroupDAO {
     }
 
     @Override
-    public int deleteGroup(int nrc) throws SQLException {
+    public int deleteGroup(int group_id) throws SQLException {
         int result = 0;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "DELETE FROM group_program WHERE nrc = ?;";
+        String query = "UPDATE group_program SET active = 0 WHERE (group_id = ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, nrc);
+        statement.setInt(1, group_id);
         result = statement.executeUpdate();
         dataBaseConnection.closeConection();
         return result;
@@ -91,7 +92,7 @@ public class GroupDAO implements IGroupDAO {
     @Override
     public int modifyGroup(Group newGroup, int newNrc) throws SQLException {
         int result = 0;
-        if ((newGroup.getNrc() == newNrc) || (checkAvailability(newNrc))) {
+        if ((newGroup.getNrc() == newNrc) || (checkAvailability(newGroup))) {
             DataBaseConnection dataBaseConnection = new DataBaseConnection();
             Connection connection = dataBaseConnection.getConnection();
             String query = "UPDATE group_program SET nrc = ?, ee_id = ?, personal_number = ?, program_id = ? WHERE nrc = ?;";
@@ -109,21 +110,22 @@ public class GroupDAO implements IGroupDAO {
         return result;
     }
 
-    public boolean checkAvailability(int nrc) throws SQLException {
+    public boolean checkAvailability(Group newGroup) throws SQLException {
         boolean available = true;
         int result = 0;
-        String query = "SELECT * FROM group_program WHERE nrc = ?";
+        String query = "SELECT * FROM group_program WHERE nrc = ? AND period_id = ?";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, nrc);
+        statement.setInt(1, newGroup.getNrc());
+        statement.setInt(2, newGroup.getPeriod());
         ResultSet resultSet = statement.executeQuery();
+        dataBaseConnection.closeConection();
         if (resultSet.next()) {
             result++;
         }
         if (result > 0)
             available = false;
-        dataBaseConnection.closeConection();
         return available;
     }
 }

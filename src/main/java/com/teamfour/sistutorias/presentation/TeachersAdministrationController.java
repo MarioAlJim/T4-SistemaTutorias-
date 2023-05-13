@@ -190,7 +190,7 @@ public class TeachersAdministrationController implements Initializable {
         if (completedForm()) {
             if (validateData() == 4) {
                 TeacherDAO teacherDAO = new TeacherDAO();
-                int result = 0;
+                int result;
                 try {
                     result = teacherDAO.modifyTeacher (newTeacher, oldPersonalNumber);
                     if(result == 2) {
@@ -198,7 +198,6 @@ public class TeachersAdministrationController implements Initializable {
                         setTeachers();
                         clearForm();
                         lookButtons(true);
-                        setTeachers();
                     } else {
                         WindowManagement.showAlert("Error", "El numero personal que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
                     }
@@ -227,14 +226,14 @@ public class TeachersAdministrationController implements Initializable {
             try {
                 result = teacherDAO.deleteTeacher(newTeacher.getPersonalNumber());
                 if (result == 1) {
+                    setTeachers();
+                    clearForm();
+                    lookButtons(true);
                     WindowManagement.showAlert("Exito", "El registro se borró con éxito", Alert.AlertType.INFORMATION);
                 }
                 lookButtons(true);
             } catch (SQLException exception){
                 Logger.getLogger(TeachersAdministrationController.class.getName()).log(Level.SEVERE, null, exception);
-            }
-            if (result == 1) {
-                WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
             }
         }
     }

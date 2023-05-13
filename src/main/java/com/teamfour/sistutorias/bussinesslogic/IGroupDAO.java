@@ -6,10 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IGroupDAO {
+    ArrayList<Group> groupsList(int idProgram, int idPeriod) throws SQLException;
 
-    public ArrayList<Group> groupsList (int idProgram) throws SQLException;
-
-   public int registerGroup(Group newGroup) throws SQLException;
+    public int registerGroup(Group newGroup) throws SQLException;
 
     int deleteGroup(int nrc) throws SQLException;
 

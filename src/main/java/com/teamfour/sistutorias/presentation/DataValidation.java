@@ -8,7 +8,7 @@ public class DataValidation {
 
     public static boolean textValidation(String text) {
         boolean valid = true;
-        String regex = "^[\\p{L} .'-]+$";
+        String regex = "^[A-Za-z0-9\\s\\,]+$";
         if (!text.matches(regex)) {
             valid = false;
         }

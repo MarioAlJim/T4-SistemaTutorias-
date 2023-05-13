@@ -33,7 +33,6 @@ public class MainMenuController implements Initializable {
     private ArrayList<RoleProgram> availableRoles;
     private RoleProgram roleProgramSelected = new RoleProgram();
     private  EducationProgram programSelected;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tabJefe.setDisable(true);
@@ -61,7 +60,6 @@ public class MainMenuController implements Initializable {
         availableRoles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
         ArrayList<EducationProgram> educationPrograms = new ArrayList<>();
         educationPrograms.add(availableRoles.get(0).getEducationProgram());
-
         for(RoleProgram roleProgram: availableRoles) {
             boolean isInCombobox = false;
             for (int i = 0; i < educationPrograms.size(); i++) {
@@ -84,7 +82,6 @@ public class MainMenuController implements Initializable {
             tabCoordinator.setDisable(true);
             tabJefe.setDisable(true);
             programSelected = (EducationProgram) valorNuevo;;
-
             for (RoleProgram roleProgram : availableRoles) {
                 if (roleProgram.getEducationProgram().getName().equals(programSelected.getName())) {
                     switch (roleProgram.getRole()) {
@@ -100,7 +97,6 @@ public class MainMenuController implements Initializable {
                     }
                 }
             }
-
             if(!tabTutor.isDisable()) {
                 tpRoles.getSelectionModel().select(tabTutor);
             } else if(!tabCoordinator.isDisable()) {
@@ -176,5 +172,21 @@ public class MainMenuController implements Initializable {
         setSessionGlobalDataRol(3);
         WindowManagement.changeScene("Soluciones a problemáticas académicas",
                 getClass().getResource("SolutionsToAcademicProblems.fxml"));
+    }
+
+    private boolean activeTutorship() {
+        if (SessionGlobalData.getSessionGlobalData().getCurrentTutorship().getIdTutorShip() != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean activePeriod () {
+        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

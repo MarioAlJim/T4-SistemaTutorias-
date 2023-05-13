@@ -121,7 +121,7 @@ public class FillTutorshipReport implements Initializable {
                 for(AcademicProblem academicProblem : academicProblems) {
                     academicProblem.setRegister(register.getRegister_id());
                     AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-                    academicProblemDAO.register(academicProblem);
+                    academicProblemDAO.registerAcademicProblem(academicProblem);
                 }
                 System.out.println("Academic problems saved");
 

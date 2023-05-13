@@ -34,6 +34,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         dataBaseConnection.closeConection();
         return academicProblems;
     }
+
     @Override
     public ArrayList<AcademicProblem> consultAcademicProblemsByTutor(int idTutorship, int idProgram, String uvAcount) throws SQLException {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
@@ -82,7 +83,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
     }
 
     @Override
-    public int register(AcademicProblem academicProblem) throws SQLException {
+    public int registerAcademicProblem(AcademicProblem academicProblem) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int insertedFiles = 0;
         Connection connection = dataBaseConnection.getConnection();
