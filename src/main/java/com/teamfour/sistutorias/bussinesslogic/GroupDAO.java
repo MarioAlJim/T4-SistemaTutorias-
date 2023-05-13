@@ -110,6 +110,43 @@ public class GroupDAO implements IGroupDAO {
         return result;
     }
 
+    @Override
+    public ArrayList<Group> getGroupsByEducationProgram(int idProgram) throws SQLException {
+        ArrayList<Group> groups = new ArrayList<>();
+        String query = "SELECT gp.period_id, gp.nrc, gp.personal_number, p.*, ee.ee_id, ee.name AS ee_name " +
+                "FROM group_program gp " +
+                "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
+                "INNER JOIN person p ON P.person_id = T.person_id " +
+                "INNER JOIN ee ee ON ee.ee_id = gp.ee_id " +
+                "WHERE gp.program_id = ?";
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProgram);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            EE ee = new EE();
+            ee.setIdEe(resultSet.getInt("ee_id"));
+            ee.setName(resultSet.getString("ee_name"));
+
+            Teacher teacher = new Teacher();
+            teacher.setPersonalNumber(resultSet.getInt("personal_number"));
+            teacher.setIdPerson(resultSet.getInt("person_id"));
+            teacher.setName(resultSet.getString("name"));
+            teacher.setPaternalSurname(resultSet.getString("paternal_surname"));
+            teacher.setMaternalSurname(resultSet.getString("maternal_surname"));
+
+            Group group = new Group();
+            group.setIdPeriod(resultSet.getInt("period_id"));
+            group.setNrc(resultSet.getInt("nrc"));
+            group.setEe(ee);
+            group.setTeacher(teacher);
+            groups.add(group);
+        }
+        dataBaseConnection.closeConection();
+        return groups;
+    }
+
     public boolean checkAvailability(Group newGroup) throws SQLException {
         boolean available = true;
         int result = 0;
@@ -118,7 +155,7 @@ public class GroupDAO implements IGroupDAO {
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, newGroup.getNrc());
-        statement.setInt(2, newGroup.getPeriod());
+        statement.setInt(2, newGroup.getIdPeriod());
         ResultSet resultSet = statement.executeQuery();
         dataBaseConnection.closeConection();
         if (resultSet.next()) {

@@ -106,7 +106,7 @@ public class ConsultAcademicProblemsController implements Initializable {
     private void setAcademicProblemsTable() {
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tcTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        tcNrc.setCellValueFactory(new PropertyValueFactory<>("nrc"));
+        tcNrc.setCellValueFactory(new PropertyValueFactory<>("group"));
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
         ArrayList<AcademicProblem> academicProblems;
         academicProblemData = FXCollections.observableArrayList();

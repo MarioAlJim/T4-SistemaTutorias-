@@ -8,20 +8,12 @@ public class Group {
     private EducationProgram educationProgram;
     private String teacherName;
     private String experience;
-    private int period;
+    private int idPeriod;
 
     public Group() {
         this.nrc = 0;
         this.teacherName = "";
         this.experience = "";
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
     }
 
     public int getNrc() {
@@ -83,5 +75,13 @@ public class Group {
     @Override
     public String toString() {
         return "NRC:" + nrc + " - " + teacherName + " - " + experience;
+    }
+
+    public int getIdPeriod() {
+        return idPeriod;
+    }
+
+    public void setIdPeriod(int idPeriod) {
+        this.idPeriod = idPeriod;
     }
 }
