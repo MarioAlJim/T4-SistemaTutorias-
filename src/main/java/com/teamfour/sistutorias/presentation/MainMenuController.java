@@ -4,9 +4,9 @@ import com.teamfour.sistutorias.domain.EducationProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -108,67 +108,71 @@ public class MainMenuController implements Initializable {
         cbEducationPrograms.getSelectionModel().selectFirst();
     }
 
-    public void clickConsultTutorshipReport(ActionEvent event) throws IOException {
+    public void clickConsultTutorshipReport() throws IOException {
         setSessionGlobalDataRol(1);
         WindowManagement.changeScene("Reporte de tutoria academica",
                 getClass().getResource("ConsultReport.fxml"));
     }
 
-    public void clickFillTutorshipReport(ActionEvent event) throws IOException {
+    public void clickFillTutorshipReport() throws IOException {
         setSessionGlobalDataRol(1);
-        WindowManagement.changeScene("Registrar reporte de tutoría académica",
-                getClass().getResource("FillTutorshipReport.fxml"));
+        if (activeTutorship()) {
+            WindowManagement.changeScene("Registrar reporte de tutoría académica",
+                    getClass().getResource("FillTutorshipReport.fxml"));
+        }
     }
 
-    public void clickConsultAcademicProblem(ActionEvent event) throws IOException {
+    public void clickConsultAcademicProblem() throws IOException {
         setSessionGlobalDataRol(1);
         WindowManagement.changeScene("Problemáticas académicas",
                 getClass().getResource("ConsultAcademicProblems.fxml"));
     }
 
-    public void clickManageTutorship(ActionEvent event) throws IOException {
+    public void clickManageTutorship() throws IOException {
         setSessionGlobalDataRol(2);
-        WindowManagement.changeScene("Registrar sesión de tutoría académica",
-                getClass().getResource("Tutorship.fxml"));
+        if (activePeriod()) {
+            WindowManagement.changeScene("Registrar sesión de tutoría académica",
+                    getClass().getResource("Tutorship.fxml"));
+        }
     }
 
-    public void clickConsultGeneralTutorshipReport(ActionEvent event) throws IOException {
+    public void clickConsultGeneralTutorshipReport() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Reporte General de Tutoría Académica",
                 getClass().getResource("ConsultGeneralTutorshipReport.fxml"));
     }
 
-    public void clickConsultReportByTutor(ActionEvent event) throws IOException {
+    public void clickConsultReportByTutor() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Reporte de tutoría",
                 getClass().getResource("ConsultTutorshipReport.fxml"));
     }
 
-    public void clickManageTutorado(ActionEvent event) throws IOException {
+    public void clickManageTutorado() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Administrar tutorados",
                 getClass().getResource("ManageTutorados.fxml"));
     }
 
-    public void clickAssignTutor(ActionEvent event) throws IOException {
+    public void clickAssignTutor() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Asignación de tutor académico",
                 getClass().getResource("TutorAssignment.fxml"));
     }
 
-    public void clickModifyTutorAssignment(ActionEvent event) throws IOException {
+    public void clickModifyTutorAssignment() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Modificar asignación de tutor académico",
                 getClass().getResource("ModifyAsignmentTutorTutorado.fxml"));
     }
 
-    public void clickRegisterSolution(ActionEvent event) throws IOException {
+    public void clickRegisterSolution() throws IOException {
         setSessionGlobalDataRol(3);
         WindowManagement.changeScene("Registrar solución a problemática académica",
                 getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
     }
 
-    public void clickConsultSolution(ActionEvent event) throws IOException {
+    public void clickConsultSolution() throws IOException {
         setSessionGlobalDataRol(3);
         WindowManagement.changeScene("Soluciones a problemáticas académicas",
                 getClass().getResource("SolutionsToAcademicProblems.fxml"));
@@ -178,6 +182,7 @@ public class MainMenuController implements Initializable {
         if (SessionGlobalData.getSessionGlobalData().getCurrentTutorship().getIdTutorShip() != 0) {
             return true;
         } else {
+            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay tutorias activas", Alert.AlertType.INFORMATION);
             return false;
         }
     }
@@ -186,6 +191,7 @@ public class MainMenuController implements Initializable {
         if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
             return true;
         } else {
+            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay periodos activos", Alert.AlertType.INFORMATION);
             return false;
         }
     }
