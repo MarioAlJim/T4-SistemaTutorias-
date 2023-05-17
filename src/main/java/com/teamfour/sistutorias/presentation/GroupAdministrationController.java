@@ -63,7 +63,6 @@ public class GroupAdministrationController implements Initializable {
     private Teacher selectedTeacher;
     private EE selectedEe;
     private Group newGroup = new Group();
-    private Period currentPeriod;
 
 
     private void lockModify(boolean lock) {
@@ -158,7 +157,8 @@ public class GroupAdministrationController implements Initializable {
         ObservableList<Group> groupsList = FXCollections.observableArrayList();
         try {
             GroupDAO groupDAO = new GroupDAO();
-            groups = groupDAO.groupsList(selectedEducationProgram.getIdEducationProgram(), currentPeriod.getIdPeriod());
+            groups = groupDAO.groupsList(selectedEducationProgram.getIdEducationProgram(),
+                    SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             groupsList.addAll(groups);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
@@ -215,7 +215,7 @@ public class GroupAdministrationController implements Initializable {
         seeSelectedEeListener();
         seeSelectedGroup();
 
-        lbPeriod.setText("Periodo: " + currentPeriod.getFullPeriod());
+        lbPeriod.setText("Periodo: " + SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getFullPeriod());
     }
 
     @FXML
@@ -263,7 +263,7 @@ public class GroupAdministrationController implements Initializable {
             GroupDAO groupDAO = new GroupDAO();
             int result;
             try {
-                result = groupDAO.deleteGroup(newGroup.getNrc());
+                result = groupDAO.deleteGroup(newGroup.getGroup_id());
                 if (result == 1) {
                     setGroups();
                     clearForm();
