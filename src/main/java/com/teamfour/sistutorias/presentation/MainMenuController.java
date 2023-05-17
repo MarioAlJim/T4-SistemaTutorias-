@@ -12,6 +12,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -188,5 +190,11 @@ public class MainMenuController implements Initializable {
         } else {
             return false;
         }
+    }
+
+    public void clickAcademicOffer(ActionEvent actionEvent) throws IOException {
+        setSessionGlobalDataRol(1);
+        WindowManagement.changeScene("Oferta académica",
+                getClass().getResource("GroupQuery.fxml"));
     }
 }
