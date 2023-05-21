@@ -291,7 +291,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
         String query = "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
                 "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
-                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN group_program gp on gp.group_id = ap.group_id " +
                 "INNER JOIN ee on ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
                 "INNER JOIN person p on p.person_id = t.person_id " +
@@ -315,37 +315,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         dataBaseConnection.closeConection();
         return academicProblems;
     }
-    /* "SELECT ap.title, ap.description, ap.number_tutorados, p.name, p.paternal_surname, " +
-                "p.maternal_surname, ee.name AS eename, gp.nrc FROM academic_problems ap " +
-                "LEFT JOIN group_program gp on gp.nrc = ap.nrc " +
-                "LEFT JOIN ee on ee.ee_id = gp.ee_id " +
-                "LEFT JOIN teacher t on t.personal_number = gp.personal_number " +
-                "LEFT JOIN person p on p.person_id = t.person_id " +
-                "WHERE register_id = ?";
-                        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, registerId);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            AcademicProblem academicProblem = new AcademicProblem();
-            academicProblem.setTitle(resultSet.getString("title"));
-            academicProblem.setDescription(resultSet.getString("description"));
-            academicProblem.setNumberTutorados(resultSet.getInt("number_tutorados"));
-            String teachername = resultSet.getString("name") + " " +
-                    resultSet.getString("paternal_surname") + " " +
-                    resultSet.getString("maternal_surname");
-            academicProblem.setTeacher(teachername);
-            academicProblem.setEe(resultSet.getString("eename"));
-            academicProblem.setGroup(resultSet.getInt("nrc"));
-            boolean alreadyRegistered = false;
-            for (AcademicProblem academicProblem1 : academicProblems) {
-                if (academicProblem1.getIdAcademicProblem() == academicProblem.getIdAcademicProblem()) {
-                    alreadyRegistered = true;
-                    break;
-                }
-            }
-            if (!alreadyRegistered) {
-                academicProblems.add(academicProblem);
-            }*/
+    
 
     @Override
     public AcademicProblem getAcademicProblemById(int academicProblemId) throws SQLException {
