@@ -131,14 +131,6 @@ public class MainMenuController implements Initializable {
                 getClass().getResource("ConsultAcademicProblems.fxml"));
     }
 
-    public void clickManageTutorship() throws IOException {
-        setSessionGlobalDataRol(2);
-        if (activePeriod()) {
-            WindowManagement.changeScene("Registrar sesión de tutoría académica",
-                    getClass().getResource("Tutorship.fxml"));
-        }
-    }
-
     public void clickConsultGeneralTutorshipReport() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Reporte General de Tutoría Académica",
@@ -186,15 +178,6 @@ public class MainMenuController implements Initializable {
             return true;
         } else {
             WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay tutorias activas", Alert.AlertType.INFORMATION);
-            return false;
-        }
-    }
-
-    private boolean activePeriod () {
-        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
-            return true;
-        } else {
-            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay periodos activos", Alert.AlertType.INFORMATION);
             return false;
         }
     }

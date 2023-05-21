@@ -1,6 +1,8 @@
 package com.teamfour.sistutorias.presentation;
 
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -9,6 +11,15 @@ public class AdminMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    private boolean activePeriod () {
+        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
+            return true;
+        } else {
+            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay periodos activos", Alert.AlertType.INFORMATION);
+            return false;
+        }
     }
 
     public void clickManageUsers() throws IOException {
@@ -34,5 +45,12 @@ public class AdminMenuController implements Initializable {
     public void clickManageGroups() throws IOException {
         WindowManagement.changeScene("Administrar grupos",
                 getClass().getResource("GroupAdministration.fxml"));
+    }
+
+    public void clickManageTutorship() throws IOException {
+        if (activePeriod()) {
+            WindowManagement.changeScene("Registrar sesión de tutoría académica",
+                    getClass().getResource("Tutorship.fxml"));
+        }
     }
 }

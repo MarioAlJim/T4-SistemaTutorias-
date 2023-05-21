@@ -178,10 +178,9 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                            </rowConstraints>
                                            <children>
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTutorship" prefHeight="26.0" prefWidth="230.0" text="Administrar fechas de sesión de tutoría" GridPane.halignment="CENTER" />
-                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterSolution" prefHeight="26.0" prefWidth="230.0" text="Registrar solución a problemática" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolution" prefHeight="26.0" prefWidth="230.0" text="Consultar solución a problemática" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterSolution" prefHeight="26.0" prefWidth="230.0" text="Registrar solución a problemática" GridPane.halignment="CENTER" />
+                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolution" prefHeight="26.0" prefWidth="230.0" text="Consultar solución a problemática" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                            </children>
                                            <padding>
                                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
