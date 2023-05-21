@@ -115,7 +115,7 @@ public class GroupDAO implements IGroupDAO {
                 "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
                 "INNER JOIN person p ON P.person_id = T.person_id " +
                 "INNER JOIN ee ee ON ee.ee_id = gp.ee_id " +
-                "WHERE gp.program_id = ? AND gp.active = 1";
+                "WHERE gp.program_id = ?";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
