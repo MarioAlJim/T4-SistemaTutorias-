@@ -87,7 +87,7 @@ public class RegisterAcademicProblemController implements Initializable{
             Group voidGroup = new Group();
             educativeExperiencesObservableList.add(voidGroup);
             GroupDAO groupDAO = new GroupDAO();
-            educativeExperiences = groupDAO.groupsList(
+            educativeExperiences = groupDAO.getGroupsList(
                     SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             educativeExperiencesObservableList.addAll(educativeExperiences);

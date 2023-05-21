@@ -56,15 +56,15 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setTutorsTable();
-        setTutoradosTable();
+        setTutors();
+        setTutorados();
         seeSelectedTutorListener();
         seeSelectedTutoradoListener();
         searchTutor();
         searchTutorado();
     }
 
-    private void setTutoradosTable() {
+    private void setTutorados() {
         colNameTurorado.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colNumberRegister.setCellValueFactory(new PropertyValueFactory<>("registrationNumber"));
         TutoradoDAO tutoradoDAO = new TutoradoDAO();
@@ -80,7 +80,7 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
         tvTutorados.setItems(tutoradosData);
     }
 
-    private void setTutorsTable() {
+    private void setTutors() {
         colNameTutor.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colNumPersonal.setCellValueFactory(new PropertyValueFactory<>("email"));
         UserRoleProgramDAO userRoleProgramDAO = new UserRoleProgramDAO();

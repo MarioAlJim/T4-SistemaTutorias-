@@ -7,14 +7,11 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import com.teamfour.sistutorias.domain.EE;
 import com.teamfour.sistutorias.domain.Group;
 import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
 import com.teamfour.sistutorias.bussinesslogic.GroupDAO;
 import com.teamfour.sistutorias.domain.AcademicProblem;
-import com.teamfour.sistutorias.domain.Period;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -55,7 +52,7 @@ public class ModifyAcademicProblemController implements Initializable {
             Group voidGroup = new Group();
             educativeExperiencesObservableList.add(voidGroup);
             GroupDAO groupDAO = new GroupDAO();
-            educativeExperiences = groupDAO.groupsList(
+            educativeExperiences = groupDAO.getGroupsList(
                     SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             educativeExperiencesObservableList.addAll(educativeExperiences);

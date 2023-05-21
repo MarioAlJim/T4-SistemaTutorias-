@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GroupDAO implements IGroupDAO {
 
     @Override
-    public ArrayList<Group> groupsList(int idProgram, int idPeriod) throws SQLException {
+    public ArrayList<Group> getGroupsList(int idProgram, int idPeriod) throws SQLException {
         ArrayList<Group> groups = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();

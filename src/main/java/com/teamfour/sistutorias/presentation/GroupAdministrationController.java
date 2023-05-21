@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -100,7 +99,7 @@ public class GroupAdministrationController implements Initializable {
         return complete;
     }
 
-    private void setEducationPrograms() {
+    private void setAcademicPrograms() {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
         ArrayList<EducationProgram> educationPrograms;
         ObservableList<EducationProgram> educationProgramsList = FXCollections.observableArrayList();
@@ -157,7 +156,7 @@ public class GroupAdministrationController implements Initializable {
         ObservableList<Group> groupsList = FXCollections.observableArrayList();
         try {
             GroupDAO groupDAO = new GroupDAO();
-            groups = groupDAO.groupsList(selectedEducationProgram.getIdEducationProgram(),
+            groups = groupDAO.getGroupsList(selectedEducationProgram.getIdEducationProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             groupsList.addAll(groups);
         } catch (SQLException exception) {
@@ -203,7 +202,7 @@ public class GroupAdministrationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setEducationPrograms();
+        setAcademicPrograms();
         setTeachers();
         setEes();
         cbEducationProgram.getSelectionModel().selectFirst();

@@ -116,6 +116,8 @@ public class ConsultAcademicProblemsController implements Initializable {
                     SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
                     SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
             academicProblemData.addAll(academicProblems);
+            btDelete.setDisable(true);
+            btModify.setDisable(true);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);

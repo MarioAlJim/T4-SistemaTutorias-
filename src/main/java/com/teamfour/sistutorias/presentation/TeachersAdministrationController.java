@@ -81,6 +81,23 @@ public class TeachersAdministrationController implements Initializable {
         });
     }
 
+    private boolean completedForm() {
+        boolean complete = true;
+        if (tfNumberPersonal.getText().isEmpty() || tfNumberPersonal.getText().trim().replaceAll(" +", "").length() == 1) {
+            complete = false;
+        }
+        if (tfName.getText().isEmpty() || tfName.getText().trim().replaceAll(" +", "").length() == 1) {
+            complete = false;
+        }
+        if (tfPaternalSurname.getText().isEmpty() || tfPaternalSurname.getText().trim().replaceAll(" +", "").length() == 1) {
+            complete = false;
+        }
+        if (tfMaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().trim().replaceAll(" +", "").length() == 1){
+            complete = false;
+        }
+        return complete;
+    }
+
     private int validateData() {
         String name = tfName.getText().trim().replaceAll(" +", " ");
         String paternal = tfPaternalSurname.getText().trim().replaceAll(" +", "");
@@ -126,23 +143,6 @@ public class TeachersAdministrationController implements Initializable {
             btnCancelModification.setDisable(false);
             btnSaveTeacher.setDisable(true);
         }
-    }
-
-    private boolean completedForm() {
-        boolean complete = true;
-        if (tfNumberPersonal.getText().isEmpty() || tfNumberPersonal.getText().trim().replaceAll(" +", "").length() == 1) {
-            complete = false;
-        }
-        if (tfName.getText().isEmpty() || tfName.getText().trim().replaceAll(" +", "").length() == 1) {
-            complete = false;
-        }
-        if (tfPaternalSurname.getText().isEmpty() || tfPaternalSurname.getText().trim().replaceAll(" +", "").length() == 1) {
-            complete = false;
-        }
-        if (tfMaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().trim().replaceAll(" +", "").length() == 1){
-            complete = false;
-        }
-        return complete;
     }
 
     @Override
