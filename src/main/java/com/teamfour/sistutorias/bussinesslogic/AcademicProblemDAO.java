@@ -22,7 +22,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
                 "INNER JOIN ee on ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
                 "INNER JOIN person p on p.person_id = t.person_id " +
-                "LEFT JOIN problem_solution ps on ps.academic_problem_id " +
+                "LEFT JOIN problem_solution ps on ps.academic_problem_id = ap.academic_problems_id " +
                 "LEFT JOIN solution s on s.solution_id = ps.solution_id " +
                 "WHERE r.tutorship_id = ? AND r.email = ? AND r.educative_program_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
