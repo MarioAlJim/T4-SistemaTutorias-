@@ -80,8 +80,8 @@ public class ConsultAcademicProblemsController implements Initializable {
             periods = periodDAO.getPeriods();
             options.addAll(periods);
         } catch (SQLException ex) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         cbPeriod.setItems(options);
         cbPeriod.valueProperty().addListener((ov, oldValue, newValue) -> {
@@ -101,8 +101,8 @@ public class ConsultAcademicProblemsController implements Initializable {
             tutorship = tutorshipDAO.getTutorshipByPeriod(selectedPeriod.getIdPeriod());
             tutorships.addAll(tutorship);
         } catch (SQLException exception) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         cbTutorship.setItems(tutorships);
         cbTutorship.valueProperty().addListener((ov, oldValue, newValue) -> {
@@ -131,8 +131,8 @@ public class ConsultAcademicProblemsController implements Initializable {
             btDelete.setDisable(true);
             btModify.setDisable(true);
         } catch (SQLException exception) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         tvProblems.setItems(academicProblemData);
         clearForm();
@@ -171,18 +171,14 @@ public class ConsultAcademicProblemsController implements Initializable {
             int result = 0;
             try {
                 result = academicProblemDAO.deleteAcademicProblem(academicProblem.getIdAcademicProblem());
-                academicProblemData.remove(tvProblems.getSelectionModel().getSelectedIndex());
-                tvProblems.getSelectionModel().clearSelection();
-                tfDescription.setText("");
-                tfTitle.setText("");
-                tfTutorados.setText("");
-                tfSolution.setText("");
-                tfGroup.setText("");
+                if (result == 1) {
+                    academicProblemData.remove(tvProblems.getSelectionModel().getSelectedIndex());
+                    tvProblems.getSelectionModel().clearSelection();
+                    clearForm();
+                    WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
+                }
             } catch (SQLException exception) {
                 Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
-            }
-            if (result == 1) {
-                WindowManagement.showAlert("Exito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
             }
         }
     }
@@ -198,10 +194,11 @@ public class ConsultAcademicProblemsController implements Initializable {
             stageMenuTutor.setTitle("Modificar problematica academica");
             stageMenuTutor.alwaysOnTopProperty();
             stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
-            ModifyAcademicProblemController modifyAcademicProblem = (ModifyAcademicProblemController) loader.getController();
+            ModifyAcademicProblemController modifyAcademicProblem = loader.getController();
             modifyAcademicProblem.recibeParameters(academicProblem);
             stageMenuTutor.showAndWait();
             tvProblems.getItems().clear();
+            clearForm();
             setAcademicProblemsTable();
         } catch (IOException exception) {
             WindowManagement.showAlert("Error", "Error al cargar la ventana de modificacion", Alert.AlertType.INFORMATION);
