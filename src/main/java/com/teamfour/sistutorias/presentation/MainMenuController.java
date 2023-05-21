@@ -4,6 +4,7 @@ import com.teamfour.sistutorias.domain.EducationProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -12,6 +13,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -194,5 +197,11 @@ public class MainMenuController implements Initializable {
             WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay periodos activos", Alert.AlertType.INFORMATION);
             return false;
         }
+    }
+
+    public void clickAcademicOffer(ActionEvent actionEvent) throws IOException {
+        setSessionGlobalDataRol(1);
+        WindowManagement.changeScene("Oferta académica",
+                getClass().getResource("GroupQuery.fxml"));
     }
 }
