@@ -41,7 +41,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
                 academicProblem.setEe(resultSet.getString("nameee"));
                 academicProblem.setTeacher(resultSet.getString("teacher"));
                 academicProblem.setRegister(resultSet.getInt("register_id"));
-                academicProblem.setSolution("solution");
+                academicProblem.setSolution(resultSet.getString("solution"));
                 academicProblems.add(academicProblem);
             } while (resultSet.next());
         }
