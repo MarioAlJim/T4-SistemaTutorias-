@@ -62,6 +62,16 @@ public class ConsultAcademicProblemsController implements Initializable {
     private Period selectedPeriod;
     private Tutorship selectedTutorship;
 
+    private void clearForm() {
+        tfDescription.setText("");
+        tfGroup.setText("");
+        tfSolution.setText("");
+        tfTitle.setText("");
+        tfTutorados.setText("");
+        btDelete.setDisable(true);
+        btModify.setDisable(true);
+    }
+
     private void setPeriods() {
         ArrayList<Period> periods;
         PeriodDAO periodDAO = new PeriodDAO();
@@ -79,6 +89,7 @@ public class ConsultAcademicProblemsController implements Initializable {
             tvProblems.getSelectionModel().clearSelection();
             selectedPeriod = newValue;
             setTutorship();
+            clearForm();
         });
     }
 
@@ -96,6 +107,7 @@ public class ConsultAcademicProblemsController implements Initializable {
         cbTutorship.setItems(tutorships);
         cbTutorship.valueProperty().addListener((ov, oldValue, newValue) -> {
             tvProblems.getItems().clear();
+            clearForm();
             if (newValue != null) {
                 selectedTutorship = newValue;
                 setAcademicProblemsTable();
@@ -123,8 +135,9 @@ public class ConsultAcademicProblemsController implements Initializable {
             Logger.getLogger(ConsultAcademicProblemsController.class.getName()).log(Level.SEVERE, null, exception);
         }
         tvProblems.setItems(academicProblemData);
-
+        clearForm();
         this.tvProblems.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            clearForm();
             if (newSelection != null) {
                 academicProblem = this.tvProblems.getSelectionModel().getSelectedItem();
                 tfDescription.setText(academicProblem.getDescription());
