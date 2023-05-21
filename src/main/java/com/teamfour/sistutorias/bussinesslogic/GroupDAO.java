@@ -38,7 +38,7 @@ public class GroupDAO implements IGroupDAO {
                 Teacher teacher = new Teacher();
                 teacher.setPersonalNumber(resultSet.getInt("personal_number"));
                 EducativeProgram educativeProgram = new EducativeProgram();
-                educativeProgram.setIdEducationProgram(resultSet.getInt("program_id"));
+                educativeProgram.setIdEducativeProgram(resultSet.getInt("program_id"));
                 group.setEe(ee);
                 group.setTeacher(teacher);
                 group.setEducationProgram(educativeProgram);
@@ -64,7 +64,7 @@ public class GroupDAO implements IGroupDAO {
             statement.setInt(1, newGroup.getNrc());
             statement.setInt(2, newGroup.getEe().getIdEe());
             statement.setInt(3, newGroup.getTeacher().getPersonalNumber());
-            statement.setInt(4, newGroup.getEducationProgram().getIdEducationProgram());
+            statement.setInt(4, newGroup.getEducationProgram().getIdEducativeProgram());
             result = statement.executeUpdate();
             dataBaseConnection.closeConection();
         } else {
@@ -97,7 +97,7 @@ public class GroupDAO implements IGroupDAO {
             statement.setInt(1, newNrc);
             statement.setInt(2, newGroup.getEe().getIdEe());
             statement.setInt(3, newGroup.getTeacher().getPersonalNumber());
-            statement.setInt(4, newGroup.getEducationProgram().getIdEducationProgram());
+            statement.setInt(4, newGroup.getEducationProgram().getIdEducativeProgram());
             statement.setInt(5, newGroup.getGroup_id());
             result = statement.executeUpdate();
             dataBaseConnection.closeConection();
@@ -115,7 +115,7 @@ public class GroupDAO implements IGroupDAO {
                 "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
                 "INNER JOIN person p ON P.person_id = T.person_id " +
                 "INNER JOIN ee ee ON ee.ee_id = gp.ee_id " +
-                "WHERE gp.program_id = ? AND gp.active = 1";
+                "WHERE gp.program_id = ?";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);

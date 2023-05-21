@@ -102,7 +102,7 @@ public class FillTutorshipReport implements Initializable {
         Register register = new Register();
         register.setEmail(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
         register.setTutorship_id(tutorship.getIdTutorShip());
-        register.setEducative_program_id(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+        register.setEducative_program_id(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         RegisterDAO registerDAO = new RegisterDAO();
         try {

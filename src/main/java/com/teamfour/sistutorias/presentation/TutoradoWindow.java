@@ -1,6 +1,6 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
+import com.teamfour.sistutorias.bussinesslogic.EducativeProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.TutoradoDAO;
 import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Tutorado;
@@ -60,7 +60,7 @@ public class TutoradoWindow implements Initializable {
 
             for(EducativeProgram educativeProgram : this.educativePrograms) {
                 if(educativeProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
-                    tutorado.setProgramId(educativeProgram.getIdEducationProgram());
+                    tutorado.setProgramId(educativeProgram.getIdEducativeProgram());
                     break;
                 }
             }
@@ -119,9 +119,9 @@ public class TutoradoWindow implements Initializable {
     }
 
     private void loadEducativePrograms() {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+        EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
         try {
-            educativePrograms.addAll(educationProgramDAO.getEducationPrograms());
+            educativePrograms.addAll(educationProgramDAO.getEducativePrograms());
             for (EducativeProgram educativeProgram : educativePrograms) {
                 cbEducativeProgram.getItems().add(educativeProgram.getName());
             }

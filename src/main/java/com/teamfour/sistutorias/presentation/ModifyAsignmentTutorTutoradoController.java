@@ -18,7 +18,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -70,7 +69,7 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
         ArrayList<Tutorado> tutorados = new ArrayList<>();
         tutoradosData = FXCollections.observableArrayList();
         try {
-            tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+            tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
         } catch (SQLException exception) {
             WindowManagement.connectionLostMessage();
             close();
@@ -86,7 +85,7 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
         ArrayList<UserRoleProgram> tutors = new ArrayList<>();
         tutorsData = FXCollections.observableArrayList();
         try {
-            tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+            tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
         } catch (SQLException exception) {
             WindowManagement.connectionLostMessage();
             close();

@@ -73,7 +73,7 @@ public class ConsultTutorshipReport implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Remove after testing
         educativeProgram = new EducativeProgram();
-        educativeProgram.setIdEducationProgram(1);
+        educativeProgram.setIdEducativeProgram(1);
 
         tutors = FXCollections.observableArrayList();
         tutorships = FXCollections.observableArrayList();
@@ -98,7 +98,7 @@ public class ConsultTutorshipReport implements Initializable {
     private void LoadTutors() {
         UserDAO userDAO = new UserDAO();
         try {
-            tutors.addAll(userDAO.getTutors(educativeProgram.getIdEducationProgram()));
+            tutors.addAll(userDAO.getTutors(educativeProgram.getIdEducativeProgram()));
             cbTutor.setItems(tutors);
             cbTutor.setOnAction(event -> LoadTutorships());
         } catch (SQLException e) {

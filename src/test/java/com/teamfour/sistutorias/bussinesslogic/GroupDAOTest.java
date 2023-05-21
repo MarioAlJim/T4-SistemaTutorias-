@@ -27,7 +27,7 @@ class GroupDAOTest {
         group.setEe(ee);
         group.setTeacher(teacher);
         EducativeProgram educativeProgram = new EducativeProgram();
-        educativeProgram.setIdEducationProgram(1);
+        educativeProgram.setIdEducativeProgram(1);
         group.setEducationProgram(educativeProgram);
         try {
             result = groupDAO.registerGroup(group);

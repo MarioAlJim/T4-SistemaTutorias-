@@ -29,7 +29,7 @@ public class AdminMenuController implements Initializable {
 
     public void clickManageEducationProgram() throws IOException {
         WindowManagement.changeScene("Administrar programas educativos",
-                getClass().getResource("ManageEducationProgram.fxml"));
+                getClass().getResource("ManageEducativeProgram.fxml"));
     }
 
     public void clickManageTeacher() throws IOException {

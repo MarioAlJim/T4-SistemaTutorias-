@@ -100,11 +100,11 @@ public class GroupAdministrationController implements Initializable {
     }
 
     private void setAcademicPrograms() {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+        EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
         ArrayList<EducativeProgram> educativePrograms;
         ObservableList<EducativeProgram> educativeProgramsList = FXCollections.observableArrayList();
         try {
-            educativePrograms = educationProgramDAO.getEducationPrograms();
+            educativePrograms = educationProgramDAO.getEducativePrograms();
             educativeProgramsList.addAll(educativePrograms);
         } catch (SQLException sqlException) {
             Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
@@ -156,7 +156,7 @@ public class GroupAdministrationController implements Initializable {
         ObservableList<Group> groupsList = FXCollections.observableArrayList();
         try {
             GroupDAO groupDAO = new GroupDAO();
-            groups = groupDAO.getGroupsList(selectedEducativeProgram.getIdEducationProgram(),
+            groups = groupDAO.getGroupsList(selectedEducativeProgram.getIdEducativeProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             groupsList.addAll(groups);
         } catch (SQLException exception) {

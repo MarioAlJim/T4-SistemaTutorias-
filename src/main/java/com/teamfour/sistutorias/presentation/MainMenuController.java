@@ -65,7 +65,7 @@ public class MainMenuController implements Initializable {
         for(RoleProgram roleProgram: availableRoles) {
             boolean isInCombobox = false;
             for (int i = 0; i < educativePrograms.size(); i++) {
-                if (educativePrograms.get(i).getIdEducationProgram() == roleProgram.getEducationProgram().getIdEducationProgram()) {
+                if (educativePrograms.get(i).getIdEducativeProgram() == roleProgram.getEducationProgram().getIdEducativeProgram()) {
                     isInCombobox = true;
                 }
                 if(!isInCombobox) {

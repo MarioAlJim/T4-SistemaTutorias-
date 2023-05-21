@@ -110,7 +110,7 @@ public class ConsultReportController implements Initializable {
         Register register = new Register(
                 SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail(),
                 tutorshipId,
-                SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+                SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         Register tutorshipReport = registerDAO.getSpecificRegister(register);
 

@@ -125,7 +125,7 @@ public class ConsultAcademicProblemsController implements Initializable {
         try {
             academicProblems = academicProblemDAO.consultAcademicProblemsByTutor(
                     selectedTutorship.getIdTutorShip(),
-                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram(),
                     SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
             academicProblemData.addAll(academicProblems);
             btDelete.setDisable(true);

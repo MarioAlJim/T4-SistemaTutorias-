@@ -89,7 +89,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
             do {
                 RoleProgram roleProgram = new RoleProgram();
                 EducativeProgram educativeProgram = new EducativeProgram();
-                educativeProgram.setIdEducationProgram(resultSet.getInt("program_id"));
+                educativeProgram.setIdEducativeProgram(resultSet.getInt("program_id"));
                 educativeProgram.setName(resultSet.getString("name"));
                 roleProgram.setRole(resultSet.getInt("role_id"));
                 roleProgram.setIdRoleProgram(resultSet.getInt("user_program_id"));
@@ -140,7 +140,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         for (int i = 0; i < userRoleProgram.getRolesPrograms().size(); i++) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, userRoleProgram.getEmail());
-            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram().getIdEducationProgram());
+            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram().getIdEducativeProgram());
             statement.setInt(3, userRoleProgram.getRolesPrograms().get(i).getRole());
             result += statement.executeUpdate();
         }
