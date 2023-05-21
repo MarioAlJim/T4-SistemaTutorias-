@@ -1,11 +1,11 @@
 package com.teamfour.sistutorias.domain;
 
 public class Group {
-    int group_id;
+    private int group_id;
     private int nrc;
     private EE ee;
     private Teacher teacher;
-    private EducationProgram educationProgram;
+    private EducativeProgram educativeProgram;
     private String teacherName;
     private String experience;
     private int idPeriod;
@@ -40,12 +40,12 @@ public class Group {
         this.teacher = teacher;
     }
 
-    public EducationProgram getEducationProgram() {
-        return educationProgram;
+    public EducativeProgram getEducationProgram() {
+        return educativeProgram;
     }
 
-    public void setEducationProgram(EducationProgram educationProgram) {
-        this.educationProgram = educationProgram;
+    public void setEducationProgram(EducativeProgram educativeProgram) {
+        this.educativeProgram = educativeProgram;
     }
 
     public String getTeacherName() {

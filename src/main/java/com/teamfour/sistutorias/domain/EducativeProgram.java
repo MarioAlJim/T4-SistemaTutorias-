@@ -1,13 +1,13 @@
 package com.teamfour.sistutorias.domain;
 
-public class EducationProgram {
+public class EducativeProgram {
     private int idEducationProgram;
     private String name;
 
-    public EducationProgram() {
+    public EducativeProgram() {
     }
 
-    public EducationProgram(int idEducationProgram, String name) {
+    public EducativeProgram(int idEducationProgram, String name) {
         this.idEducationProgram = idEducationProgram;
         this.name = name;
     }

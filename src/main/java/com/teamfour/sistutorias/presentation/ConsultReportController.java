@@ -49,7 +49,7 @@ public class ConsultReportController implements Initializable {
     private TableView<Assistance> tvTutored;
     private ObservableList<User> tutors;
     private ObservableList<Tutorship> tutorships;
-    private EducationProgram educationProgram;
+    private EducativeProgram educativeProgram;
     private ObservableList<Assistance> assistances;
     private ObservableList<AcademicProblem> academicProblems;
 

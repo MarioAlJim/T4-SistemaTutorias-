@@ -2,7 +2,7 @@ package com.teamfour.sistutorias.presentation;
 
 import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.TutoradoDAO;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Tutorado;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +37,7 @@ public class TutoradoWindow implements Initializable {
 
     private Tutorado tutorado;
     private boolean isEditing;
-    private ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
+    private ObservableList<EducativeProgram> educativePrograms = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,9 +58,9 @@ public class TutoradoWindow implements Initializable {
             tutorado.setMaternalSurname(tfMaternalSurname.getText());
             tutorado.setRegistrationNumber(tfMatricula.getText());
 
-            for(EducationProgram educationProgram : this.educationPrograms) {
-                if(educationProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
-                    tutorado.setProgramId(educationProgram.getIdEducationProgram());
+            for(EducativeProgram educativeProgram : this.educativePrograms) {
+                if(educativeProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
+                    tutorado.setProgramId(educativeProgram.getIdEducationProgram());
                     break;
                 }
             }
@@ -121,9 +121,9 @@ public class TutoradoWindow implements Initializable {
     private void loadEducativePrograms() {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
         try {
-            educationPrograms.addAll(educationProgramDAO.getEducationPrograms());
-            for (EducationProgram educationProgram : educationPrograms) {
-                cbEducativeProgram.getItems().add(educationProgram.getName());
+            educativePrograms.addAll(educationProgramDAO.getEducationPrograms());
+            for (EducativeProgram educativeProgram : educativePrograms) {
+                cbEducativeProgram.getItems().add(educativeProgram.getName());
             }
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al cargar los programas educativos", Alert.AlertType.ERROR);

@@ -2,7 +2,7 @@ package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
 import com.teamfour.sistutorias.domain.EE;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Group;
 import com.teamfour.sistutorias.domain.Teacher;
 
@@ -37,11 +37,11 @@ public class GroupDAO implements IGroupDAO {
                 ee.setIdEe(resultSet.getInt("ee_id"));
                 Teacher teacher = new Teacher();
                 teacher.setPersonalNumber(resultSet.getInt("personal_number"));
-                EducationProgram educationProgram = new EducationProgram();
-                educationProgram.setIdEducationProgram(resultSet.getInt("program_id"));
+                EducativeProgram educativeProgram = new EducativeProgram();
+                educativeProgram.setIdEducationProgram(resultSet.getInt("program_id"));
                 group.setEe(ee);
                 group.setTeacher(teacher);
-                group.setEducationProgram(educationProgram);
+                group.setEducationProgram(educativeProgram);
                 group.setGroup_id(resultSet.getInt("group_id"));
                 group.setExperience(resultSet.getString("experience"));
                 group.setTeacherName(resultSet.getString("teacher"));

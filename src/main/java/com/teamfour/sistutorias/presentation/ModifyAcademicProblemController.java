@@ -62,7 +62,7 @@ public class ModifyAcademicProblemController implements Initializable {
                 ees = newValue;
             });
         } catch (SQLException exception){
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+            WindowManagement.connectionLostMessage();
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
@@ -104,18 +104,18 @@ public class ModifyAcademicProblemController implements Initializable {
                 int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
                 String title = tfTitle.getText().trim().replaceAll(" +", "");
                 String description = tfDescription.getText().trim().replaceAll(" +", "");
-                int nrc = ees.getNrc();
+                int idGroup = ees.getGroup_id();
                 academicProblem.setNumberTutorados(numberTutorados);
                 academicProblem.setDescription(description);
                 academicProblem.setTitle(title);
-                academicProblem.setGroup(nrc);
+                academicProblem.setGroup(idGroup);
                 try {
                     int result = academicProblemDAO.updateAcademicProblem(academicProblem);
                     if (result == 1) {
                         WindowManagement.showAlert("Exito", "Actualizacion realizada", Alert.AlertType.INFORMATION);
                     }
                 }catch (SQLException exception){
-                    WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                    WindowManagement.connectionLostMessage();
                     Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
                 }
             } else {

@@ -49,7 +49,7 @@ public class GroupAdministrationController implements Initializable {
     @FXML
     private TextField tfSelectedTeacher;
     @FXML
-    private ComboBox<EducationProgram> cbEducationProgram;
+    private ComboBox<EducativeProgram> cbEducationProgram;
     @FXML
     private TableColumn<Group, Integer> tcNrc;
     @FXML
@@ -58,7 +58,7 @@ public class GroupAdministrationController implements Initializable {
     private Label lbl_action;
     @FXML
     private Label lbPeriod;
-    private EducationProgram selectedEducationProgram;
+    private EducativeProgram selectedEducativeProgram;
     private Teacher selectedTeacher;
     private EE selectedEe;
     private Group newGroup = new Group();
@@ -101,21 +101,21 @@ public class GroupAdministrationController implements Initializable {
 
     private void setAcademicPrograms() {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
-        ArrayList<EducationProgram> educationPrograms;
-        ObservableList<EducationProgram> educationProgramsList = FXCollections.observableArrayList();
+        ArrayList<EducativeProgram> educativePrograms;
+        ObservableList<EducativeProgram> educativeProgramsList = FXCollections.observableArrayList();
         try {
-            educationPrograms = educationProgramDAO.getEducationPrograms();
-            educationProgramsList.addAll(educationPrograms);
+            educativePrograms = educationProgramDAO.getEducationPrograms();
+            educativeProgramsList.addAll(educativePrograms);
         } catch (SQLException sqlException) {
             Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
         }
-        cbEducationProgram.setItems(educationProgramsList);
+        cbEducationProgram.setItems(educativeProgramsList);
         cbEducationProgram.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
-            selectedEducationProgram = valorNuevo;
+            selectedEducativeProgram = valorNuevo;
             clearForm();
             setGroups();
             lockModify(true);
-            newGroup.setEducationProgram(selectedEducationProgram);
+            newGroup.setEducationProgram(selectedEducativeProgram);
         });
     }
 
@@ -156,7 +156,7 @@ public class GroupAdministrationController implements Initializable {
         ObservableList<Group> groupsList = FXCollections.observableArrayList();
         try {
             GroupDAO groupDAO = new GroupDAO();
-            groups = groupDAO.getGroupsList(selectedEducationProgram.getIdEducationProgram(),
+            groups = groupDAO.getGroupsList(selectedEducativeProgram.getIdEducationProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             groupsList.addAll(groups);
         } catch (SQLException exception) {

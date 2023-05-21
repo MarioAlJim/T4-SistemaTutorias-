@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -7,8 +8,8 @@
 
 <AnchorPane prefHeight="440.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblemsController">
     <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="383.0" layoutX="5.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="451.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="383.0" layoutX="474.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="517.0" />
+      <Rectangle fill="#e0e0e0" height="383.0" layoutX="5.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="451.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e0e0e0" height="383.0" layoutX="474.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="517.0" />
         <Label layoutX="20.0" layoutY="14.0" text="Periodo" />
         <Label layoutX="21.0" layoutY="71.0" text="Tutoria" />
         <ComboBox fx:id="cbTutorship" focusTraversable="false" layoutX="21.0" layoutY="94.0" prefHeight="25.0" prefWidth="209.0" promptText="Seleccione una fecha de tutoria" />

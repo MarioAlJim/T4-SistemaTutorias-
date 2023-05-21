@@ -72,8 +72,8 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
         try {
             tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
         } catch (SQLException exception) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         tutoradosData.addAll(tutorados);
         tvTutorados.setItems(tutoradosData);
@@ -88,8 +88,8 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
         try {
             tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
         } catch (SQLException exception) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         tutorsData.addAll(tutors);
         tvTutors.setItems(tutorsData);
@@ -188,16 +188,17 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
                     System.out.println(result);
                 }
             } catch (SQLException exception) {
-                WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                WindowManagement.connectionLostMessage();
                 Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
             }
+        } else {
+            WindowManagement.showAlert("Atencion", "Debe seleccionar un tutor y un tutoradop para cambiar la asignacion", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    public void close(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
+    public void close() {
+        Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
     }
 }
