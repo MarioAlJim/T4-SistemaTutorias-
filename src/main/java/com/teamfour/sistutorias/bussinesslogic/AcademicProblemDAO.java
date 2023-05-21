@@ -10,41 +10,15 @@ import java.util.ArrayList;
 public class AcademicProblemDAO implements IAcademicProblemDAO {
 
     @Override
-    public ArrayList<AcademicProblem> consultAcademicProblemsByProgram(int idProgram) throws SQLException {
-        ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, " +
-                "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', p.maternal_surname) as teacher, s.description as solution " +
-                "FROM academic_problems ap " +
-                "INNER JOIN register r on ap.register_id = r.register_id " +
-                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
-                "INNER JOIN ee on ee.ee_id = gp.ee_id " +
-                "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
-                "INNER JOIN person p on p.person_id = t.person_id " +
-                "LEFT JOIN problem_solution ps on ps.academic_problem_id " +
-                "LEFT JOIN solution s on s.solution_id = ps.solution_id " +
-                "where r.educative_program_id = ?");
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, idProgram);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            academicProblems.add(getAcademicProblem(resultSet));
-        }
-        dataBaseConnection.closeConection();
-        return academicProblems;
-    }
-
-    @Override
     public ArrayList<AcademicProblem> consultAcademicProblemsByTutor(int idTutorship, int idProgram, String uvAcount) throws SQLException {
         ArrayList<AcademicProblem> academicProblems = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "SELECT ap.academic_problems_id, ap.title, ap.nrc, ap.description, ap.number_tutorados, r.register_id, " +
+        String query = "SELECT ap.academic_problems_id, ap.title, gp.nrc, ap.description, ap.number_tutorados, r.register_id, " +
                 "ee.name as nameee, concat(p.name, ' ', p.paternal_surname, ' ', maternal_surname) as teacher, s.description as solution " +
                 "FROM academic_problems ap " +
                 "INNER JOIN register r on ap.register_id = r.register_id " +
-                "INNER JOIN group_program gp on gp.nrc = ap.nrc " +
+                "INNER JOIN group_program gp on gp.group_id = ap.group_id " +
                 "INNER JOIN ee on ee.ee_id = gp.ee_id " +
                 "INNER JOIN teacher t on t.personal_number = gp.personal_number " +
                 "INNER JOIN person p on p.person_id = t.person_id " +
@@ -87,19 +61,13 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int insertedFiles = 0;
         Connection connection = dataBaseConnection.getConnection();
-        String description = academicProblem.getDescription();
-        String title = academicProblem.getTitle();
-        int group = academicProblem.getGroup();
-        int numberTutorados = academicProblem.getNumberTutorados();
-        int register = academicProblem.getRegister();
-        String query = "INSERT INTO academic_problems (title, description, nrc, register_id, number_tutorados) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO academic_problems (title, description, number_tutorados, group_id, register_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, title);
-            statement.setString(2, description);
-            statement.setInt(3, group);
-            statement.setInt(4, register);
-            statement.setInt(5, numberTutorados);
-        statement.setInt(5 , register);
+            statement.setString(1, academicProblem.getTitle());
+            statement.setString(2, academicProblem.getDescription());
+            statement.setInt(3, academicProblem.getNumberTutorados());
+            statement.setInt(4, academicProblem.getGroup());
+            statement.setInt(5, academicProblem.getRegister());
         insertedFiles = statement.executeUpdate();
         dataBaseConnection.closeConection();
         return insertedFiles;
@@ -110,18 +78,13 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int insertedFiles = 0;
         Connection connection = dataBaseConnection.getConnection();
-        String description = academicProblem.getDescription();
-        String title = academicProblem.getTitle();
-        int group = academicProblem.getGroup();
-        int numberTutorados = academicProblem.getNumberTutorados();
-        int id = academicProblem.getIdAcademicProblem();
-        String query = "UPDATE academic_problems SET title = ?, description = ?, number_tutorados = ?, nrc = ? WHERE academic_problems_id = ?;";
+        String query = "UPDATE academic_problems SET title = ?, description = ?, number_tutorados = ?, group_id = ? WHERE academic_problems_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, title);
-        statement.setString(2, description);
-        statement.setInt(3, numberTutorados);
-        statement.setInt(4, group);
-        statement.setInt(5, id);
+        statement.setString(1, academicProblem.getTitle());
+        statement.setString(2, academicProblem.getDescription());
+        statement.setInt(3, academicProblem.getNumberTutorados());
+        statement.setInt(4, academicProblem.getGroup());
+        statement.setInt(5, academicProblem.getIdAcademicProblem());
         insertedFiles = statement.executeUpdate();
         dataBaseConnection.closeConection();
         return insertedFiles;
@@ -132,7 +95,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int modifiedFiles = 0;
         Connection connection = dataBaseConnection.getConnection();
-        String query = "DELETE FROM `academic_problems` WHERE (`academic_problems_id` = ?);";
+        String query = "DELETE FROM academic_problems WHERE (academic_problems_id = ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, idAcademicProblem);
         modifiedFiles = statement.executeUpdate();
@@ -315,7 +278,7 @@ public class AcademicProblemDAO implements IAcademicProblemDAO {
         dataBaseConnection.closeConection();
         return academicProblems;
     }
-    
+
 
     @Override
     public AcademicProblem getAcademicProblemById(int academicProblemId) throws SQLException {

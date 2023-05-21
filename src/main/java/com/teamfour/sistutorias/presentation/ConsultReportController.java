@@ -121,16 +121,6 @@ public class ConsultReportController implements Initializable {
             Comment comment = commentDAO.getCommentFromRegister(tutorshipReport.getRegister_id());
             ArrayList<AcademicProblem> academicProblemsArrayList = academicProblemDAO.getAcademicProblemsFromRegister(tutorshipReport.getRegister_id());
             assistances.addAll(assistancesArrayList);
-               /* for (Assistance a : assistances) {
-                    if (a.getAsistencia()) {
-                        a.getCheckBoxAsistencia().setSelected(true);
-                        a.getCheckBoxAsistencia().setDisable(true);
-                    }
-                    if (a.getRiesgo()) {
-                        a.getCheckBoxRiesgo().setSelected(true);
-                        a.getCheckBoxRiesgo().setDisable(true);
-                    }
-                }*/
             tvTutored.setItems(assistances);
             SetPercentages();
             academicProblems.addAll(academicProblemsArrayList);
