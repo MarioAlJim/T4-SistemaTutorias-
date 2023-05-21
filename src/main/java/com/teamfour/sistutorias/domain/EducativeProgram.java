@@ -1,23 +1,23 @@
 package com.teamfour.sistutorias.domain;
 
 public class EducativeProgram {
-    private int idEducationProgram;
+    private int idEducativeProgram;
     private String name;
 
     public EducativeProgram() {
     }
 
-    public EducativeProgram(int idEducationProgram, String name) {
-        this.idEducationProgram = idEducationProgram;
+    public EducativeProgram(int idEducativeProgram, String name) {
+        this.idEducativeProgram = idEducativeProgram;
         this.name = name;
     }
 
-    public int getIdEducationProgram() {
-        return idEducationProgram;
+    public int getIdEducativeProgram() {
+        return idEducativeProgram;
     }
 
-    public void setIdEducationProgram(int idEducationProgram) {
-        this.idEducationProgram = idEducationProgram;
+    public void setIdEducativeProgram(int idEducativeProgram) {
+        this.idEducativeProgram = idEducativeProgram;
     }
 
     public String getName() {

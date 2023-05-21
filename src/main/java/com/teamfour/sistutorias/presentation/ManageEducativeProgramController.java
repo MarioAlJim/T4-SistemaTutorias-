@@ -1,6 +1,6 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
+import com.teamfour.sistutorias.bussinesslogic.EducativeProgramDAO;
 import com.teamfour.sistutorias.domain.EducativeProgram;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -17,13 +17,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ManageEducationProgramController implements Initializable {
+public class ManageEducativeProgramController implements Initializable {
     @FXML
-    private TextField tfSearchEducationProgram;
+    private TextField tfSearchEducativeProgram;
     @FXML
-    private TextField tfNameEducationProgram;
+    private TextField tfNameEducativeProgram;
     @FXML
-    private TableView<EducativeProgram> tvEducationPrograms;
+    private TableView<EducativeProgram> tvEducativePrograms;
     @FXML
     private TableColumn<EducativeProgram, String> tcName;
     @FXML
@@ -36,11 +36,11 @@ public class ManageEducationProgramController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             populateTable();
-            searchEducationProgram();
-            seeSelectedEducationProgram();
-            this.tfSearchEducationProgram.setTextFormatter(new TextFormatter<String>(change ->
+            searchEducativeProgram();
+            seeSelectedEducativeProgram();
+            this.tfSearchEducativeProgram.setTextFormatter(new TextFormatter<String>(change ->
                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
-            this.tfNameEducationProgram.setTextFormatter(new TextFormatter<String>(change ->
+            this.tfNameEducativeProgram.setTextFormatter(new TextFormatter<String>(change ->
                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
             disableButtons(true);
         } catch(SQLException sqlException) {
@@ -54,45 +54,45 @@ public class ManageEducationProgramController implements Initializable {
     }
 
     private void populateTable() throws SQLException {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
-        ArrayList<EducativeProgram> registeredEducativePrograms = educationProgramDAO.getEducationPrograms();
+        EducativeProgramDAO educativeProgramDAO = new EducativeProgramDAO();
+        ArrayList<EducativeProgram> registeredEducativePrograms = educativeProgramDAO.getEducativePrograms();
 
         this.educativePrograms.addAll(registeredEducativePrograms);
 
         this.tcName.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getName()));
-        this.tvEducationPrograms.setItems(educativePrograms);
+        this.tvEducativePrograms.setItems(educativePrograms);
     }
 
-    private void searchEducationProgram() {
+    private void searchEducativeProgram() {
         FilteredList<EducativeProgram> filteredEducativePrograms = new FilteredList<>(this.educativePrograms, b -> true);
-        this.tfSearchEducationProgram.textProperty().addListener((observable, oldValue, newValue) -> {
+        this.tfSearchEducativeProgram.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredEducativePrograms.setPredicate(
-                    educationProgram -> {
+                    educativeProgram -> {
                         if(newValue == null || newValue.isEmpty())
                             return true;
 
                         disableButtons(true);
-                        this.tfNameEducationProgram.clear();
+                        this.tfNameEducativeProgram.clear();
                         String lowerCaseFilter = newValue.toLowerCase().replaceAll("\\s", "");
 
-                        return educationProgram.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter);
+                        return educativeProgram.getName().toLowerCase().replaceAll("\\s", "").contains(lowerCaseFilter);
                     }
             );
         });
         SortedList<EducativeProgram> educativeProgramSortedList = new SortedList<>(filteredEducativePrograms);
-        educativeProgramSortedList.comparatorProperty().bind(this.tvEducationPrograms.comparatorProperty());
-        this.tvEducationPrograms.setItems(educativeProgramSortedList);
+        educativeProgramSortedList.comparatorProperty().bind(this.tvEducativePrograms.comparatorProperty());
+        this.tvEducativePrograms.setItems(educativeProgramSortedList);
     }
 
-    private void seeSelectedEducationProgram() {
-        this.tvEducationPrograms.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldSelection, newSelection) -> {
+    private void seeSelectedEducativeProgram() {
+        this.tvEducativePrograms.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldSelection, newSelection) -> {
             if(newSelection != null) {
-                EducativeProgram selectedEducativeProgram = this.tvEducationPrograms.getSelectionModel().getSelectedItem();
-                String educationProgramName = selectedEducativeProgram.getName();
-                this.tfNameEducationProgram.setText(educationProgramName);
+                EducativeProgram selectedEducativeProgram = this.tvEducativePrograms.getSelectionModel().getSelectedItem();
+                String educativeProgramName = selectedEducativeProgram.getName();
+                this.tfNameEducativeProgram.setText(educativeProgramName);
                 disableButtons(false);
             } else {
-                this.tfNameEducationProgram.clear();
+                this.tfNameEducativeProgram.clear();
             }
         }));
     }
@@ -104,22 +104,22 @@ public class ManageEducationProgramController implements Initializable {
 
     @FXML
     private void clickModify(ActionEvent event) {
-        EducativeProgram selectedEducativeProgram = this.tvEducationPrograms.getSelectionModel().getSelectedItem();
-        boolean emptyName = this.tfNameEducationProgram.getText().replaceAll("\\s","").isEmpty();
+        EducativeProgram selectedEducativeProgram = this.tvEducativePrograms.getSelectionModel().getSelectedItem();
+        boolean emptyName = this.tfNameEducativeProgram.getText().replaceAll("\\s","").isEmpty();
 
-        String newName = this.tfNameEducationProgram.getText().trim().replaceAll(" +"," ");
+        String newName = this.tfNameEducativeProgram.getText().trim().replaceAll(" +"," ");
         if(!emptyName) {
             try {
-                EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
-                boolean educationProgramUpdated = educationProgramDAO.updateEducationProgram(new EducativeProgram(selectedEducativeProgram.getIdEducationProgram(), newName));
-                if(educationProgramUpdated) {
+                EducativeProgramDAO educativeProgramDAO = new EducativeProgramDAO();
+                boolean educativeProgramUpdated = educativeProgramDAO.updateEducativeProgram(new EducativeProgram(selectedEducativeProgram.getIdEducativeProgram(), newName));
+                if(educativeProgramUpdated) {
                     WindowManagement.showAlert("Programa educativo actualizado",
                             "El programa educativo se ha actualizado exitosamente",
                             Alert.AlertType.INFORMATION);
                     selectedEducativeProgram.setName(newName);
-                    this.tfNameEducationProgram.clear();
-                    this.tvEducationPrograms.refresh();
-                    this.tvEducationPrograms.getSelectionModel().clearSelection();
+                    this.tfNameEducativeProgram.clear();
+                    this.tvEducativePrograms.refresh();
+                    this.tvEducativePrograms.getSelectionModel().clearSelection();
                     disableButtons(true);
                 } else {
                     WindowManagement.showAlert("Programa educativo no actualizado",
@@ -139,17 +139,17 @@ public class ManageEducationProgramController implements Initializable {
 
     @FXML
     private void clickRegister(ActionEvent event) {
-        if (this.tfNameEducationProgram.getText().isEmpty() || this.tfNameEducationProgram.getText().isBlank()) {
+        if (this.tfNameEducativeProgram.getText().isEmpty() || this.tfNameEducativeProgram.getText().isBlank()) {
             WindowManagement.showAlert("Programa educativo no registrado",
                     "No se ha ingresado un nombre de programa educativo",
                     Alert.AlertType.WARNING);
         } else {
-            String educationProgramName = this.tfNameEducationProgram.getText().trim().replaceAll(" +"," ");
+            String educativeProgramName = this.tfNameEducativeProgram.getText().trim().replaceAll(" +"," ");
 
             boolean isAlreadyRegistered = false;
 
             for(EducativeProgram educativeProgram : this.educativePrograms) {
-                if(educativeProgram.getName().equals(educationProgramName)) {
+                if(educativeProgram.getName().equals(educativeProgramName)) {
                     isAlreadyRegistered = true;
                     break;
                 }
@@ -160,15 +160,15 @@ public class ManageEducationProgramController implements Initializable {
                         "El programa educativo ha sido registrado anteriormente",
                         Alert.AlertType.WARNING);
             } else {
-                EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+                EducativeProgramDAO educativeProgramDAO = new EducativeProgramDAO();
                 try {
                     EducativeProgram educativeProgram = new EducativeProgram();
-                    educativeProgram.setName(educationProgramName);
-                    int educationProgramWasRegistered = educationProgramDAO.register(educativeProgram);
-                    if(educationProgramWasRegistered != -1) {
-                        educativeProgram.setIdEducationProgram(educationProgramWasRegistered);
+                    educativeProgram.setName(educativeProgramName);
+                    int educativeProgramWasRegistered = educativeProgramDAO.register(educativeProgram);
+                    if(educativeProgramWasRegistered != -1) {
+                        educativeProgram.setIdEducativeProgram(educativeProgramWasRegistered);
                         this.educativePrograms.add(educativeProgram);
-                        this.tfNameEducationProgram.clear();
+                        this.tfNameEducativeProgram.clear();
                         WindowManagement.showAlert("Programa educativo registrado exitosamente",
                                 "El programa educativo ha sido registrado exitosamente",
                                 Alert.AlertType.INFORMATION);
@@ -182,7 +182,7 @@ public class ManageEducationProgramController implements Initializable {
                 }
             }
         }
-        this.tvEducationPrograms.getSelectionModel().clearSelection();
+        this.tvEducativePrograms.getSelectionModel().clearSelection();
         disableButtons(true);
     }
 }

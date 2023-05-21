@@ -89,7 +89,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         });
 
         GroupDAO groupDAO = new GroupDAO();
-        this.groups = groupDAO.getGroupsByEducationProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+        this.groups = groupDAO.getGroupsByEducationProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         this.teachers.add(new Teacher());
         this.ees.add(new EE());
@@ -133,7 +133,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     private void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         int idSolution = 0;
         int positionSolution = 0;

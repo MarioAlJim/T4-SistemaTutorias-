@@ -53,7 +53,7 @@ public class ModifyAcademicProblemController implements Initializable {
             educativeExperiencesObservableList.add(voidGroup);
             GroupDAO groupDAO = new GroupDAO();
             educativeExperiences = groupDAO.getGroupsList(
-                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             educativeExperiencesObservableList.addAll(educativeExperiences);
             cbGroup.setItems(educativeExperiencesObservableList);

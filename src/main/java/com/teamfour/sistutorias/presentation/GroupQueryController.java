@@ -55,7 +55,7 @@ public class GroupQueryController implements Initializable {
         ArrayList<Group> groups;
         ofertasData = FXCollections.observableArrayList();
         try {
-            groups= groupDAO.getGroupsList(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+            groups= groupDAO.getGroupsList(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             ofertasData.addAll(groups);
         } catch (SQLException exception) {

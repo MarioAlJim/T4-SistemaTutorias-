@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EducationProgramDAOTest {
-    private EducationProgramDAO educationProgramDAO;
+    private EducativeProgramDAO educationProgramDAO;
     private ArrayList<EducativeProgram> educativePrograms;
     private EducativeProgram educativeProgram;
     private EducativeProgram educativeProgram1;
@@ -18,7 +18,7 @@ class EducationProgramDAOTest {
     private ArrayList<EducativeProgram> registeredEducativePrograms;
     @BeforeEach
     void setUp() {
-        educationProgramDAO = new EducationProgramDAO();
+        educationProgramDAO = new EducativeProgramDAO();
         educativePrograms = new ArrayList<>();
         registeredEducativePrograms = new ArrayList<>();
         educativeProgram = new EducativeProgram();
@@ -33,7 +33,7 @@ class EducationProgramDAOTest {
         educativeProgram2.setName("Estadistica");
         registeredEducativePrograms.add(educativeProgram2);
 
-        educativePrograms = educationProgramDAO.getEducationPrograms();
+        educativePrograms = educationProgramDAO.getEducativePrograms();
         boolean isValid = true;
         int iteration = 0;
         for(EducativeProgram educativeProgramUV : educativePrograms) {
@@ -53,8 +53,8 @@ class EducationProgramDAOTest {
 
     @Test
     public void updateEducationProgram() throws SQLException {
-        educativeProgram.setIdEducationProgram(1);
+        educativeProgram.setIdEducativeProgram(1);
         educativeProgram.setName("Ingenieria de Software");
-        assertTrue(educationProgramDAO.updateEducationProgram(educativeProgram));
+        assertTrue(educationProgramDAO.updateEducativeProgram(educativeProgram));
     }
 }

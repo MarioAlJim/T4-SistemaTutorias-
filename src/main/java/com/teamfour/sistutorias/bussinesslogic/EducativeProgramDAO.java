@@ -6,9 +6,9 @@ import com.teamfour.sistutorias.domain.EducativeProgram;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class EducationProgramDAO implements IEducationProgramDAO {
+public class EducativeProgramDAO implements IEducativeProgramDAO {
     @Override
-    public ArrayList<EducativeProgram> getEducationPrograms() throws SQLException {
+    public ArrayList<EducativeProgram> getEducativePrograms() throws SQLException {
         ArrayList<EducativeProgram> educativePrograms = new ArrayList<>();
         String query = "SELECT * FROM education_program";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -42,7 +42,7 @@ public class EducationProgramDAO implements IEducationProgramDAO {
     }
 
     @Override
-    public boolean updateEducationProgram(EducativeProgram educativeProgram) throws SQLException {
+    public boolean updateEducativeProgram(EducativeProgram educativeProgram) throws SQLException {
         boolean educationProgramModified = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -51,7 +51,7 @@ public class EducationProgramDAO implements IEducationProgramDAO {
                 "WHERE education_program_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, educativeProgram.getName());
-        statement.setInt(2, educativeProgram.getIdEducationProgram());
+        statement.setInt(2, educativeProgram.getIdEducativeProgram());
         if(statement.executeUpdate() != 0)
             educationProgramModified = true;
         dataBaseConnection.closeConection();
@@ -62,7 +62,7 @@ public class EducationProgramDAO implements IEducationProgramDAO {
         EducativeProgram educativeProgram = new EducativeProgram();
         int educationProgramId = resultSet.getInt("education_program_id");
         String name = resultSet.getString("name");
-        educativeProgram.setIdEducationProgram(educationProgramId);
+        educativeProgram.setIdEducativeProgram(educationProgramId);
         educativeProgram.setName(name);
         return educativeProgram;
     }
