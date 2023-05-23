@@ -115,7 +115,9 @@ public class TutoradoWindow implements Initializable {
         try {
             ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
             for (EducationProgram educationProgram : educationPrograms) {
-                cbEducativeProgram.getItems().add(educationProgram.getName());
+                if (educationProgram.getName() != null && educationProgram.getName().equals(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getName())) {
+                    cbEducativeProgram.getItems().add(educationProgram.getName());
+                }
             }
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al cargar los programas educativos", Alert.AlertType.ERROR);
