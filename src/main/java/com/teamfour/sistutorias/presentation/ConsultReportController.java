@@ -49,7 +49,7 @@ public class ConsultReportController implements Initializable {
     private TableView<Assistance> tvTutored;
     private ObservableList<User> tutors;
     private ObservableList<Tutorship> tutorships;
-    private EducationProgram educationProgram;
+    private EducativeProgram educativeProgram;
     private ObservableList<Assistance> assistances;
     private ObservableList<AcademicProblem> academicProblems;
 
@@ -110,7 +110,7 @@ public class ConsultReportController implements Initializable {
         Register register = new Register(
                 SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail(),
                 tutorshipId,
-                SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+                SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         Register tutorshipReport = registerDAO.getSpecificRegister(register);
 
@@ -121,16 +121,6 @@ public class ConsultReportController implements Initializable {
             Comment comment = commentDAO.getCommentFromRegister(tutorshipReport.getRegister_id());
             ArrayList<AcademicProblem> academicProblemsArrayList = academicProblemDAO.getAcademicProblemsFromRegister(tutorshipReport.getRegister_id());
             assistances.addAll(assistancesArrayList);
-               /* for (Assistance a : assistances) {
-                    if (a.getAsistencia()) {
-                        a.getCheckBoxAsistencia().setSelected(true);
-                        a.getCheckBoxAsistencia().setDisable(true);
-                    }
-                    if (a.getRiesgo()) {
-                        a.getCheckBoxRiesgo().setSelected(true);
-                        a.getCheckBoxRiesgo().setDisable(true);
-                    }
-                }*/
             tvTutored.setItems(assistances);
             SetPercentages();
             academicProblems.addAll(academicProblemsArrayList);

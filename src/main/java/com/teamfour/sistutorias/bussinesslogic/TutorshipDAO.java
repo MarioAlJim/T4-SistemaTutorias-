@@ -59,6 +59,7 @@ public class TutorshipDAO implements ITutorshipDAO {
         dataBaseConnection.closeConection();
         return tutorships;
     }
+
     @Override
     public boolean addTutorship(Tutorship tutorship) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -69,21 +70,22 @@ public class TutorshipDAO implements ITutorshipDAO {
         int period = tutorship.getPeriodId();
         String query = "INSERT INTO tutorship (start, end, period_id) VALUES (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        if(!openingDay.isEmpty() && !closingDay.isEmpty() && period != 0){
+        if (!openingDay.isEmpty() && !closingDay.isEmpty() && period != 0) {
             int result;
             statement.setString(1, openingDay);
             statement.setString(2, closingDay);
             statement.setInt(3, period);
             result = statement.executeUpdate();
-            if(result == 0){
+            if (result == 0) {
                 throw new SQLException("No se pudo registrar la tutoría");
             } else {
-                flag= true;
+                flag = true;
             }
         }
         dataBaseConnection.closeConection();
         return flag;
     }
+
     @Override
     public boolean updateTutorship(Tutorship tutorship) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -95,26 +97,21 @@ public class TutorshipDAO implements ITutorshipDAO {
         int tutorshipId = tutorship.getIdTutorShip();
         String query = "UPDATE tutorship SET start = ?, end = ?, period_id = ? WHERE tutorship_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        if(!openingDay.isEmpty() && !closingDay.isEmpty() && period != 0){
+        if (!openingDay.isEmpty() && !closingDay.isEmpty() && period != 0) {
             int result;
             statement.setString(1, openingDay);
             statement.setString(2, closingDay);
             statement.setInt(3, period);
             statement.setInt(4, tutorshipId);
             result = statement.executeUpdate();
-            if(result == 0){
+            if (result == 0) {
                 throw new SQLException("No se pudo modififcar la tutoría");
             } else {
-                flag= true;
+                flag = true;
             }
         }
         dataBaseConnection.closeConection();
         return flag;
-    }
-
-
-    public boolean isValidDate(String date) {
-        return true;
     }
 
     @Override
@@ -137,7 +134,8 @@ public class TutorshipDAO implements ITutorshipDAO {
         db.closeConection();
         return tutorships;
     }
-     public List<Tutorship> getTutorship(int periodId) throws SQLException{
+
+    public List<Tutorship> getTutorship(int periodId) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM tutorship WHERE period_id = ?";
@@ -145,18 +143,37 @@ public class TutorshipDAO implements ITutorshipDAO {
         statement.setInt(1, periodId);
         ResultSet resultSet = statement.executeQuery();
         List<Tutorship> listTutorships = new ArrayList<>();
-        if(resultSet.next()){
-            do{
+        if (resultSet.next()) {
+            do {
                 Tutorship tutorship = new Tutorship();
                 tutorship.setIdTutorShip(resultSet.getInt("tutorship_id"));
                 tutorship.setStart(resultSet.getString("start"));
                 tutorship.setEnd(resultSet.getString("end"));
                 tutorship.setPeriodId(resultSet.getInt("period_id"));
                 listTutorships.add(tutorship);
-            } while(resultSet.next());
+            } while (resultSet.next());
         }
         dataBaseConnection.closeConection();
         return listTutorships;
+    }
+
+
+    @Override
+    public Tutorship getCurrentTutorship(int period_id) throws SQLException {
+        Tutorship tutorship = new Tutorship();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT * FROM tutorship T WHERE T.period_id = ? AND CURDATE() BETWEEN T.start AND T.end";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, period_id);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            tutorship.setIdTutorShip(resultSet.getInt("tutorship_id"));
+            tutorship.setStart(resultSet.getString("start"));
+            tutorship.setEnd(resultSet.getString("end"));
+            tutorship.setPeriodId(resultSet.getInt("period_id"));
+        }
+        return tutorship;
     }
 
 }

@@ -1,19 +1,10 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.EEDAO;
-import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
-import com.teamfour.sistutorias.bussinesslogic.GroupDAO;
-import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
+import com.teamfour.sistutorias.bussinesslogic.*;
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import com.teamfour.sistutorias.domain.EE;
-import com.teamfour.sistutorias.domain.EducationProgram;
-import com.teamfour.sistutorias.domain.Group;
-import com.teamfour.sistutorias.domain.Teacher;
+import com.teamfour.sistutorias.domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
@@ -37,39 +27,42 @@ public class GroupAdministrationController implements Initializable {
     @FXML
     private TableView<Group> tvGroup;
     @FXML
-    private TableColumn tcPersonalNum;
+    private TableColumn<Object, Object> tcPersonalNum;
     @FXML
-    private TableColumn tcName;
+    private TableColumn<Object, Object> tcName;
     @FXML
     private Button btnDeleteGroup;
     @FXML
     private Button btnModifyGroup;
     @FXML
-    private Label lbl_action;
-    @FXML
     private Button btnCancelModification;
     @FXML
     private TableView<Teacher> tvTeacher;
     @FXML
-    private TableColumn tcNameTeacher;
+    private TableColumn<Teacher, String> tcNameTeacher;
     @FXML
     private TableView<EE> tvEE;
     @FXML
-    private TableColumn tcEE;
+    private TableColumn<EE, String> tcEE;
     @FXML
     private TextField tfSelectedEE;
     @FXML
     private TextField tfSelectedTeacher;
     @FXML
-    private ComboBox cbbAcademicProblem;
+    private ComboBox<EducativeProgram> cbEducationProgram;
     @FXML
-    private TableColumn tcNrc;
+    private TableColumn<Group, Integer> tcNrc;
     @FXML
-    private TableColumn tcEeG;
-    private EducationProgram selectedEducationProgram;
+    private TableColumn<Group, String> tcEeG;
+    @FXML
+    private Label lbl_action;
+    @FXML
+    private Label lbPeriod;
+    private EducativeProgram selectedEducativeProgram;
     private Teacher selectedTeacher;
     private EE selectedEe;
     private Group newGroup = new Group();
+
 
     private void lockModify(boolean lock) {
         if (lock) {
@@ -93,27 +86,36 @@ public class GroupAdministrationController implements Initializable {
     }
 
     private boolean completedForm(){
-        return (!tfNRC.getText().isEmpty() && !tfSelectedEE.getText().isEmpty() && !tfSelectedTeacher.getText().isEmpty());
+        boolean complete = true;
+        String nrc = tfNRC.getText().trim().replaceAll(" +","");
+        if(DataValidation.numberValidation(nrc) == -1) {
+            complete = false;
+            WindowManagement.showAlert("Atencion", "El NRC debe ser un numero", Alert.AlertType.INFORMATION);
+        }
+        if(tfSelectedEE.getText().isEmpty() || tfSelectedTeacher.getText().isEmpty()) {
+            complete = false;
+            WindowManagement.showAlert("Error", "Por favor seleccione todos los elementos para el registro", Alert.AlertType.INFORMATION);
+        }
+        return complete;
     }
 
-    private void setEducationProgram() {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
-        ArrayList<EducationProgram> educationPrograms;
-        ObservableList<EducationProgram> educationProgramsList = FXCollections.observableArrayList();
+    private void setAcademicPrograms() {
+        EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
+        ArrayList<EducativeProgram> educativePrograms;
+        ObservableList<EducativeProgram> educativeProgramsList = FXCollections.observableArrayList();
         try {
-            educationPrograms = educationProgramDAO.getEducationPrograms();
-            educationProgramsList.addAll(educationPrograms);
+            educativePrograms = educationProgramDAO.getEducativePrograms();
+            educativeProgramsList.addAll(educativePrograms);
         } catch (SQLException sqlException) {
             Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
         }
-        cbbAcademicProblem.setItems(educationProgramsList);
-        cbbAcademicProblem.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
-            selectedEducationProgram = (EducationProgram) valorNuevo;
-            setTeachers();
-            setEes();
+        cbEducationProgram.setItems(educativeProgramsList);
+        cbEducationProgram.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
+            selectedEducativeProgram = valorNuevo;
+            clearForm();
             setGroups();
-            btnSaveGroup.setDisable(false);
-            newGroup.setEducationProgram(selectedEducationProgram);
+            lockModify(true);
+            newGroup.setEducationProgram(selectedEducativeProgram);
         });
     }
 
@@ -154,7 +156,8 @@ public class GroupAdministrationController implements Initializable {
         ObservableList<Group> groupsList = FXCollections.observableArrayList();
         try {
             GroupDAO groupDAO = new GroupDAO();
-            groups = groupDAO.groupsList(selectedEducationProgram.getIdEducationProgram());
+            groups = groupDAO.getGroupsList(selectedEducativeProgram.getIdEducativeProgram(),
+                    SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             groupsList.addAll(groups);
         } catch (SQLException exception) {
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
@@ -163,61 +166,80 @@ public class GroupAdministrationController implements Initializable {
         tvGroup.setItems(groupsList);
     }
 
-    private void selectTeacherListener() {
+    private void seeSelectedTeacherListener() {
         this.tvTeacher.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 selectedTeacher = this.tvTeacher.getSelectionModel().getSelectedItem();
-                String teachersName = selectedTeacher.getPersonalNumber() + "";
+                String teachersName = String.valueOf(selectedTeacher.getFullName());
                 this.tfSelectedTeacher.setText(teachersName);
                 newGroup.setTeacher(selectedTeacher);
             }
         });
     }
 
-    private void selectEeListener() {
+    private void seeSelectedEeListener() {
         this.tvEE.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 selectedEe = this.tvEE.getSelectionModel().getSelectedItem();
-                String eesName = selectedEe.getIdEe() + "";
+                String eesName = String.valueOf(selectedEe.getName());
                 this.tfSelectedEE.setText(eesName);
                 newGroup.setEe(selectedEe);
             }
         });
     }
 
-    private void selectGroup() {
+    private void seeSelectedGroup() {
         this.tvGroup.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 newGroup = this.tvGroup.getSelectionModel().getSelectedItem();
-                this.tfNRC.setText(newGroup.getNrc() + "");
-                this.tfSelectedEE.setText(newGroup.getEe().getIdEe()+"");
-                this.tfSelectedTeacher.setText(newGroup.getTeacher().getPersonalNumber()+"");
+                this.tfNRC.setText((String.valueOf(newGroup.getNrc())));
+                this.tfSelectedEE.setText(String.valueOf(newGroup.getEe().getIdEe()));
+                this.tfSelectedTeacher.setText(String.valueOf(newGroup.getTeacher().getPersonalNumber()));
                 lockModify(false);
             }
         });
     }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setAcademicPrograms();
+        setTeachers();
+        setEes();
+        cbEducationProgram.getSelectionModel().selectFirst();
+        lockModify(true);
+        btnSaveGroup.setDisable(true);
+        tfSelectedTeacher.setDisable(true);
+        tfSelectedEE.setDisable(true);
+        seeSelectedTeacherListener();
+        seeSelectedEeListener();
+        seeSelectedGroup();
+
+        lbPeriod.setText("Periodo: " + SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getFullPeriod());
+    }
+
     @FXML
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    public void cancelModification(ActionEvent actionEvent) {
+    public void cancelModification() {
         clearForm();
         lockModify(true);
     }
 
     @FXML
-    public void saveGroups(ActionEvent actionEvent) {
+    public void registerGroup() {
         GroupDAO groupDAO = new GroupDAO();
         int result;
         if (completedForm()) {
             try {
-                newGroup.setNrc(Integer.parseInt(tfNRC.getText()));
+                newGroup.setNrc(Integer.parseInt(tfNRC.getText().trim().replaceAll(" ","")));
                 result = groupDAO.registerGroup(newGroup);
                 if (result == 1) {
                     setGroups();
+                    clearForm();
                     WindowManagement.showAlert("Éxito", "Registro exitoso", Alert.AlertType.INFORMATION);
                 } else if (result == -1) {
                     WindowManagement.showAlert("Error", "El grupo que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
@@ -226,13 +248,11 @@ public class GroupAdministrationController implements Initializable {
                 Logger.getLogger(GroupAdministrationController.class.getName()).log(Level.SEVERE, null, sqlException);
                 WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
             }
-        } else {
-            WindowManagement.showAlert("Error", "Por favor seleccione todos los elementos para el registro", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    public void deleteGroup(ActionEvent actionEvent) {
+    public void deleteGroup() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación");
@@ -242,9 +262,11 @@ public class GroupAdministrationController implements Initializable {
             GroupDAO groupDAO = new GroupDAO();
             int result;
             try {
-                result = groupDAO.deleteGroup(newGroup.getNrc());
+                result = groupDAO.deleteGroup(newGroup.getGroup_id());
                 if (result == 1) {
                     setGroups();
+                    clearForm();
+                    lockModify(true);
                     WindowManagement.showAlert("Éxito", "Eliminacion exitosa", Alert.AlertType.INFORMATION);
                 }
             } catch (SQLException sqlException) {
@@ -255,15 +277,17 @@ public class GroupAdministrationController implements Initializable {
     }
 
     @FXML
-    public void modifyGroup(ActionEvent actionEvent) {
+    public void modifyGroup() {
         GroupDAO groupDAO = new GroupDAO();
         int result;
         if (completedForm()) {
             try {
-                int newNrc= Integer.parseInt(tfNRC.getText());
+                int newNrc= Integer.parseInt(tfNRC.getText().trim().replaceAll(" +",""));
                 result = groupDAO.modifyGroup(newGroup, newNrc);
                 if (result == 1) {
                     setGroups();
+                    clearForm();
+                    lockModify(true);
                     WindowManagement.showAlert("Éxito", "Modificacion exitosa", Alert.AlertType.INFORMATION);
                 } else if (result == -1) {
                     WindowManagement.showAlert("Error", "El grupo que intenta registrar ya se encuentra en el sistema", Alert.AlertType.INFORMATION);
@@ -275,17 +299,5 @@ public class GroupAdministrationController implements Initializable {
         } else {
             WindowManagement.showAlert("Error", "Por favor llene todos los elementos para el registro", Alert.AlertType.INFORMATION);
         }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setEducationProgram();
-        lockModify(true);
-        btnSaveGroup.setDisable(true);
-        tfSelectedTeacher.setDisable(true);
-        tfSelectedEE.setDisable(true);
-        selectTeacherListener();
-        selectEeListener();
-        selectGroup();
     }
 }

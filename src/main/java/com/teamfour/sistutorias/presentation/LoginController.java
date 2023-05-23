@@ -32,8 +32,6 @@ public class LoginController implements Initializable {
     @FXML
     private Label lblInvalidPassword;
     @FXML
-    private Label lblPassword;
-    @FXML
     private Button btnSignIn;
     @FXML
     private Button btnExit;
@@ -54,7 +52,13 @@ public class LoginController implements Initializable {
             }
         }
         closeAux();
+        PeriodDAO periodDAO = new PeriodDAO();
+        TutorshipDAO tutorshipDAO = new TutorshipDAO();
         try {
+            Period period = periodDAO.getCurrentPeriod();
+            Tutorship tutorship = tutorshipDAO.getCurrentTutorship(period.getIdPeriod());
+            SessionGlobalData.getSessionGlobalData().setCurrentPeriod(period);
+            SessionGlobalData.getSessionGlobalData().setCurrentTutorship(tutorship);
             switch (typeUser) {
                 case 2:
                     WindowManagement.changeScene("Menu de administrador", getClass().getResource("AdminMenu.fxml"));
@@ -66,11 +70,14 @@ public class LoginController implements Initializable {
         } catch (IOException exception) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
             WindowManagement.showAlert("Error", "Error no se pudo cargar el menu", Alert.AlertType.INFORMATION);
+        } catch (SQLException exception) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.showAlert("Error", "Error al conectar con la base de datos, compruebe su conexion", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    private void signUp(ActionEvent event) {
+    private void signUp() {
         String uvAcount = txtUser.getText().trim().replaceAll(" ","");
         String password = txtPassword.getText();
         if(uvAcount.isEmpty() || uvAcount.length() > 50){

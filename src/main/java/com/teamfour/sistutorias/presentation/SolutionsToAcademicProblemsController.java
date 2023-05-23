@@ -1,11 +1,7 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
-import com.teamfour.sistutorias.bussinesslogic.EEDAO;
-import com.teamfour.sistutorias.bussinesslogic.TeacherDAO;
-import com.teamfour.sistutorias.domain.AcademicProblem;
-import com.teamfour.sistutorias.domain.EE;
-import com.teamfour.sistutorias.domain.Teacher;
+import com.teamfour.sistutorias.bussinesslogic.*;
+import com.teamfour.sistutorias.domain.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +29,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     @FXML
     private ComboBox<EE> cbEE;
     @FXML
+    private ComboBox<Period> cbPeriod;
+    @FXML
     private TextArea taSolution;
     @FXML
     private TableView<SolutionsTable> tvAcademicProblems;
@@ -46,8 +44,11 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     private Button btnModify;
     @FXML
     private Button btnDelete;
-
+    private ArrayList<Group> groups = new ArrayList<>();
     private final ObservableList<SolutionsTable> tableSolutions = FXCollections.observableArrayList();
+    private final ObservableList<Period> periods = FXCollections.observableArrayList();
+    private final ObservableList<Teacher> teachers = FXCollections.observableArrayList();
+    private final ObservableList<EE> ees = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,6 +56,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             populateComboBoxes();
             populateTable();
             seeSolutionListener();
+            filterAcademicProblems(new ActionEvent());
             disableButtons(true);
         } catch (SQLException sqlException) {
             WindowManagement.connectionLostMessage();
@@ -67,12 +69,43 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     }
 
     private void populateComboBoxes() throws SQLException {
-        TeacherDAO teacherDAO = new TeacherDAO();
-        ObservableList<Teacher> teachers = FXCollections.observableArrayList();
-        teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
-        this.cbTeacher.setItems(teachers);
+        PeriodDAO periodDAO = new PeriodDAO();
+
+        periods.addAll(periodDAO.getPeriods());
+
+        this.cbPeriod.setItems(periods);
+        this.cbPeriod.getSelectionModel().select(SessionGlobalData.getSessionGlobalData().getCurrentPeriod());
+
+        this.cbPeriod.setConverter(new StringConverter<Period>() {
+            @Override
+            public String toString(Period period) {
+                return period == null ? null : period.getFullPeriod();
+            }
+
+            @Override
+            public Period fromString(String s) {
+                return null;
+            }
+        });
+
+        GroupDAO groupDAO = new GroupDAO();
+        this.groups = groupDAO.getGroupsByEducationProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
+
+        this.teachers.add(new Teacher());
+        this.ees.add(new EE());
+
+        for(Group group : this.groups) {
+            if(group.getIdPeriod() == this.cbPeriod.getSelectionModel().getSelectedItem().getIdPeriod()) {
+                this.teachers.add(group.getTeacher());
+                this.ees.add(group.getEe());
+            }
+        }
+
+        this.cbTeacher.setItems(this.teachers);
+        this.cbEE.setItems(this.ees);
         this.cbTeacher.getSelectionModel().selectFirst();
+        this.cbEE.getSelectionModel().selectFirst();
+
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
             @Override
             public String toString(Teacher teacher) {
@@ -85,12 +118,6 @@ public class SolutionsToAcademicProblemsController implements Initializable {
             }
         });
 
-        EEDAO eedao = new EEDAO();
-        ObservableList<EE> ees = FXCollections.observableArrayList();
-        ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram()));
-        this.cbEE.setItems(ees);
-        this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
             @Override
             public String toString(EE ee) {
@@ -106,7 +133,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     private void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         int idSolution = 0;
         int positionSolution = 0;
@@ -129,9 +156,9 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
                 idSolution = academicProblem.getIdSolution();
                 positionSolution++;
-                tableSolutions.add(solutionsFromTable);
+                this.tableSolutions.add(solutionsFromTable);
             } else {
-                SolutionsTable solution = tableSolutions.get(positionSolution-1);
+                SolutionsTable solution = this.tableSolutions.get(positionSolution-1);
                 solution.getCbAcademicProblems().getItems().add(academicProblem.getTitle());
                 solution.addRelatedAcademicProblems(academicProblem.getIdAcademicProblem());
             }
@@ -140,7 +167,6 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         this.tcAcademicProblem.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCbAcademicProblems()));
         this.tcTeacher.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTeacher()));
         this.tcEE.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getEe()));
-        this.tvAcademicProblems.setItems(tableSolutions);
     }
 
     private void seeSolutionListener() throws SQLException {
@@ -149,41 +175,70 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 AcademicProblem selectedSolutionToAcademicProblem = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
                 String solution = selectedSolutionToAcademicProblem.getSolution();
                 this.taSolution.setText(solution);
-                disableButtons(false);
+                if(selectedSolutionToAcademicProblem.getPeriod().getIdPeriod() == SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod()) {
+                    disableButtons(false);
+                }
             }
         });
     }
 
+    private void updateComboBoxes() {
+        this.cbTeacher.getSelectionModel().selectFirst();
+        this.cbEE.getSelectionModel().selectFirst();
+        this.teachers.removeIf(teacher -> !teacher.getFullName().equals(""));
+        this.ees.removeIf(ee -> !ee.getName().equals(""));
+
+        for(Group group : this.groups) {
+            if(group.getIdPeriod() == this.cbPeriod.getSelectionModel().getSelectedItem().getIdPeriod()) {
+                this.teachers.add(group.getTeacher());
+                this.ees.add(group.getEe());
+            }
+        }
+    }
+
+    @FXML
+    private void filterAcademicProblemsAndUpdateComboBoxes(ActionEvent event) {
+        updateComboBoxes();
+        filterAcademicProblems(event);
+    }
+
     @FXML
     private void filterAcademicProblems(ActionEvent event) {
-        Teacher selectedTeacher = (Teacher) this.cbTeacher.getSelectionModel().getSelectedItem();
+        Teacher selectedTeacher = this.cbTeacher.getSelectionModel().getSelectedItem();
         String selectedTeacherName = selectedTeacher.getFullName().replaceAll("\\s", "");
-        EE selectedEE = (EE) this.cbEE.getSelectionModel().getSelectedItem();
+        EE selectedEE = this.cbEE.getSelectionModel().getSelectedItem();
         String selectedEEName = selectedEE.getName().replaceAll("\\s", "");
+        Period selectedPeriod = this.cbPeriod.getSelectionModel().getSelectedItem();
 
         ObservableList<SolutionsTable> filteredAcademicProblems = FXCollections.observableArrayList();
 
         if(!selectedTeacherName.isEmpty() && !selectedEEName.isEmpty()) {
             for(SolutionsTable academicProblem : tableSolutions) {
                 if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
-                        && academicProblem.getEe().equals(selectedEE.getName()))
+                        && academicProblem.getEe().equals(selectedEE.getName())
+                        && academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
                     filteredAcademicProblems.add(academicProblem);
             }
         } else if(!selectedTeacherName.isEmpty()) {
             for(SolutionsTable academicProblem : tableSolutions) {
-                if(academicProblem.getTeacher().equals(selectedTeacher.getFullName()))
+                if(academicProblem.getTeacher().equals(selectedTeacher.getFullName())
+                        && academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
                     filteredAcademicProblems.add(academicProblem);
             }
         } else if(!selectedEEName.isEmpty()) {
             for(SolutionsTable academicProblem : tableSolutions) {
-                if(academicProblem.getEe().equals(selectedEE.getName()))
+                if(academicProblem.getEe().equals(selectedEE.getName())
+                        && academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
                     filteredAcademicProblems.add(academicProblem);
             }
         } else {
-            filteredAcademicProblems = tableSolutions;
+            for(SolutionsTable academicProblem : tableSolutions) {
+                if(academicProblem.getPeriod().getIdPeriod() == selectedPeriod.getIdPeriod())
+                    filteredAcademicProblems.add(academicProblem);
+            }
         }
 
-        tvAcademicProblems.setItems(filteredAcademicProblems);
+        this.tvAcademicProblems.setItems(filteredAcademicProblems);
 
         if(this.tvAcademicProblems.getSelectionModel().getSelectedItem() == null) {
             disableButtons(true);

@@ -1,8 +1,8 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
+import com.teamfour.sistutorias.bussinesslogic.EducativeProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.TutoradoDAO;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Tutorado;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +37,7 @@ public class TutoradoWindow implements Initializable {
 
     private Tutorado tutorado;
     private boolean isEditing;
+    private ObservableList<EducativeProgram> educativePrograms = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,7 +57,14 @@ public class TutoradoWindow implements Initializable {
             tutorado.setPaternalSurname(tfPaternalSurname.getText());
             tutorado.setMaternalSurname(tfMaternalSurname.getText());
             tutorado.setRegistrationNumber(tfMatricula.getText());
-            tutorado.setProgramId(1); //Provisional until a better solution is found
+
+            for(EducativeProgram educativeProgram : this.educativePrograms) {
+                if(educativeProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
+                    tutorado.setProgramId(educativeProgram.getIdEducativeProgram());
+                    break;
+                }
+            }
+
             if (isEditing) {
                 updateTutorado();
             } else {
@@ -111,7 +119,7 @@ public class TutoradoWindow implements Initializable {
     }
 
     private void loadEducativePrograms() {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+        EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
         try {
             ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
             for (EducationProgram educationProgram : educationPrograms) {

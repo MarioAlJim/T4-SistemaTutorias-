@@ -12,80 +12,89 @@ import com.teamfour.sistutorias.bussinesslogic.GroupDAO;
 import com.teamfour.sistutorias.domain.AcademicProblem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
 public class RegisterAcademicProblemController implements Initializable{
 
     @FXML
-    private TextField txtNumberTutorados;
+    private TextField tfNumberTutorados;
     @FXML
-    private TextField txtTitle;
+    private TextField tfTitle;
     @FXML
-    private TextArea txtDescription;
+    private TextArea tfDescription;
     @FXML
-    private ComboBox cbEe;
+    private ComboBox<Group> cbGroups;
     @FXML
-    private Button btnSave;
+    private Button btSave;
     @FXML
-    private Button btnCancel;
+    private TableView<AcademicProblem> tvAcademicProblems;
+    @FXML
+    private TableColumn<AcademicProblem, String> tcTitle;
+    @FXML
+    private TableColumn<AcademicProblem, String> tcDescription;
+    @FXML
+    private TableColumn<AcademicProblem, Integer> tcNrc;
+    @FXML
+    private Button btClose;
+    @FXML
+    private Button btDelete;
+    @FXML
+    private Button btModify;
+    @FXML
+    private Button btCancel;
+
     private Group ees;
     private ArrayList<AcademicProblem> listAcademicProblems;
+    private ObservableList<AcademicProblem> academicProblems = FXCollections.observableArrayList();
+    private int indexAcademicProblemSelected;
+
 
     public void setListAcademicProblems(ArrayList<AcademicProblem> academicProblems){
         this.listAcademicProblems = academicProblems;
+        setTableAcademicProblems();
     }
-    public ArrayList getListAcademicProblems(){
+
+    public ArrayList<AcademicProblem> getListAcademicProblems(){
         return listAcademicProblems;
     }
 
-    @FXML
-    public void newRegister(ActionEvent event) {
-        if(txtNumberTutorados.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        }else if(txtTitle.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        }else if(txtDescription.getText().isEmpty()){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        }else if(ees == null){
-            WindowManagement.showAlert("Error", "Campos vacios detectados", Alert.AlertType.INFORMATION);
-        }else {
-            if(validateData() == 3){
-                saveProblem();
-            } else {
-                WindowManagement.showAlert("Error", "Se detectó el uso de caracteres invalidos", Alert.AlertType.INFORMATION);
+    private void setTableAcademicProblems() {
+        tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        tcTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcNrc.setCellValueFactory(new PropertyValueFactory<>("group"));
+
+        this.academicProblems.addAll(listAcademicProblems);
+        this.tvAcademicProblems.setItems(academicProblems);
+        this.tvAcademicProblems.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indexAcademicProblemSelected = tvAcademicProblems.getSelectionModel().getSelectedIndex();
+                tfTitle.setText(newSelection.getTitle());
+                tfDescription.setText(newSelection.getDescription());
+                tfNumberTutorados.setText(String.valueOf(newSelection.getNumberTutorados()));
+                lockButtons(false);
             }
-        }
+        });
     }
 
-    @FXML
-    public void close(ActionEvent event) {
-        exitWindow();
-    }
-
-    private void exitWindow() {
-        Stage stage = (Stage) btnCancel.getScene().getWindow();
-        stage.close();
-    }
-
-    private void loadEes(int idProgram) {
+    private void setGroups() {
         ArrayList<Group> educativeExperiences;
         ObservableList<Group> educativeExperiencesObservableList = FXCollections.observableArrayList();
         try {
+            Group voidGroup = new Group();
+            educativeExperiencesObservableList.add(voidGroup);
             GroupDAO groupDAO = new GroupDAO();
-            educativeExperiences = groupDAO.groupsList(idProgram);
-            if (!educativeExperiences.isEmpty()) {
-                for (Group ee : educativeExperiences) {
-                    educativeExperiencesObservableList.add(ee);
-                }
-            } else {
-                WindowManagement.showAlert("Atencion", "No hay experiencias registradas", Alert.AlertType.INFORMATION);
-            }
-            cbEe.setItems(educativeExperiencesObservableList);
-            cbEe.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
-                ees = (Group) valorNuevo;
+            educativeExperiences = groupDAO.getGroupsList(
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram(),
+                    SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
+            educativeExperiencesObservableList.addAll(educativeExperiences);
+            cbGroups.setItems(educativeExperiencesObservableList);
+            cbGroups.getSelectionModel().selectFirst();
+            cbGroups.valueProperty().addListener((ov, oldValue, newValue) -> {
+                ees = newValue;
             });
         } catch (SQLException exception){
             WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
@@ -93,50 +102,124 @@ public class RegisterAcademicProblemController implements Initializable{
         }
     }
 
-    private int validateData() {
-        int validData = 0;
-        String cantidadTutorados = txtNumberTutorados.getText();
-        if(cantidadTutorados.matches("[0-9]+")) {
-            int number = Integer.parseInt(cantidadTutorados);
-            if(number > 0 && number < 30) {
-                ++validData;
-            }
+    private boolean completedForm() {
+        boolean complete = true;
+        if (tfDescription.getText().isEmpty() || tfDescription.getText().trim().replaceAll(" +", "").length() == 0)
+            complete = false;
+        if (tfTitle.getText().isEmpty() || tfTitle.getText().trim().replaceAll(" +", "").length() == 0)
+            complete = false;
+        if (cbGroups.getSelectionModel().isSelected(0))
+            complete = false;
+        if (tfNumberTutorados.getText().isEmpty() || tfNumberTutorados.getText().trim().replaceAll(" +", "").length() == 0)
+            complete = false;
+
+        return complete;
+    }
+
+    private boolean validData() {
+        boolean validData = true;
+        String numberTutorado = tfNumberTutorados.getText().trim().replaceAll(" +","");
+        if(DataValidation.numberValidation(numberTutorado) == -1) {
+            validData = false;
         }
-        if(txtTitle.getText().length() < 100) {
-            ++validData;
+        if(tfTitle.getText().trim().replaceAll(" +", "").length() > 100 || !DataValidation.textValidation(tfTitle.getText())) {
+            validData = false;
         }
-        if(txtDescription.getText().length() < 500) {
-            ++validData;
+        if(tfDescription.getText().trim().replaceAll(" +", "").length() > 500 || !DataValidation.textValidation(tfDescription.getText())) {
+            validData = false;
         }
         return validData;
     }
 
-    private void saveProblem() {
-        AcademicProblem academicProblem = new AcademicProblem();
-        int numberTutorados = Integer.parseInt(txtNumberTutorados.getText());
-        String title = txtTitle.getText();
-        String description = txtDescription.getText();
-        int nrc = ees.getNrc();
-        academicProblem.setNumberTutorados(numberTutorados);
-        academicProblem.setDescription(description);
-        academicProblem.setTitle(title);
-        academicProblem.setGroup(nrc);
-        academicProblem.setRegister(1);
-        listAcademicProblems.add(academicProblem);
-        exitWindow();
+    private void lockButtons (boolean lock) {
+        if (lock) {
+            tfDescription.setText("");
+            tfTitle.setText("");
+            tfNumberTutorados.setText("");
+            cbGroups.getSelectionModel().selectFirst();
+            btCancel.setDisable(true);
+            btModify.setDisable(true);
+            btDelete.setDisable(true);
+            btSave.setDisable(false);
+        } else {
+            btCancel.setDisable(false);
+            btModify.setDisable(false);
+            btDelete.setDisable(false);
+            btSave.setDisable(true);
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadEes(1);
+        setGroups();
+        lockButtons(true);
     }
 
-    private void clean() {
-        txtDescription.setText("");
-        txtTitle.setText("");
-        txtNumberTutorados.setText("");
-        cbEe.getSelectionModel().clearSelection();
-        if (listAcademicProblems == null)
-            listAcademicProblems = new ArrayList<>();
+    @FXML
+    public void saveAcademicProblem() {
+        if (completedForm()) {
+            if (validData()) {
+                AcademicProblem academicProblem = new AcademicProblem();
+                int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
+                String title = tfTitle.getText().trim().replaceAll(" +", "");
+                String description = tfDescription.getText().trim().replaceAll(" +", "");
+                int idGroup = ees.getGroup_id();
+                academicProblem.setNumberTutorados(numberTutorados);
+                academicProblem.setDescription(description);
+                academicProblem.setTitle(title);
+                academicProblem.setGroup(idGroup);
+                this.listAcademicProblems.add(academicProblem);
+                this.academicProblems.add(academicProblem);
+                lockButtons(true);
+            } else {
+                WindowManagement.showAlert("Atencion", "Se detectó el uso de caracteres invalidos, numero de tutorados debe ser un numero, en titulo y descripcion no se permiten caracteres especiales", Alert.AlertType.INFORMATION);
+            }
+        } else {
+            WindowManagement.showAlert("Atencion", "Todos los campos deben estar llenos", Alert.AlertType.INFORMATION);
+        }
+    }
+
+    @FXML
+    public void deleteAcademicProblem() {
+        academicProblems.remove(indexAcademicProblemSelected);
+        listAcademicProblems.remove(indexAcademicProblemSelected);
+        lockButtons(true);
+    }
+
+    @FXML
+    public void modifyAcademicProblem() {
+        if (completedForm()) {
+            if (validData()) {
+                AcademicProblem academicProblem = new AcademicProblem();
+                int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
+                String title = tfTitle.getText().trim().replaceAll(" +", "");
+                String description = tfDescription.getText().trim().replaceAll(" +", "");
+                int idGroup = ees.getGroup_id();
+                academicProblem.setNumberTutorados(numberTutorados);
+                academicProblem.setDescription(description);
+                academicProblem.setTitle(title);
+                academicProblem.setGroup(idGroup);
+                academicProblems.remove(indexAcademicProblemSelected);
+                listAcademicProblems.remove(indexAcademicProblemSelected);
+                listAcademicProblems.add(academicProblem);
+                academicProblems.add(academicProblem);
+                lockButtons(true);
+            } else {
+                WindowManagement.showAlert("Atencion", "Se detectó el uso de caracteres invalidos, numero de tutorados debe ser un numero, en titulo y descripcion no se permiten caracteres especiales", Alert.AlertType.INFORMATION);
+            }
+        } else {
+            WindowManagement.showAlert("Atencion", "Todos los campos deben estar llenos", Alert.AlertType.INFORMATION);
+        }
+    }
+
+    @FXML
+    public void cancel() {
+        lockButtons(true);
+    }
+
+    @FXML
+    public void close() {
+        Stage stage = (Stage) btCancel.getScene().getWindow();
+        stage.close();
     }
 }

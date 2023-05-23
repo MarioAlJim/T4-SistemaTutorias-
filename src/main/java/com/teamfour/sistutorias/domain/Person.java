@@ -40,6 +40,11 @@ public class Person {
     }
 
     public String getFullName() {
-        return this.name.trim() + " " + this.paternalSurname.trim() + " " + this.maternalSurname.trim();
+        String fullName;
+        if(this.name.equals("") && this.paternalSurname.equals("") && this.maternalSurname.equals(""))
+            fullName = "";
+        else
+            fullName = this.name.trim() + " " + this.paternalSurname.trim() + " " + this.maternalSurname.trim();
+        return fullName;
     }
 }

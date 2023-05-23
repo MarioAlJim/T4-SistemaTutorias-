@@ -114,4 +114,5 @@ public class AcademicProblem {
     public void setPeriod(Period period) {
         this.period = period;
     }
+
 }

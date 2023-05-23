@@ -1,9 +1,9 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
+import com.teamfour.sistutorias.bussinesslogic.EducativeProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.UserDAO;
 import com.teamfour.sistutorias.bussinesslogic.UserRoleProgramDAO;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import com.teamfour.sistutorias.domain.User;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class UserWindow implements Initializable {
@@ -61,11 +60,11 @@ public class UserWindow implements Initializable {
     }
 
     private void loadEducativePrograms() {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+        EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
         try {
-            ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
-            for (EducationProgram educationProgram : educationPrograms) {
-                cbEducativeProgram.getItems().add(educationProgram.getName());
+            ObservableList<EducativeProgram> educativePrograms = FXCollections.observableArrayList(educationProgramDAO.getEducativePrograms());
+            for (EducativeProgram educativeProgram : educativePrograms) {
+                cbEducativeProgram.getItems().add(educativeProgram.getName());
             }
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al cargar los programas educativos", Alert.AlertType.ERROR);
@@ -154,22 +153,22 @@ public class UserWindow implements Initializable {
 
                 if (chbTutor.isSelected()) {
                     roleProgram.setRole(1);
-                    roleProgram.getEducationProgram().setIdEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducativeProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCoordinator.isSelected()) {
                     roleProgram.setRole(2);
-                    roleProgram.getEducationProgram().setIdEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducativeProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCareerManager.isSelected()) {
                     roleProgram.setRole(3);
-                    roleProgram.getEducationProgram().setIdEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducativeProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbAdmin.isSelected()) {
                     roleProgram.setRole(4);
-                    roleProgram.getEducationProgram().setIdEducationProgram(1);
+                    roleProgram.getEducationProgram().setIdEducativeProgram(1);
                     userRoleProgram.addRole(roleProgram);
                 }
                 userRoleProgramDAO.insertRoleProgram(userRoleProgram);
@@ -235,22 +234,22 @@ public class UserWindow implements Initializable {
 
             if (chbTutor.isSelected()) {
                 roleProgram.setRole(1);
-                roleProgram.getEducationProgram().setIdEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducativeProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             if (chbCoordinator.isSelected()) {
                 roleProgram.setRole(2);
-                roleProgram.getEducationProgram().setIdEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducativeProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             if (chbCareerManager.isSelected()) {
                 roleProgram.setRole(3);
-                roleProgram.getEducationProgram().setIdEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducativeProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             if (chbAdmin.isSelected()) {
                 roleProgram.setRole(4);
-                roleProgram.getEducationProgram().setIdEducationProgram(1);
+                roleProgram.getEducationProgram().setIdEducativeProgram(1);
                 userRoleProgram.addRole(roleProgram);
             }
             userRoleProgramDAO.insertRoleProgram(userRoleProgram);

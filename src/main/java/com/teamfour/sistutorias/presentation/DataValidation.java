@@ -1,6 +1,8 @@
 package com.teamfour.sistutorias.presentation;
 
 import javafx.scene.control.Alert;
+
+import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +10,7 @@ public class DataValidation {
 
     public static boolean textValidation(String text) {
         boolean valid = true;
-        String regex = "^[\\p{L} .'-]+$";
+        String regex = "^[A-Za-z0-9\\s\\,]+$";
         if (!text.matches(regex)) {
             valid = false;
         }
@@ -17,6 +19,13 @@ public class DataValidation {
 
     public static boolean textValidation(String text, int length, boolean spaces) {
         text = text.trim();
+        if (text.isBlank()){
+            return false;
+        } else if (text.isEmpty()) {
+            return false;
+        } else if (text.length() == 0) {
+            return false;
+        }
         boolean valid = true;
         boolean lastCharIsSpace = false;
         for (int i = 0; i < text.length(); i++) {
@@ -36,7 +45,8 @@ public class DataValidation {
             } else {
                 lastCharIsSpace = false;
             }
-            if ((character < 'A' || character > 'Z') && (character < 'a' || character > 'z')) {
+            if((character < 'A' || character > 'Z') && (character < 'a' || character > 'z') &&
+                    (character <= '0' || character >= '9') && (character == 'Ñ') && (character == 'ñ')){
                 valid = false;
                 break;
             }

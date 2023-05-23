@@ -14,8 +14,8 @@
         <Label layoutX="37.0" layoutY="124.0" text="Titulo" />
         <Label layoutX="36.0" layoutY="178.0" text="Descripción" />
         <Label layoutX="36.0" layoutY="92.0" text="Experiencia Educativa" />
-        <ComboBox fx:id="cbEe" layoutX="183.0" layoutY="88.0" prefHeight="25.0" prefWidth="374.0" promptText="Elija un Docente" />
-        <Button fx:id="btnSave" layoutX="502.0" layoutY="380.0" mnemonicParsing="false" onAction="#updateAcademicProblem" text="Guardar" />
-        <Button fx:id="btnCancel" layoutX="425.0" layoutY="380.0" mnemonicParsing="false" onAction="#close" text="Cancelar" />
+        <ComboBox fx:id="cbGroup" layoutX="183.0" layoutY="88.0" prefHeight="25.0" prefWidth="374.0" promptText="Elija un Docente" />
+        <Button fx:id="btSave" layoutX="502.0" layoutY="380.0" mnemonicParsing="false" onAction="#updateAcademicProblem" text="Guardar" style="-fx-background-color: ForestGreen;"/>
+        <Button fx:id="btCancel" layoutX="425.0" layoutY="380.0" mnemonicParsing="false" onAction="#close" text="Cancelar" style="-fx-background-color: DimGray;"/>
     </children>
 </AnchorPane>

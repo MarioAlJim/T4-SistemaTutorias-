@@ -13,10 +13,11 @@ public class TeacherDAO implements ITeacherDAO {
     @Override
     public ArrayList<Teacher> getTeachersByProgram(int idProgram) throws SQLException {
         ArrayList<Teacher> teachers = new ArrayList<>();
-        String query = "SELECT DISTINCT p.person_id, t.personal_number, p.name, p.paternal_surname, p.maternal_surname FROM group_program gp " +
+        String query = "SELECT DISTINCT p.person_id, t.personal_number, p.name, p.paternal_surname, p.maternal_surname, gp.period_id " +
+                "FROM group_program gp " +
                 "INNER JOIN teacher t ON t.personal_number = gp.personal_number " +
                 "INNER JOIN person p ON P.person_id = T.person_id " +
-                "WHERE gp.program_id = ?";
+                "WHERE gp.program_id = ? AND t.active = 1";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
@@ -33,7 +34,8 @@ public class TeacherDAO implements ITeacherDAO {
     public ArrayList<Teacher> getAllTeachers() throws SQLException {
         ArrayList<Teacher> teachers = new ArrayList<>();
         String query = "SELECT * FROM sistematutorias.teacher t " +
-                        "INNER JOIN person p ON p.person_id = t.person_id;";
+                        "INNER JOIN person p ON p.person_id = t.person_id " +
+                        "WHERE active = 1;";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
@@ -43,7 +45,6 @@ public class TeacherDAO implements ITeacherDAO {
                 teachers.add(getTeacher(resultSet));
             } while (resultSet.next());
         }
-
         dataBaseConnection.closeConection();
         return teachers;
     }
@@ -66,7 +67,7 @@ public class TeacherDAO implements ITeacherDAO {
     @Override
     public int registerTeacher(Teacher teacher) throws SQLException {
         int result = -1;
-        if (!duplicatedTeacher(teacher.getPersonalNumber())) {
+        if (duplicatedTeacher(teacher.getPersonalNumber())) {
             String queryPerson = "INSERT INTO person (name, paternal_surname, maternal_surname) VALUES (?,?,?);";
             DataBaseConnection dataBaseConnection = new DataBaseConnection();
             Connection connection = dataBaseConnection.getConnection();
@@ -102,7 +103,7 @@ public class TeacherDAO implements ITeacherDAO {
     @Override
     public int modifyTeacher(Teacher updateTeacher, int oldPersonalNumber) throws SQLException {
         int result = 0;
-        if ((oldPersonalNumber == updateTeacher.getPersonalNumber()) || (!duplicatedTeacher(updateTeacher.getPersonalNumber()))) {
+        if ((oldPersonalNumber == updateTeacher.getPersonalNumber()) || (duplicatedTeacher(updateTeacher.getPersonalNumber()))) {
             String queryPerson = "UPDATE person SET name = ?, paternal_surname = ?, maternal_surname= ? WHERE (person_id = ?);";
             String queryTeacher = "UPDATE teacher SET personal_number = ? WHERE (personal_number = ?);";
             DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -122,18 +123,14 @@ public class TeacherDAO implements ITeacherDAO {
         return result;
     }
 
-    public int deleteTeacher(int personalNumber, int person_id) throws SQLException {
+    public int deleteTeacher(int personalNumber) throws SQLException {
         int result = 0;
-        String queryDeleteTeacher = "DELETE FROM teacher WHERE (personal_number = ?);";
-        String queryDeletePerson = "DELETE FROM person WHERE (person_id = ?);";
+        String queryDeleteTeacher = "UPDATE teacher SET active = 0 WHERE (personal_number = ?);";
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statementTeacher = connection.prepareStatement(queryDeleteTeacher);
         statementTeacher.setInt(1, personalNumber);
-        PreparedStatement statementPerson = connection.prepareStatement(queryDeletePerson);
-        statementPerson.setInt(1, person_id);
         result += statementTeacher.executeUpdate();
-        result += statementPerson.executeUpdate();
         return result;
     }
 
@@ -153,6 +150,6 @@ public class TeacherDAO implements ITeacherDAO {
             duplicated = true;
         }
         dataBaseConnection.closeConection();
-        return duplicated;
+        return !duplicated;
     }
 }
