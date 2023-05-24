@@ -16,7 +16,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Locale.setDefault(Locale.Category.FORMAT, new Locale("es", "US"));
-        scene = new Scene(loadFXML("GroupQuery"));
+        scene = new Scene(loadFXML("Login"));
         stage.getIcons().add(new Image(App.class.getResourceAsStream("images/Flor_uv.png")));
         stage.setScene(scene);
         stage.show();

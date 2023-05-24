@@ -67,7 +67,7 @@ public class GroupQueryController implements Initializable {
 
 
     public void closeAction(ActionEvent actionEvent) {
-
+        WindowManagement.closeWindow(actionEvent);
     }
 
 

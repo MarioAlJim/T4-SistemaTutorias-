@@ -84,4 +84,5 @@ public class Group {
     public void setIdPeriod(int idPeriod) {
         this.idPeriod = idPeriod;
     }
+
 }
