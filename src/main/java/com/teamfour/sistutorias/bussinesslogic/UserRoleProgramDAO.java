@@ -1,7 +1,7 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import java.sql.Connection;
@@ -88,12 +88,12 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         if (resultSet.next()) {
             do {
                 RoleProgram roleProgram = new RoleProgram();
-                EducationProgram educationProgram = new EducationProgram();
-                educationProgram.setIdEducationProgram(resultSet.getInt("program_id"));
-                educationProgram.setName(resultSet.getString("name"));
+                EducativeProgram educativeProgram = new EducativeProgram();
+                educativeProgram.setIdEducativeProgram(resultSet.getInt("program_id"));
+                educativeProgram.setName(resultSet.getString("name"));
                 roleProgram.setRole(resultSet.getInt("role_id"));
                 roleProgram.setIdRoleProgram(resultSet.getInt("user_program_id"));
-                roleProgram.setEducationProgram(educationProgram);
+                roleProgram.setEducationProgram(educativeProgram);
                 rolePrograms.add(roleProgram);
             } while (resultSet.next());
         }
@@ -140,7 +140,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         for (int i = 0; i < userRoleProgram.getRolesPrograms().size(); i++) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, userRoleProgram.getEmail());
-            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram().getIdEducationProgram());
+            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram().getIdEducativeProgram());
             statement.setInt(3, userRoleProgram.getRolesPrograms().get(i).getRole());
             result += statement.executeUpdate();
         }

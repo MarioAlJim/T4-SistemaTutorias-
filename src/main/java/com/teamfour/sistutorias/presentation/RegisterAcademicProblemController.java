@@ -65,7 +65,7 @@ public class RegisterAcademicProblemController implements Initializable{
     private void setTableAcademicProblems() {
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tcTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        tcNrc.setCellValueFactory(new PropertyValueFactory <>("group"));
+        tcNrc.setCellValueFactory(new PropertyValueFactory<>("group"));
 
         this.academicProblems.addAll(listAcademicProblems);
         this.tvAcademicProblems.setItems(academicProblems);
@@ -87,8 +87,8 @@ public class RegisterAcademicProblemController implements Initializable{
             Group voidGroup = new Group();
             educativeExperiencesObservableList.add(voidGroup);
             GroupDAO groupDAO = new GroupDAO();
-            educativeExperiences = groupDAO.groupsList(
-                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+            educativeExperiences = groupDAO.getGroupsList(
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             educativeExperiencesObservableList.addAll(educativeExperiences);
             cbGroups.setItems(educativeExperiencesObservableList);
@@ -163,11 +163,11 @@ public class RegisterAcademicProblemController implements Initializable{
                 int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
                 String title = tfTitle.getText().trim().replaceAll(" +", "");
                 String description = tfDescription.getText().trim().replaceAll(" +", "");
-                int nrc = ees.getNrc();
+                int idGroup = ees.getGroup_id();
                 academicProblem.setNumberTutorados(numberTutorados);
                 academicProblem.setDescription(description);
                 academicProblem.setTitle(title);
-                academicProblem.setGroup(nrc);
+                academicProblem.setGroup(idGroup);
                 this.listAcademicProblems.add(academicProblem);
                 this.academicProblems.add(academicProblem);
                 lockButtons(true);
@@ -194,11 +194,11 @@ public class RegisterAcademicProblemController implements Initializable{
                 int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
                 String title = tfTitle.getText().trim().replaceAll(" +", "");
                 String description = tfDescription.getText().trim().replaceAll(" +", "");
-                int nrc = ees.getNrc();
+                int idGroup = ees.getGroup_id();
                 academicProblem.setNumberTutorados(numberTutorados);
                 academicProblem.setDescription(description);
                 academicProblem.setTitle(title);
-                academicProblem.setGroup(nrc);
+                academicProblem.setGroup(idGroup);
                 academicProblems.remove(indexAcademicProblemSelected);
                 listAcademicProblems.remove(indexAcademicProblemSelected);
                 listAcademicProblems.add(academicProblem);

@@ -49,7 +49,6 @@ public class SolutionsToAcademicProblemsController implements Initializable {
     private final ObservableList<Period> periods = FXCollections.observableArrayList();
     private final ObservableList<Teacher> teachers = FXCollections.observableArrayList();
     private final ObservableList<EE> ees = FXCollections.observableArrayList();
-    private Period currentPeriod;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -74,10 +73,8 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
         periods.addAll(periodDAO.getPeriods());
 
-        this.currentPeriod = periodDAO.getCurrentPeriod();
-
         this.cbPeriod.setItems(periods);
-        this.cbPeriod.getSelectionModel().select(currentPeriod);
+        this.cbPeriod.getSelectionModel().select(SessionGlobalData.getSessionGlobalData().getCurrentPeriod());
 
         this.cbPeriod.setConverter(new StringConverter<Period>() {
             @Override
@@ -92,7 +89,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
         });
 
         GroupDAO groupDAO = new GroupDAO();
-        this.groups = groupDAO.getGroupsByEducationProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+        this.groups = groupDAO.getGroupsByEducationProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         this.teachers.add(new Teacher());
         this.ees.add(new EE());
@@ -136,7 +133,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
 
     private void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram());
+        ArrayList<AcademicProblem> academicProblemsWithSolution = academicProblemDAO.getAcademicProblemsWithSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         int idSolution = 0;
         int positionSolution = 0;
@@ -178,7 +175,7 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 AcademicProblem selectedSolutionToAcademicProblem = this.tvAcademicProblems.getSelectionModel().getSelectedItem();
                 String solution = selectedSolutionToAcademicProblem.getSolution();
                 this.taSolution.setText(solution);
-                if(selectedSolutionToAcademicProblem.getPeriod().getIdPeriod() == currentPeriod.getIdPeriod()) {
+                if(selectedSolutionToAcademicProblem.getPeriod().getIdPeriod() == SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod()) {
                     disableButtons(false);
                 }
             }

@@ -1,10 +1,9 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.domain.EE;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Group;
 import com.teamfour.sistutorias.domain.Teacher;
-import com.teamfour.sistutorias.presentation.GroupAdministrationController;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -27,9 +26,9 @@ class GroupDAOTest {
         group.setNrc(85296);
         group.setEe(ee);
         group.setTeacher(teacher);
-        EducationProgram educationProgram = new EducationProgram();
-        educationProgram.setIdEducationProgram(1);
-        group.setEducationProgram(educationProgram);
+        EducativeProgram educativeProgram = new EducativeProgram();
+        educativeProgram.setIdEducativeProgram(1);
+        group.setEducationProgram(educativeProgram);
         try {
             result = groupDAO.registerGroup(group);
         }catch (SQLException sqlException)  {

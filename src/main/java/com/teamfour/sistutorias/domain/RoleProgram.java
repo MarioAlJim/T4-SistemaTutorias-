@@ -5,11 +5,11 @@ public class RoleProgram {
     private int idRoleProgram;
     private int role;
     private String nameRole = "";
-    private EducationProgram educationProgram = new EducationProgram();
+    private EducativeProgram educativeProgram = new EducativeProgram();
     public RoleProgram(){}
-    public RoleProgram(int role, EducationProgram educationProgram, int idRoleProgram, String nameProgram) {
+    public RoleProgram(int role, EducativeProgram educativeProgram, int idRoleProgram, String nameProgram) {
         this.role = role;
-        this.educationProgram = educationProgram;
+        this.educativeProgram = educativeProgram;
         this.idRoleProgram = idRoleProgram;
     }
 
@@ -32,12 +32,12 @@ public class RoleProgram {
         }
     }
 
-    public EducationProgram getEducationProgram() {
-        return educationProgram;
+    public EducativeProgram getEducationProgram() {
+        return educativeProgram;
     }
 
-    public void setEducationProgram(EducationProgram educationProgram) {
-        this.educationProgram = educationProgram;
+    public void setEducationProgram(EducativeProgram educativeProgram) {
+        this.educativeProgram = educativeProgram;
     }
 
     public int getIdRoleProgram() {

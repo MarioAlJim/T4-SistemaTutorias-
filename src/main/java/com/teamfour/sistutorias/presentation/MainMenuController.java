@@ -1,6 +1,6 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +14,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
     @FXML
-    private ComboBox<EducationProgram> cbEducationPrograms;
+    private ComboBox<EducativeProgram> cbEducationPrograms;
     @FXML
     private TabPane tpRoles;
     @FXML
@@ -32,10 +31,10 @@ public class MainMenuController implements Initializable {
     @FXML
     private Tab tabJefe;
 
-    private ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
+    private ObservableList<EducativeProgram> educativePrograms = FXCollections.observableArrayList();
     private ArrayList<RoleProgram> availableRoles;
     private RoleProgram roleProgramSelected = new RoleProgram();
-    private  EducationProgram programSelected;
+    private EducativeProgram programSelected;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tabJefe.setDisable(true);
@@ -61,30 +60,30 @@ public class MainMenuController implements Initializable {
 
     private void getEducationPrograms() {
         availableRoles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
-        ArrayList<EducationProgram> educationPrograms = new ArrayList<>();
-        educationPrograms.add(availableRoles.get(0).getEducationProgram());
+        ArrayList<EducativeProgram> educativePrograms = new ArrayList<>();
+        educativePrograms.add(availableRoles.get(0).getEducationProgram());
         for(RoleProgram roleProgram: availableRoles) {
             boolean isInCombobox = false;
-            for (int i = 0; i < educationPrograms.size(); i++) {
-                if (educationPrograms.get(i).getIdEducationProgram() == roleProgram.getEducationProgram().getIdEducationProgram()) {
+            for (int i = 0; i < educativePrograms.size(); i++) {
+                if (educativePrograms.get(i).getIdEducativeProgram() == roleProgram.getEducationProgram().getIdEducativeProgram()) {
                     isInCombobox = true;
                 }
                 if(!isInCombobox) {
-                    educationPrograms.add(roleProgram.getEducationProgram());
+                    educativePrograms.add(roleProgram.getEducationProgram());
                 }
             }
         }
-        populateComboBox(educationPrograms);
+        populateComboBox(educativePrograms);
     }
 
-    private void populateComboBox(ArrayList<EducationProgram> educationProgram) {
-        educationPrograms.addAll(educationProgram);
-        cbEducationPrograms.setItems(educationPrograms);
+    private void populateComboBox(ArrayList<EducativeProgram> educativeProgram) {
+        educativePrograms.addAll(educativeProgram);
+        cbEducationPrograms.setItems(educativePrograms);
         cbEducationPrograms.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
             tabTutor.setDisable(true);
             tabCoordinator.setDisable(true);
             tabJefe.setDisable(true);
-            programSelected = (EducationProgram) valorNuevo;;
+            programSelected = (EducativeProgram) valorNuevo;;
             for (RoleProgram roleProgram : availableRoles) {
                 if (roleProgram.getEducationProgram().getName().equals(programSelected.getName())) {
                     switch (roleProgram.getRole()) {
@@ -129,14 +128,6 @@ public class MainMenuController implements Initializable {
         setSessionGlobalDataRol(1);
         WindowManagement.changeScene("Problemáticas académicas",
                 getClass().getResource("ConsultAcademicProblems.fxml"));
-    }
-
-    public void clickManageTutorship() throws IOException {
-        setSessionGlobalDataRol(2);
-        if (activePeriod()) {
-            WindowManagement.changeScene("Registrar sesión de tutoría académica",
-                    getClass().getResource("Tutorship.fxml"));
-        }
     }
 
     public void clickConsultGeneralTutorshipReport() throws IOException {
@@ -186,15 +177,6 @@ public class MainMenuController implements Initializable {
             return true;
         } else {
             WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay tutorias activas", Alert.AlertType.INFORMATION);
-            return false;
-        }
-    }
-
-    private boolean activePeriod () {
-        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
-            return true;
-        } else {
-            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay periodos activos", Alert.AlertType.INFORMATION);
             return false;
         }
     }

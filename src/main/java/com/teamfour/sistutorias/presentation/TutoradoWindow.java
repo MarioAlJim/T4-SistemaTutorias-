@@ -1,8 +1,8 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.bussinesslogic.EducationProgramDAO;
+import com.teamfour.sistutorias.bussinesslogic.EducativeProgramDAO;
 import com.teamfour.sistutorias.bussinesslogic.TutoradoDAO;
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Tutorado;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +37,7 @@ public class TutoradoWindow implements Initializable {
 
     private Tutorado tutorado;
     private boolean isEditing;
-    private ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList();
+    private ObservableList<EducativeProgram> educativePrograms = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,9 +58,9 @@ public class TutoradoWindow implements Initializable {
             tutorado.setMaternalSurname(tfMaternalSurname.getText());
             tutorado.setRegistrationNumber(tfMatricula.getText());
 
-            for(EducationProgram educationProgram : this.educationPrograms) {
-                if(educationProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
-                    tutorado.setProgramId(educationProgram.getIdEducationProgram());
+            for(EducativeProgram educativeProgram : this.educativePrograms) {
+                if(educativeProgram.getName().equals(this.cbEducativeProgram.getSelectionModel().getSelectedItem())) {
+                    tutorado.setProgramId(educativeProgram.getIdEducativeProgram());
                     break;
                 }
             }
@@ -119,11 +119,13 @@ public class TutoradoWindow implements Initializable {
     }
 
     private void loadEducativePrograms() {
-        EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
+        EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
         try {
-            educationPrograms.addAll(educationProgramDAO.getEducationPrograms());
+            ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
             for (EducationProgram educationProgram : educationPrograms) {
-                cbEducativeProgram.getItems().add(educationProgram.getName());
+                if (educationProgram.getName() != null && educationProgram.getName().equals(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getName())) {
+                    cbEducativeProgram.getItems().add(educationProgram.getName());
+                }
             }
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al cargar los programas educativos", Alert.AlertType.ERROR);

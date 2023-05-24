@@ -7,14 +7,11 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.teamfour.sistutorias.bussinesslogic.PeriodDAO;
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
-import com.teamfour.sistutorias.domain.EE;
 import com.teamfour.sistutorias.domain.Group;
 import com.teamfour.sistutorias.bussinesslogic.AcademicProblemDAO;
 import com.teamfour.sistutorias.bussinesslogic.GroupDAO;
 import com.teamfour.sistutorias.domain.AcademicProblem;
-import com.teamfour.sistutorias.domain.Period;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -55,8 +52,8 @@ public class ModifyAcademicProblemController implements Initializable {
             Group voidGroup = new Group();
             educativeExperiencesObservableList.add(voidGroup);
             GroupDAO groupDAO = new GroupDAO();
-            educativeExperiences = groupDAO.groupsList(
-                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducationProgram(),
+            educativeExperiences = groupDAO.getGroupsList(
+                    SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram(),
                     SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             educativeExperiencesObservableList.addAll(educativeExperiences);
             cbGroup.setItems(educativeExperiencesObservableList);
@@ -65,7 +62,7 @@ public class ModifyAcademicProblemController implements Initializable {
                 ees = newValue;
             });
         } catch (SQLException exception){
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+            WindowManagement.connectionLostMessage();
             Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
@@ -107,18 +104,18 @@ public class ModifyAcademicProblemController implements Initializable {
                 int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
                 String title = tfTitle.getText().trim().replaceAll(" +", "");
                 String description = tfDescription.getText().trim().replaceAll(" +", "");
-                int nrc = ees.getNrc();
+                int idGroup = ees.getGroup_id();
                 academicProblem.setNumberTutorados(numberTutorados);
                 academicProblem.setDescription(description);
                 academicProblem.setTitle(title);
-                academicProblem.setGroup(nrc);
+                academicProblem.setGroup(idGroup);
                 try {
                     int result = academicProblemDAO.updateAcademicProblem(academicProblem);
                     if (result == 1) {
                         WindowManagement.showAlert("Exito", "Actualizacion realizada", Alert.AlertType.INFORMATION);
                     }
                 }catch (SQLException exception){
-                    WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                    WindowManagement.connectionLostMessage();
                     Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
                 }
             } else {
