@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ManageTutorados implements Initializable {
@@ -94,6 +95,10 @@ public class ManageTutorados implements Initializable {
         TutoradoDAO tutoradoDAO = new TutoradoDAO();
         try {
             tutorados = FXCollections.observableArrayList(tutoradoDAO.getAll());
+            //remove tutorados with null educative programs or programs different from the session user's
+            tutorados.removeIf(tutorado -> tutorado.getEducativeProgram() == null ||
+                    //use contains instead of equals to deal with weird string comparison errors
+                    !Objects.requireNonNull(tutorado.getEducativeProgram()).contains(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getName()));
         } catch (SQLException e) {
             WindowManagement.showAlert("Error", "Error al cargar los tutorados.", Alert.AlertType.ERROR);
             e.printStackTrace();
