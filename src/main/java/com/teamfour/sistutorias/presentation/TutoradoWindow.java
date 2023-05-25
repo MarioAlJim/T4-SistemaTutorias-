@@ -121,8 +121,8 @@ public class TutoradoWindow implements Initializable {
     private void loadEducativePrograms() {
         EducativeProgramDAO educationProgramDAO = new EducativeProgramDAO();
         try {
-            ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
-            for (EducationProgram educationProgram : educationPrograms) {
+            ObservableList<EducativeProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducativePrograms());
+            for (EducativeProgram educationProgram : educationPrograms) {
                 if (educationProgram.getName() != null && educationProgram.getName().equals(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getName())) {
                     cbEducativeProgram.getItems().add(educationProgram.getName());
                 }
