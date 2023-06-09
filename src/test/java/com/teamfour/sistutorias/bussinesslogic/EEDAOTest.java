@@ -44,4 +44,25 @@ class EEDAOTest {
         }
         assertTrue(isValid);
     }
+    @Test
+    public void registerEE() throws SQLException {
+        ee.setName("registrar ee PRUEBA");
+        boolean flag = eedao.register(ee);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void updateEE() throws SQLException {
+        ee.setIdEe(1);
+        ee.setName("actualizar ee PRUEBA");
+        boolean flag = eedao.update(ee);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void deleteEE() throws SQLException {
+        ee.setIdEe(1);
+        boolean flag = eedao.delete(ee);
+        assertTrue(flag);
+    }
 }

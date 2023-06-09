@@ -1,3 +1,3 @@
-Direction = jdbc:mysql://systutorships.mysql.database.azure.com:3306/sistematutorias?useSSL=true
+Direction = jdbc:mysql://localhost:3306/sistematutorias
 User = tutorshipSystemUser
 Password = zOc0B;i0xYQXL~H(@~5D-+

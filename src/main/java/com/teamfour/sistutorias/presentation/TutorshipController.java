@@ -153,48 +153,35 @@ public class TutorshipController implements Initializable {
             Period period = getCurrentPeriod();
             currentPeriod.setText(period.toString());
             populateDatePicker();
-            TutorshipDAO tutorship = new TutorshipDAO();
-            List<Tutorship> tutorships = tutorship.getTutorship(1);
+            Callback<DatePicker, DateCell> dayCellFactory = getDayCellFactory();
+            firstDatePicker.setDayCellFactory(dayCellFactory);
+            endFirstDatePicker.setDayCellFactory(dayCellFactory);
+            secondDatePicker.setDayCellFactory(dayCellFactory);
+            endSecondDatePicker.setDayCellFactory(dayCellFactory);
+            thirdDatePicker.setDayCellFactory(dayCellFactory);
+            endThirdDatePicker.setDayCellFactory(dayCellFactory);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        //setDatePickers();
     }
 
-    public void setDatePickers() {
-        Callback<DatePicker, DateCell> dayCellFactory = (DatePicker picker) -> new DateCell() {
+    private Callback<DatePicker, DateCell> getDayCellFactory() {
+        return new Callback<>() {
             @Override
-            public void updateItem(LocalDate localDate, boolean isEmpty) {
-                super.updateItem(localDate, isEmpty);
-                if (isEmpty || localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                    setDisable(true);
-                }
-                Period period = null;
-                try {
-                    period = getCurrentPeriod();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                if (period != null) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
-                    try {
-                        Date date = dateFormat.parse(period.getStart());
-                        Date date2 = dateFormat.parse(period.getEnd());
-                        if (localDate.isBefore(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) || localDate.isAfter(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
+            public DateCell call(DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null && (item.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                                item.getDayOfWeek() == DayOfWeek.SUNDAY)) {
                             setDisable(true);
+                            setStyle("-fx-background-color: #cccccc;");
                         }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
                     }
-                }
+                };
             }
         };
-        firstDatePicker.setDayCellFactory(dayCellFactory);
-        endFirstDatePicker.setDayCellFactory(dayCellFactory);
-        secondDatePicker.setDayCellFactory(dayCellFactory);
-        endSecondDatePicker.setDayCellFactory(dayCellFactory);
-        thirdDatePicker.setDayCellFactory(dayCellFactory);
-        endThirdDatePicker.setDayCellFactory(dayCellFactory);
     }
 
     public Period getCurrentPeriod() throws SQLException {
