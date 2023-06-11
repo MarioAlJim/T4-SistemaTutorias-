@@ -176,8 +176,6 @@ public class SolutionsToAcademicProblemsController implements Initializable {
                 String solution = selectedSolutionToAcademicProblem.getSolution();
                 this.taSolution.setText(solution);
                 if(selectedSolutionToAcademicProblem.getPeriod().getIdPeriod() == SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod()) {
-                    System.out.println(SessionGlobalData.getSessionGlobalData().getActiveRole().getRole());
-                    System.out.println(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRoles());
                     if(SessionGlobalData.getSessionGlobalData().getActiveRole().getRole() == 3) {
                         disableButtons(false);
                     }
