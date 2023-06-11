@@ -166,7 +166,13 @@ public class MainMenuController implements Initializable {
                 getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
     }
 
-    public void clickConsultSolution() throws IOException {
+    public void clickConsultSolutionAsCoordinator() throws IOException {
+        setSessionGlobalDataRol(2);
+        WindowManagement.changeScene("Soluciones a problemáticas académicas",
+                getClass().getResource("SolutionsToAcademicProblems.fxml"));
+    }
+
+    public void clickConsultSolutionAsCareerManager() throws IOException {
         setSessionGlobalDataRol(3);
         WindowManagement.changeScene("Soluciones a problemáticas académicas",
                 getClass().getResource("SolutionsToAcademicProblems.fxml"));
