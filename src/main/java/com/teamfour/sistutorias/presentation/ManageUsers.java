@@ -119,6 +119,10 @@ public class ManageUsers implements Initializable {
 
     @FXML
     void openModifyUserWindow(ActionEvent event) {
+        if (tvUsers.getSelectionModel().getSelectedItem() == null) {
+            WindowManagement.showAlert("Error", "No se ha seleccionado un usuario", Alert.AlertType.ERROR);
+            return;
+        }
         openUserWindow(tvUsers.getSelectionModel().getSelectedItem());
     }
 
