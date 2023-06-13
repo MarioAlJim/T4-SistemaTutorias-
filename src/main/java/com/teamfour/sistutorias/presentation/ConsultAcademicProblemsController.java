@@ -139,7 +139,7 @@ public class ConsultAcademicProblemsController implements Initializable {
         this.tvProblems.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             clearForm();
             if (newSelection != null) {
-                academicProblem = this.tvProblems.getSelectionModel().getSelectedItem();
+                academicProblem = newSelection;
                 tfDescription.setText(academicProblem.getDescription());
                 tfGroup.setText(academicProblem.getGroup() + " " + academicProblem.getTeacher() + " " + academicProblem.getEe());
                 tfSolution.setText(academicProblem.getSolution());

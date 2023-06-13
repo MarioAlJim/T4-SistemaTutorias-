@@ -114,6 +114,27 @@ public class RegisterDAO implements IRegisterDAO{
         return registerList;
     }
 
+    public List<Register> getTutorshipRegister(int tutorshipId, String email) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        List<Register> registerList = new ArrayList<>();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT * FROM register WHERE tutorship_id = ? AND email = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, tutorshipId);
+        statement.setString(2, email);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Register register = new Register();
+            register.setRegister_id(resultSet.getInt("register_id"));
+            register.setEmail(resultSet.getString("email"));
+            register.setTutorship_id(resultSet.getInt("tutorship_id"));
+            register.setEducative_program_id(resultSet.getInt("educative_program_id"));
+            registerList.add(register);
+        }
+        dataBaseConnection.closeConection();
+        return registerList;
+    }
+
     @Override
     public Register getSpecificRegister(Register register) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
