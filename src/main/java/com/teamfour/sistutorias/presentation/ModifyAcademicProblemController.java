@@ -101,9 +101,9 @@ public class ModifyAcademicProblemController implements Initializable {
         if (completedForm()) {
             if (validData()) {
                 AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-                int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", ""));
-                String title = tfTitle.getText().trim().replaceAll(" +", "");
-                String description = tfDescription.getText().trim().replaceAll(" +", "");
+                int numberTutorados = Integer.parseInt(tfNumberTutorados.getText().trim().replaceAll(" +", " "));
+                String title = tfTitle.getText().trim().replaceAll(" +", " ");
+                String description = tfDescription.getText().trim().replaceAll(" +", " ");
                 int idGroup = ees.getGroup_id();
                 academicProblem.setNumberTutorados(numberTutorados);
                 academicProblem.setDescription(description);

@@ -5,6 +5,7 @@ import com.teamfour.sistutorias.domain.EE;
 import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.Group;
 import com.teamfour.sistutorias.domain.Teacher;
+import com.teamfour.sistutorias.presentation.SessionGlobalData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,6 +66,7 @@ public class GroupDAO implements IGroupDAO {
             statement.setInt(2, newGroup.getEe().getIdEe());
             statement.setInt(3, newGroup.getTeacher().getPersonalNumber());
             statement.setInt(4, newGroup.getEducationProgram().getIdEducativeProgram());
+            statement.setInt(5, SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
             result = statement.executeUpdate();
             dataBaseConnection.closeConection();
         } else {
@@ -155,12 +157,12 @@ public class GroupDAO implements IGroupDAO {
         statement.setInt(1, newGroup.getNrc());
         statement.setInt(2, newGroup.getIdPeriod());
         ResultSet resultSet = statement.executeQuery();
-        dataBaseConnection.closeConection();
         if (resultSet.next()) {
             result++;
         }
         if (result > 0)
             available = false;
+        dataBaseConnection.closeConection();
         return available;
     }
 }

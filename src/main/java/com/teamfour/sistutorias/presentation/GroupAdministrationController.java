@@ -59,8 +59,8 @@ public class GroupAdministrationController implements Initializable {
     @FXML
     private Label lbPeriod;
     private EducativeProgram selectedEducativeProgram;
-    private Teacher selectedTeacher;
-    private EE selectedEe;
+    private Teacher selectedTeacher = null;
+    private EE selectedEe = null;
     private Group newGroup = new Group();
 
 
@@ -70,6 +70,8 @@ public class GroupAdministrationController implements Initializable {
             btnModifyGroup.setDisable(true);
             btnDeleteGroup.setDisable(true);
             btnSaveGroup.setDisable(false);
+            selectedEe = null;
+            selectedTeacher = null;
         } else {
             btnCancelModification.setDisable(false);
             btnModifyGroup.setDisable(false);
@@ -91,7 +93,7 @@ public class GroupAdministrationController implements Initializable {
             complete = false;
             WindowManagement.showAlert("Atencion", "El NRC debe ser un numero", Alert.AlertType.INFORMATION);
         }
-        if(tfSelectedEE.getText().isEmpty() || tfSelectedTeacher.getText().isEmpty()) {
+        if(tfSelectedEE == null || tfSelectedTeacher == null) {
             complete = false;
             WindowManagement.showAlert("Error", "Por favor seleccione todos los elementos para el registro", Alert.AlertType.INFORMATION);
         }
@@ -192,8 +194,8 @@ public class GroupAdministrationController implements Initializable {
             if (newSelection != null) {
                 newGroup = this.tvGroup.getSelectionModel().getSelectedItem();
                 this.tfNRC.setText((String.valueOf(newGroup.getNrc())));
-                this.tfSelectedEE.setText(String.valueOf(newGroup.getEe().getIdEe()));
-                this.tfSelectedTeacher.setText(String.valueOf(newGroup.getTeacher().getPersonalNumber()));
+                this.tfSelectedEE.setText(newGroup.getExperience());
+                this.tfSelectedTeacher.setText(newGroup.getTeacherName());
                 lockModify(false);
             }
         });
@@ -212,7 +214,7 @@ public class GroupAdministrationController implements Initializable {
         seeSelectedTeacherListener();
         seeSelectedEeListener();
         seeSelectedGroup();
-
+        newGroup.setIdPeriod(SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod());
         lbPeriod.setText("Periodo: " + SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getFullPeriod());
     }
 
@@ -226,6 +228,8 @@ public class GroupAdministrationController implements Initializable {
     public void cancelModification() {
         clearForm();
         lockModify(true);
+        selectedEe = null;
+        selectedTeacher = null;
     }
 
     @FXML
@@ -234,7 +238,7 @@ public class GroupAdministrationController implements Initializable {
         int result;
         if (completedForm()) {
             try {
-                newGroup.setNrc(Integer.parseInt(tfNRC.getText().trim().replaceAll(" ","")));
+                newGroup.setNrc(Integer.parseInt(tfNRC.getText().trim().replaceAll(" +","")));
                 result = groupDAO.registerGroup(newGroup);
                 if (result == 1) {
                     setGroups();

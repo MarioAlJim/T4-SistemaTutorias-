@@ -125,7 +125,8 @@ public class MainMenuController implements Initializable {
             RegisterDAO registerDAO = new RegisterDAO();
             try {
                 List<Register> register = registerDAO.getTutorshipRegister(SessionGlobalData.getSessionGlobalData().getCurrentTutorship().getIdTutorShip(),
-                        SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
+                        SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail(),
+                        SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
                 if (register.isEmpty()) {
                     WindowManagement.changeScene("Registrar reporte de tutoría académica",
                             getClass().getResource("FillTutorshipReport.fxml"));

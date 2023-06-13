@@ -185,18 +185,16 @@ public class ConsultAcademicProblemsController implements Initializable {
 
     @FXML
     public void openModificationAcademicProblem() {
-        Stage stageMenuTutor = new Stage();
-        FXMLLoader loader = new FXMLLoader();
+        Stage stage = new Stage();
+        stage.setTitle("Modificar problematica academica");
+
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModifyAcademicProblem.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stageMenuTutor.setScene(scene);
-            stageMenuTutor.setTitle("Modificar problematica academica");
-            stageMenuTutor.alwaysOnTopProperty();
-            stageMenuTutor.initModality(Modality.APPLICATION_MODAL);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyAcademicProblem.fxml"));
+            stage.setScene(new Scene(loader.load()));
+            stage.initModality(Modality.APPLICATION_MODAL);
             ModifyAcademicProblemController modifyAcademicProblem = loader.getController();
             modifyAcademicProblem.recibeParameters(academicProblem);
-            stageMenuTutor.showAndWait();
+            stage.showAndWait();
             tvProblems.getItems().clear();
             clearForm();
             setAcademicProblemsTable();

@@ -111,19 +111,16 @@ public class FillTutorshipReport implements Initializable {
             register = registerDAO.getLatestRegister();
 
             if(register.getRegister_id() != 0) {
-                System.out.println("Register saved");
 
                 comment.setRegister(register.getRegister_id());
                 CommentDAO commentDAO = new CommentDAO();
                 commentDAO.register(comment);
-                System.out.println("Comment saved");
 
                 for(AcademicProblem academicProblem : academicProblems) {
                     academicProblem.setRegister(register.getRegister_id());
                     AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
                     academicProblemDAO.registerAcademicProblem(academicProblem);
                 }
-                System.out.println("Academic problems saved");
 
                 for(Assistance tutored : tutorados) {
                     AssistanceDAO assistanceDAO = new AssistanceDAO();
@@ -140,9 +137,7 @@ public class FillTutorshipReport implements Initializable {
                     }
                     assistanceDAO.register(tutored);
                 }
-                System.out.println("Assistance saved");
             }
-
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Error al guardar el registro").showAndWait();
             System.err.println(e.getMessage());
