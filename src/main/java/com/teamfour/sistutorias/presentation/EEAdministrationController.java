@@ -56,6 +56,7 @@ public class EEAdministrationController implements Initializable {
                 WindowManagement.showAlert("EE eliminada",
                         "La EE se ha eliminado correctamente",
                         Alert.AlertType.INFORMATION);
+                clickCancelSelection(actionEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -135,11 +136,13 @@ public class EEAdministrationController implements Initializable {
                     WindowManagement.showAlert("EE actualizada",
                             "La EE se ha actualizado correctamente",
                             Alert.AlertType.INFORMATION);
+                    clickCancelSelection(actionEvent);
                 } else {
                     WindowManagement.showAlert("EE no actualizada",
                             "La EE no se ha actualizado correctamente",
                             Alert.AlertType.INFORMATION);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
