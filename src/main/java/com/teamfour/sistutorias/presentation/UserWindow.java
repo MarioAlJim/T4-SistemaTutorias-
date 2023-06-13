@@ -307,12 +307,16 @@ public class UserWindow implements Initializable {
             for (String role : roles) {
                 if (role.equalsIgnoreCase("administrador")) {
                     chbAdmin.setSelected(true);
+                    chbAdmin.setDisable(true);
                 } else if (role.equalsIgnoreCase("jefe de carrera")) {
                     chbCareerManager.setSelected(true);
+                    chbCareerManager.setDisable(true);
                 } else if (role.equalsIgnoreCase("coordinador")) {
                     chbCoordinator.setSelected(true);
+                    chbCoordinator.setDisable(true);
                 } else if (role.equalsIgnoreCase("tutor académico") || role.equalsIgnoreCase("tutor academico") || role.equalsIgnoreCase("tutor")) {
                     chbTutor.setSelected(true);
+                    chbTutor.setDisable(true);
                 }
             }
         } else {
