@@ -9,11 +9,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ManageEducativeProgramController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ManageEducativeProgramController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="356.0" layoutX="17.0" layoutY="14.0" stroke="#dddddd" strokeType="INSIDE" width="325.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="129.0" layoutX="346.0" layoutY="14.0" stroke="#dddddd" strokeType="INSIDE" width="325.0" />
-      <Label layoutX="30.0" layoutY="26.0" text="En el sistema">
+      <Label layoutX="30.0" layoutY="26.0" text="Registros en el sistema">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -36,7 +36,8 @@
         </columns>
       </TableView>
       <Button layoutX="17.0" layoutY="378.0" mnemonicParsing="false" onAction="#clickCancel" style="-fx-background-color: DimGray;" text="Cancelar" textFill="WHITE" />
-      <Button layoutX="594.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickRegister" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
-      <Button fx:id="btnModify" layoutX="493.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickModify" style="-fx-background-color: GoldenRod;" text="Modificar" textFill="WHITE" />
+      <Button fx:id="btnRegister" layoutX="594.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickRegister" style="-fx-background-color: ForestGreen;" text="Registrar" textFill="WHITE" />
+      <Button fx:id="btnModify" layoutX="499.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickModify" style="-fx-background-color: GoldenRod;" text="Modificar" textFill="WHITE" />
+      <Button fx:id="btnCancelSelection" layoutX="358.0" layoutY="101.0" mnemonicParsing="false" onAction="#clickCancelSelection" style="-fx-background-color: DimGray;" text="Cancelar selección" textFill="WHITE" />
    </children>
 </AnchorPane>

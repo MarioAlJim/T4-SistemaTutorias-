@@ -28,6 +28,10 @@ public class ManageEducativeProgramController implements Initializable {
     private TableColumn<EducativeProgram, String> tcName;
     @FXML
     private Button btnModify;
+    @FXML
+    private Button btnRegister;
+    @FXML
+    private Button btnCancelSelection;
 
     private final int MAX_CHARS = 100;
     private final ObservableList<EducativeProgram> educativePrograms = FXCollections.observableArrayList();
@@ -51,6 +55,8 @@ public class ManageEducativeProgramController implements Initializable {
 
     private void disableButtons(boolean isDisabled) {
         this.btnModify.setDisable(isDisabled);
+        this.btnCancelSelection.setDisable(isDisabled);
+        this.btnRegister.setDisable(!isDisabled);
     }
 
     private void populateTable() throws SQLException {
@@ -182,6 +188,12 @@ public class ManageEducativeProgramController implements Initializable {
                 }
             }
         }
+        this.tvEducativePrograms.getSelectionModel().clearSelection();
+        disableButtons(true);
+    }
+
+    @FXML
+    private void clickCancelSelection(ActionEvent event) {
         this.tvEducativePrograms.getSelectionModel().clearSelection();
         disableButtons(true);
     }

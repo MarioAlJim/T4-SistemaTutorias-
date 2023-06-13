@@ -31,6 +31,8 @@ public class EEAdministrationController implements Initializable {
     @FXML
     private Button delBttn;
     @FXML
+    private Button cancelBtn;
+    @FXML
     public void eeTable(SortEvent<TableView> tableViewSortEvent) {
 
     }
@@ -175,5 +177,16 @@ public class EEAdministrationController implements Initializable {
         delBttn.setDisable(false);
         modBttn.setDisable(false);
         addBttn.setDisable(true);
+        cancelBtn.setDisable(false);
+    }
+
+    @FXML
+    private void clickCancelSelection(ActionEvent event) {
+        eeTf.clear();
+        eeTb.getSelectionModel().clearSelection();
+        delBttn.setDisable(true);
+        modBttn.setDisable(true);
+        addBttn.setDisable(false);
+        cancelBtn.setDisable(true);
     }
 }
