@@ -58,16 +58,6 @@ public class UserDAO implements IUserDAO{
             user.setEducativeProgram(resultSet.getString("education_program"));
             users.add(user);
         }
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            for (int j = i + 1; j < users.size(); j++) {
-                User otherUser = users.get(j);
-                if (user.getEmail().equals(otherUser.getEmail())) {
-                    user.addRole(otherUser.getRoles());
-                    users.remove(j);
-                }
-            }
-        }
         dataBaseConnection.closeConection();
         return users;
     }

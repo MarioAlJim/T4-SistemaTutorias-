@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class UserWindow implements Initializable {
@@ -51,6 +50,8 @@ public class UserWindow implements Initializable {
 
     @FXML
     private TextField tfPaternalSurname;
+
+    ObservableList<EducationProgram> educationPrograms;
     private User user;
     private boolean isEdit;
 
@@ -63,7 +64,7 @@ public class UserWindow implements Initializable {
     private void loadEducativePrograms() {
         EducationProgramDAO educationProgramDAO = new EducationProgramDAO();
         try {
-            ObservableList<EducationProgram> educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
+            educationPrograms = FXCollections.observableArrayList(educationProgramDAO.getEducationPrograms());
             for (EducationProgram educationProgram : educationPrograms) {
                 cbEducativeProgram.getItems().add(educationProgram.getName());
             }
@@ -88,7 +89,7 @@ public class UserWindow implements Initializable {
         if (tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfName.getText().isEmpty() || tfPaternalSurname.getText().isEmpty() || tfMaternalSurname.getText().isEmpty() || cbEducativeProgram.getValue() == null) {
             WindowManagement.showAlert("Error", "Por favor, llene todos los campos", Alert.AlertType.ERROR);
         } else {
-            if (!tfEmail.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            if (!tfEmail.getText().matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 WindowManagement.showAlert("Error", "Por favor, ingrese un correo electrónico válido", Alert.AlertType.ERROR);
                 return;
             }
@@ -150,26 +151,29 @@ public class UserWindow implements Initializable {
                 UserRoleProgram userRoleProgram = new UserRoleProgram();
                 userRoleProgram.setIdPerson(user.getIdPerson());
                 userRoleProgram.setEmail(user.getEmail());
-                RoleProgram roleProgram = new RoleProgram();
 
                 if (chbTutor.isSelected()) {
+                    RoleProgram roleProgram = new RoleProgram();
                     roleProgram.setRole(1);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.setEducationProgram(educationPrograms.get(cbEducativeProgram.getSelectionModel().getSelectedIndex()).getIdEducationProgram());
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCoordinator.isSelected()) {
+                    RoleProgram roleProgram = new RoleProgram();
                     roleProgram.setRole(2);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.setEducationProgram(educationPrograms.get(cbEducativeProgram.getSelectionModel().getSelectedIndex()).getIdEducationProgram());
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbCareerManager.isSelected()) {
+                    RoleProgram roleProgram = new RoleProgram();
                     roleProgram.setRole(3);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.setEducationProgram(educationPrograms.get(cbEducativeProgram.getSelectionModel().getSelectedIndex()).getIdEducationProgram());
                     userRoleProgram.addRole(roleProgram);
                 }
                 if (chbAdmin.isSelected()) {
+                    RoleProgram roleProgram = new RoleProgram();
                     roleProgram.setRole(4);
-                    roleProgram.setEducationProgram(1);
+                    roleProgram.setEducationProgram(educationPrograms.get(cbEducativeProgram.getSelectionModel().getSelectedIndex()).getIdEducationProgram());
                     userRoleProgram.addRole(roleProgram);
                 }
                 userRoleProgramDAO.insertRoleProgram(userRoleProgram);
