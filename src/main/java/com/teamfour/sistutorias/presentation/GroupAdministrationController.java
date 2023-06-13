@@ -76,7 +76,6 @@ public class GroupAdministrationController implements Initializable {
             btnDeleteGroup.setDisable(false);
             btnSaveGroup.setDisable(true);
         }
-
     }
 
     private void clearForm() {
