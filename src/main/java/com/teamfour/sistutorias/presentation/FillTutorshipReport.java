@@ -24,40 +24,28 @@ public class FillTutorshipReport implements Initializable {
 
     @FXML
     private Label lbAssistantPercentage;
-
     @FXML
     private Label lbDate;
-
     @FXML
     private Label lbPeriod;
-
     @FXML
     private Label lbRiskPercentage;
-
     @FXML
     private TableColumn<Assistance, CheckBox> tcAssistance;
-
     @FXML
     private TableColumn<Assistance, CheckBox> tcRisk;
-
     @FXML
     private TableColumn tcTutored;
-
     @FXML
     private TableView<Assistance> tvTutored;
 
-    private User tutor;
     private Tutorship tutorship;
     private Comment comment;
     private ArrayList<AcademicProblem> academicProblems;
-    private ObservableList<Assistance> tutorados;
+    private ObservableList<Assistance> tutorados = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Remove after testing
-        tutor = new User();
-        tutor.setEmail("test@test.com");
-
         setUpTable();
         loadTutored();
         updatePercentage();
@@ -112,9 +100,9 @@ public class FillTutorshipReport implements Initializable {
     @FXML
     void saveRegister(ActionEvent event) {
         Register register = new Register();
-        register.setEmail(tutor.getEmail());
+        register.setEmail(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail());
         register.setTutorship_id(tutorship.getIdTutorShip());
-        register.setEducative_program_id(1); //TODO: Change in order to avoid magic numbers
+        register.setEducative_program_id(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         RegisterDAO registerDAO = new RegisterDAO();
         try {
@@ -133,7 +121,7 @@ public class FillTutorshipReport implements Initializable {
                 for(AcademicProblem academicProblem : academicProblems) {
                     academicProblem.setRegister(register.getRegister_id());
                     AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-                    academicProblemDAO.register(academicProblem);
+                    academicProblemDAO.registerAcademicProblem(academicProblem);
                 }
                 System.out.println("Academic problems saved");
 
@@ -168,13 +156,12 @@ public class FillTutorshipReport implements Initializable {
         tcTutored.setCellValueFactory(new PropertyValueFactory<Assistance, String>("name"));
         tcAssistance.setCellValueFactory(new PropertyValueFactory<>("checkBoxAsistencia"));
         tcRisk.setCellValueFactory(new PropertyValueFactory<>("checkBoxRiesgo"));
-        tutorados = FXCollections.observableArrayList();
     }
 
     private void loadTutored() {
         AssistanceDAO assistanceDAO = new AssistanceDAO();
         try {
-            ArrayList<Assistance> queryResult = new ArrayList<>(assistanceDAO.getAssistanceTutor(tutor.getEmail()));
+            ArrayList<Assistance> queryResult = new ArrayList<>(assistanceDAO.getAssistanceTutor(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getEmail()));
             if(queryResult != null) {
                 tutorados.addAll(queryResult);
                 tvTutored.getItems().clear();
@@ -193,7 +180,7 @@ public class FillTutorshipReport implements Initializable {
     }
 
     private void updatePercentage() {
-        int total = tutorados.size();
+        int total = 1; tutorados.size();
         int assistance = 0;
         int risk = 0;
         for (Assistance tutored : tutorados) {

@@ -1,11 +1,15 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
+import com.teamfour.sistutorias.domain.User;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
+import com.teamfour.sistutorias.presentation.LoginController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,5 +47,24 @@ class UserRoleProgramDAOTest {
             iterator++;
         }
         assertTrue(isValid);
+    }
+
+
+    @Test
+    public void getUser() throws SQLException{
+        UserRoleProgram userRoleProgram;
+        userRoleProgram = userRoleProgramDAO.searchUser("mario14@uv.mx", "majiji0104");
+        assertTrue(userRoleProgram.getEmail().equals("mario14@uv.mx"));
+    }
+
+    @Test
+    public void searchUser() {
+        try {
+            UserRoleProgram user = userRoleProgramDAO.searchUser("aarenas@uv.mx", "Pl4wRkZLrTcicmr");
+            assertTrue(user.getEmail().equals("aarenas@uv.mx"));
+        } catch (SQLException sqlException) {
+            Logger.getLogger(UserRoleProgramDAOTest.class.getName()).log(Level.SEVERE, null, sqlException);
+        }
+
     }
 }

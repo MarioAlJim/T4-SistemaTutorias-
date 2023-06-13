@@ -2,18 +2,15 @@ package com.teamfour.sistutorias.domain;
 
 public class RoleProgram {
 
-    private String nameProgram = "";
     private int idRoleProgram;
     private int role;
     private String nameRole = "";
-    private int educationProgram;
-
+    private EducativeProgram educativeProgram = new EducativeProgram();
     public RoleProgram(){}
-    public RoleProgram(int role, int educationProgram, int idRoleProgram, String nameProgram) {
+    public RoleProgram(int role, EducativeProgram educativeProgram, int idRoleProgram, String nameProgram) {
         this.role = role;
-        this.educationProgram = educationProgram;
+        this.educativeProgram = educativeProgram;
         this.idRoleProgram = idRoleProgram;
-        this.nameProgram = nameProgram;
     }
 
     public int getRole() {
@@ -35,12 +32,12 @@ public class RoleProgram {
         }
     }
 
-    public int getEducationProgram() {
-        return educationProgram;
+    public EducativeProgram getEducationProgram() {
+        return educativeProgram;
     }
 
-    public void setEducationProgram(int educationProgram) {
-        this.educationProgram = educationProgram;
+    public void setEducationProgram(EducativeProgram educativeProgram) {
+        this.educativeProgram = educativeProgram;
     }
 
     public int getIdRoleProgram() {
@@ -51,17 +48,4 @@ public class RoleProgram {
         this.idRoleProgram = idRoleProgram;
     }
 
-    public String getNameProgram() {
-        return nameProgram;
-    }
-
-    public void setNameProgram(String nameProgram) {
-        this.nameProgram = nameProgram;
-    }
-
-    @Override
-    public String toString() {
-        return "PE: " + nameProgram  +
-                ", Rol:" + nameRole;
-    }
 }

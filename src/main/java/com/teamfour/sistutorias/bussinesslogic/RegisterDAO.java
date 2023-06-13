@@ -18,8 +18,9 @@ public class RegisterDAO implements IRegisterDAO{
         int registerId = register.getRegister_id();
         String query = "SELECT * FROM register WHERE register_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, registerId);
-            statement.executeQuery();
+        statement.setInt(1, registerId);
+        statement.executeQuery();
+        dataBaseConnection.closeConection();
         return register;
     }
 
@@ -37,6 +38,7 @@ public class RegisterDAO implements IRegisterDAO{
             register.setTutorship_id(resultSet.getInt("tutorship_id"));
             register.setEducative_program_id(resultSet.getInt("educative_program_id"));
         }
+        dataBaseConnection.closeConection();
         return register;
     }
 
@@ -50,10 +52,11 @@ public class RegisterDAO implements IRegisterDAO{
         int educativeProgramId = register.getEducative_program_id();
         String query = "INSERT INTO register (email, tutorship_id, educative_program_id) VALUES (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
-            statement.setInt(2, tutorshipId);
-            statement.setInt(3, educativeProgramId);
-            insertedFiles = statement.executeUpdate();
+        statement.setString(1, email);
+        statement.setInt(2, tutorshipId);
+        statement.setInt(3, educativeProgramId);
+        insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -68,11 +71,12 @@ public class RegisterDAO implements IRegisterDAO{
         int educativeProgramId = register.getEducative_program_id();
         String query = "UPDATE register SET email = ?, tutorship_id = ?, educative_program_id = ? WHERE register_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
-            statement.setInt(2, tutorshipId);
-            statement.setInt(3, educativeProgramId);
-            statement.setInt(4, registerId);
-            insertedFiles = statement.executeUpdate();
+        statement.setString(1, email);
+        statement.setInt(2, tutorshipId);
+        statement.setInt(3, educativeProgramId);
+        statement.setInt(4, registerId);
+        insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -84,8 +88,9 @@ public class RegisterDAO implements IRegisterDAO{
         int registerId = register.getRegister_id();
         String query = "DELETE FROM register WHERE register_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, registerId);
-            insertedFiles = statement.executeUpdate();
+        statement.setInt(1, registerId);
+        insertedFiles = statement.executeUpdate();
+        dataBaseConnection.closeConection();
         return insertedFiles;
     }
 
@@ -95,16 +100,34 @@ public class RegisterDAO implements IRegisterDAO{
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM register WHERE tutorship_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, tutorshipId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Register register = new Register();
-                register.setRegister_id(resultSet.getInt("register_id"));
-                register.setEmail(resultSet.getString("email"));
-                register.setTutorship_id(resultSet.getInt("tutorship_id"));
-                register.setEducative_program_id(resultSet.getInt("educative_program_id"));
-                registerList.add(register);
-            }
+        statement.setInt(1, tutorshipId);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Register register = new Register();
+            register.setRegister_id(resultSet.getInt("register_id"));
+            register.setEmail(resultSet.getString("email"));
+            register.setTutorship_id(resultSet.getInt("tutorship_id"));
+            register.setEducative_program_id(resultSet.getInt("educative_program_id"));
+            registerList.add(register);
+        }
+        dataBaseConnection.closeConection();
         return registerList;
+    }
+
+    @Override
+    public Register getSpecificRegister(Register register) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "SELECT register_id FROM register WHERE email = ? AND tutorship_id = ? AND educative_program_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, register.getEmail());
+        statement.setInt(2, register.getTutorship_id());
+        statement.setInt(3, register.getEducative_program_id());
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()) {
+            register.setRegister_id(resultSet.getInt("register_id"));
+        }
+        dataBaseConnection.closeConection();
+        return register;
     }
 }

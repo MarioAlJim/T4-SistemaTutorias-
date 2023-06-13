@@ -41,7 +41,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
     @FXML
     private TextArea taSolution;
 
-    final int MAX_CHARS = 100;
+    final int MAX_CHARS = 200;
     private final ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
     private ArrayList<Integer> previouslySelectedAcademicProblems = new ArrayList<>();
     private int solution;
@@ -57,8 +57,6 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // FOR DEMONSTRATION PURPOSES
-            //SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
@@ -74,7 +72,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
         TeacherDAO teacherDAO = new TeacherDAO();
         ObservableList<Teacher> teachers = FXCollections.observableArrayList();
         teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram()));
+        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram()));
         this.cbTeacher.setItems(teachers);
         this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
@@ -92,7 +90,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram()));
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
@@ -110,7 +108,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
 
     public void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram());
+        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
 
         for(AcademicProblem academicProblem : academicProblemsWithoutSolution) {
             AcademicProblemsTable academicProblemFromTable = new AcademicProblemsTable();
@@ -196,7 +194,7 @@ public class ModifySolutionToAcademicProblemController implements Initializable 
                 if(solutionLinked) {
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
                     WindowManagement.closeWindow(event);
                 } else {
                     WindowManagement.showAlert("Solución no registrada",

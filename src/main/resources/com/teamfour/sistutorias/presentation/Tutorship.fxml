@@ -6,8 +6,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.TutorshipController">
     <children>
-        <Button fx:id="cancelButton" layoutX="467.0" layoutY="350.0" mnemonicParsing="false" onAction="#cancelAction" text="Cancelar" />
-        <Button fx:id="addButton" layoutX="534.0" layoutY="350.0" mnemonicParsing="false" onAction="#addAction" style="-fx-background-color: #A5C9FF;" text="Guardar" />
+        <Button fx:id="cancelButton" layoutX="35.0" layoutY="350.0" mnemonicParsing="false" onAction="#cancelAction" style="-fx-background-color: dimgrey;" text="Cancelar" textFill="WHITE" />
+        <Button fx:id="addButton" layoutX="501.0" layoutY="350.0" mnemonicParsing="false" onAction="#addAction" style="-fx-background-color: ForestGreen;" text="Guardar" textFill="WHITE" />
         <Label fx:id="periodLabel" layoutX="229.0" layoutY="25.0" text="Sesiones Tutoría">
             <font>
                 <Font size="15.0" />
@@ -30,11 +30,11 @@
         <Label fx:id="endThirdSessionLabel" layoutX="388.0" layoutY="263.0" text="Cierre tercera sesión" />
         <DatePicker fx:id="thirdDatePicker" editable="false" layoutX="49.0" layoutY="289.0" promptText="Ingresar fecha" />
         <DatePicker fx:id="endThirdDatePicker" editable="false" layoutX="354.0" layoutY="289.0" promptText="Ingresar fecha" />
-      <Label layoutX="35.0" layoutY="60.0" text="Periodo Escolar">
+      <Label layoutX="35.0" layoutY="60.0" text="Periodo Escolar:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbPeriod" layoutX="127.0" layoutY="56.0" prefHeight="25.0" prefWidth="403.0" />
+      <Label fx:id="currentPeriod" layoutX="154.0" layoutY="60.0" prefHeight="17.0" prefWidth="380.0" style="-fx-background-color: white;" />
     </children>
 </AnchorPane>

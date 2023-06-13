@@ -1,6 +1,7 @@
 package com.teamfour.sistutorias.presentation;
 
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,14 +13,23 @@ public class AdminMenuController implements Initializable {
 
     }
 
+    private boolean activePeriod () {
+        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
+            return true;
+        } else {
+            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay periodos activos", Alert.AlertType.INFORMATION);
+            return false;
+        }
+    }
+
     public void clickManageUsers() throws IOException {
         WindowManagement.changeScene("Administrar usuarios",
-                getClass().getResource(""));
+                getClass().getResource("ManageUsers.fxml"));
     }
 
     public void clickManageEducationProgram() throws IOException {
         WindowManagement.changeScene("Administrar programas educativos",
-                getClass().getResource("ManageEducationProgram.fxml"));
+                getClass().getResource("ManageEducativeProgram.fxml"));
     }
 
     public void clickManageTeacher() throws IOException {
@@ -29,11 +39,18 @@ public class AdminMenuController implements Initializable {
 
     public void clickManageEE() throws IOException {
         WindowManagement.changeScene("Administrar EEs",
-                getClass().getResource(""));
+                getClass().getResource("EEAdministration.fxml"));
     }
 
     public void clickManageGroups() throws IOException {
         WindowManagement.changeScene("Administrar grupos",
                 getClass().getResource("GroupAdministration.fxml"));
+    }
+
+    public void clickManageTutorship() throws IOException {
+        if (activePeriod()) {
+            WindowManagement.changeScene("Registrar sesión de tutoría académica",
+                    getClass().getResource("Tutorship.fxml"));
+        }
     }
 }

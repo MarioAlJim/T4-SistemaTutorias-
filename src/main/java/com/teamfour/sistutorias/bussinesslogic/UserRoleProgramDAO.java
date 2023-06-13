@@ -1,6 +1,7 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import com.teamfour.sistutorias.domain.UserRoleProgram;
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import com.teamfour.sistutorias.dataaccess.SHA512;
 
 public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     @Override
@@ -21,11 +23,15 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
-        do {
-            tutors.add(getTutor(resultSet));
-        } while (resultSet.next());
-        dataBaseConnection.closeConection();
-        return tutors;
+        if(!resultSet.next()) {
+            throw new SQLException("No se encontraron tutores");
+        } else {
+            do {
+                tutors.add(getTutor(resultSet));
+            } while (resultSet.next());
+            dataBaseConnection.closeConection();
+            return tutors;
+        }
     }
 
     private UserRoleProgram getTutor(ResultSet resultSet) throws SQLException {
@@ -42,15 +48,15 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     @Override
     public UserRoleProgram searchUser(String uvAcount, String password) throws SQLException {
         UserRoleProgram user = new UserRoleProgram();
-        String query = ("SELECT U.email, p.name, p.paternal_surname, p.maternal_surname " +
+        String query = ("SELECT U.email, P.name, P.paternal_surname, P.maternal_surname " +
                 "FROM user U " +
                 "INNER JOIN person P ON P.person_id = U.person_id " +
-                "WHERE u.email = ? AND u.password = ?");
+                "WHERE U.email = ? AND U.password = ?");
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, uvAcount);
-        statement.setString(2, password);
+        statement.setString(2, SHA512.getSHA512(password));
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             String email = resultSet.getString("email");
@@ -61,10 +67,8 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
             user.setMaternalSurname(maternalSurname);
             user.setPaternalSurname(paternalSurname);
             user.setEmail(email);
-
             ArrayList<RoleProgram> rolePrograms;
             rolePrograms = getRoles(email);
-
             user.setRolesPrograms(rolePrograms);
         }
         dataBaseConnection.closeConection();
@@ -74,23 +78,26 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
     private ArrayList<RoleProgram> getRoles(String email) throws SQLException {
         ArrayList<RoleProgram> rolePrograms = new ArrayList<>();
         String query = ("SELECT * FROM user_program_role UPR " +
-                        "INNER JOIN education_program EP ON UPR.program_id = EP.education_program_id " +
-                        "WHERE email = ?;");
+                "INNER JOIN education_program EP ON UPR.program_id = EP.education_program_id " +
+                "WHERE email = ?;");
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, email);
         ResultSet resultSet = statement.executeQuery();
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             do {
-               RoleProgram roleProgram = new RoleProgram();
-               roleProgram.setNameProgram(resultSet.getString("name"));
-               roleProgram.setEducationProgram(resultSet.getInt("program_id"));
-               roleProgram.setRole(resultSet.getInt("role_id"));
-               roleProgram.setIdRoleProgram(resultSet.getInt("user_program_id"));
-               rolePrograms.add(roleProgram);
-            }while (resultSet.next());
+                RoleProgram roleProgram = new RoleProgram();
+                EducativeProgram educativeProgram = new EducativeProgram();
+                educativeProgram.setIdEducativeProgram(resultSet.getInt("program_id"));
+                educativeProgram.setName(resultSet.getString("name"));
+                roleProgram.setRole(resultSet.getInt("role_id"));
+                roleProgram.setIdRoleProgram(resultSet.getInt("user_program_id"));
+                roleProgram.setEducationProgram(educativeProgram);
+                rolePrograms.add(roleProgram);
+            } while (resultSet.next());
         }
+        dataBaseConnection.closeConection();
         return rolePrograms;
     }
 
@@ -133,7 +140,7 @@ public class UserRoleProgramDAO implements IUserRoleProgramDAO {
         for (int i = 0; i < userRoleProgram.getRolesPrograms().size(); i++) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, userRoleProgram.getEmail());
-            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram());
+            statement.setInt(2, userRoleProgram.getRolesPrograms().get(i).getEducationProgram().getIdEducativeProgram());
             statement.setInt(3, userRoleProgram.getRolesPrograms().get(i).getRole());
             result += statement.executeUpdate();
         }

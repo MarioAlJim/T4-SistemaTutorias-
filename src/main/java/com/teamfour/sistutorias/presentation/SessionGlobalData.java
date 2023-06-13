@@ -1,14 +1,13 @@
 package com.teamfour.sistutorias.presentation;
 
-import com.teamfour.sistutorias.domain.RoleProgram;
-import com.teamfour.sistutorias.domain.User;
-import com.teamfour.sistutorias.domain.UserRoleProgram;
+import com.teamfour.sistutorias.domain.*;
 
 public class SessionGlobalData {
     private static SessionGlobalData instance;
     private UserRoleProgram user;
     private RoleProgram roleProgram;
-
+    private Tutorship currentTutorship;
+    private Period currentPeriod;
     public UserRoleProgram getUserRoleProgram() {
         return user;
     }
@@ -34,5 +33,21 @@ public class SessionGlobalData {
 
     public RoleProgram getActiveRole() {
         return roleProgram;
+    }
+
+    public Tutorship getCurrentTutorship() {
+        return currentTutorship;
+    }
+
+    public void setCurrentTutorship(Tutorship currentTutorship) {
+        this.currentTutorship = currentTutorship;
+    }
+
+    public Period getCurrentPeriod() {
+        return currentPeriod;
+    }
+
+    public void setCurrentPeriod(Period currentPeriod) {
+        this.currentPeriod = currentPeriod;
     }
 }

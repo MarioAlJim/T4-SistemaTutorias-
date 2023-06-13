@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="667.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblemsController">
+<AnchorPane prefHeight="440.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.ConsultAcademicProblemsController">
     <children>
-        <Label layoutX="59.0" layoutY="15.0" text="Periodo" />
-        <Label layoutX="312.0" layoutY="15.0" text="Tutoria" />
-        <ComboBox fx:id="cbTutorship" focusTraversable="false" layoutX="312.0" layoutY="38.0" prefHeight="25.0" prefWidth="209.0" promptText="Seleccione una fecha de tutoria" />
-        <ComboBox fx:id="cbPeriod" layoutX="59.0" layoutY="38.0" prefHeight="25.0" prefWidth="185.0" promptText="Seleccione un periodo" />
-        <TableView fx:id="tvProblems" layoutX="54.0" layoutY="98.0" prefHeight="177.0" prefWidth="488.0">
+      <Rectangle fill="#ebebeb" height="383.0" layoutX="5.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="451.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="383.0" layoutX="474.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="517.0" />
+        <Label layoutX="20.0" layoutY="14.0" text="Periodo" />
+        <Label layoutX="21.0" layoutY="71.0" text="Tutoria" />
+        <ComboBox fx:id="cbTutorship" focusTraversable="false" layoutX="21.0" layoutY="94.0" prefHeight="25.0" prefWidth="209.0" promptText="Seleccione una fecha de tutoria" />
+        <ComboBox fx:id="cbPeriod" layoutX="20.0" layoutY="37.0" prefHeight="25.0" prefWidth="211.0" promptText="Seleccione un periodo" />
+        <TableView fx:id="tvProblems" layoutX="17.0" layoutY="160.0" prefHeight="208.0" prefWidth="426.0">
             <columns>
-                <TableColumn fx:id="colProblem_id" prefWidth="75.0" text="idProblematica" visible="false" />
-                <TableColumn fx:id="colTitle" prefWidth="302.0" text="Titulo" />
-                <TableColumn fx:id="colNrc" minWidth="0.0" prefWidth="185.0" text="Experiencia Educativa" />
+                <TableColumn fx:id="tcTitle" prefWidth="133.3333282470703" text="Titulo" />
+            <TableColumn fx:id="tcDescription" prefWidth="221.33334350585938" text="Descripcion" />
+                <TableColumn fx:id="tcNrc" minWidth="0.0" prefWidth="69.66665649414062" text="EE" />
             </columns>
         </TableView>
-        <Button fx:id="btnClose" layoutX="331.0" layoutY="617.0" mnemonicParsing="false" onAction="#close" text="Cerrar" />
-        <TextField fx:id="tfTutorados" disable="true" layoutX="180.0" layoutY="292.0" prefHeight="25.0" prefWidth="55.0" />
-        <TextField fx:id="tfGroup" disable="true" layoutX="180.0" layoutY="326.0" prefHeight="25.0" prefWidth="358.0" />
-        <TextField fx:id="tfSolution" disable="true" layoutX="55.0" layoutY="538.0" prefHeight="55.0" prefWidth="488.0" />
-        <TextField fx:id="tfTitle" disable="true" layoutX="52.0" layoutY="376.0" prefHeight="25.0" prefWidth="488.0" />
-        <TextField fx:id="tfDescription" disable="true" layoutX="54.0" layoutY="423.0" prefHeight="92.0" prefWidth="488.0" />
-        <Label fx:id="lblTutorados" layoutX="55.0" layoutY="292.0" text="Alumnos que reportan" />
-        <Label fx:id="lblGroup" layoutX="55.0" layoutY="325.0" prefHeight="17.0" prefWidth="120.0" text="Docente reportado" />
-        <Label fx:id="lblTitle" layoutX="54.0" layoutY="359.0" text="Titulo" />
-        <Label fx:id="lblDescription" layoutX="55.0" layoutY="406.0" text="Descripción" />
-        <Button fx:id="btnDelete" disable="true" layoutX="400.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteAcademicProblem" text="Eliminar" />
-        <Button fx:id="btnModiify" disable="true" layoutX="476.0" layoutY="617.0" mnemonicParsing="false" onAction="#launchModificate" text="Modificar" />
-        <Label fx:id="lblSugerence" layoutX="54.0" layoutY="72.0" text="Seleccione una problemática de la tabla" />
-      <Label fx:id="lblSolution" layoutX="55.0" layoutY="521.0" text="Solucion" />
+        <Button fx:id="btClose" layoutX="929.0" layoutY="401.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: DimGray;" text="Cerrar" textFill="WHITE" />
+        <TextField fx:id="tfTutorados" disable="true" layoutX="615.0" layoutY="19.0" prefHeight="25.0" prefWidth="55.0" />
+        <TextField fx:id="tfGroup" disable="true" layoutX="615.0" layoutY="53.0" prefHeight="25.0" prefWidth="358.0" />
+        <TextField fx:id="tfSolution" disable="true" layoutX="490.0" layoutY="265.0" prefHeight="81.0" prefWidth="488.0" />
+        <TextField fx:id="tfTitle" disable="true" layoutX="487.0" layoutY="103.0" prefHeight="25.0" prefWidth="488.0" />
+        <TextField fx:id="tfDescription" disable="true" layoutX="489.0" layoutY="150.0" prefHeight="94.0" prefWidth="488.0" />
+        <Label layoutX="490.0" layoutY="19.0" text="Alumnos que reportan" />
+        <Label layoutX="490.0" layoutY="52.0" prefHeight="17.0" prefWidth="120.0" text="Docente reportado" />
+        <Label layoutX="489.0" layoutY="86.0" text="Titulo" />
+        <Label layoutX="490.0" layoutY="133.0" text="Descripción" />
+        <Button fx:id="btDelete" disable="true" layoutX="835.0" layoutY="356.0" mnemonicParsing="false" onAction="#deleteAcademicProblem" style="-fx-background-color: Indianred;" text="Eliminar" textFill="WHITE" />
+        <Button fx:id="btModify" disable="true" layoutX="911.0" layoutY="356.0" mnemonicParsing="false" onAction="#openModificationAcademicProblem" style="-fx-background-color: Goldenrod;" text="Modificar" />
+        <Label layoutX="20.0" layoutY="142.0" text="Seleccione una problemática de la tabla" />
+      <Label layoutX="490.0" layoutY="248.0" text="Solucion" />
     </children>
 </AnchorPane>

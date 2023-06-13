@@ -1,6 +1,6 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
-import com.teamfour.sistutorias.domain.EducationProgram;
+import com.teamfour.sistutorias.domain.EducativeProgram;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,34 +10,34 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EducationProgramDAOTest {
-    private EducationProgramDAO educationProgramDAO;
-    private ArrayList<EducationProgram> educationPrograms;
-    private EducationProgram educationProgram;
-    private EducationProgram educationProgram1;
-    private EducationProgram educationProgram2;
-    private ArrayList<EducationProgram> registeredEducationPrograms;
+    private EducativeProgramDAO educationProgramDAO;
+    private ArrayList<EducativeProgram> educativePrograms;
+    private EducativeProgram educativeProgram;
+    private EducativeProgram educativeProgram1;
+    private EducativeProgram educativeProgram2;
+    private ArrayList<EducativeProgram> registeredEducativePrograms;
     @BeforeEach
     void setUp() {
-        educationProgramDAO = new EducationProgramDAO();
-        educationPrograms = new ArrayList<>();
-        registeredEducationPrograms = new ArrayList<>();
-        educationProgram = new EducationProgram();
-        educationProgram1 = new EducationProgram();
-        educationProgram2 = new EducationProgram();
+        educationProgramDAO = new EducativeProgramDAO();
+        educativePrograms = new ArrayList<>();
+        registeredEducativePrograms = new ArrayList<>();
+        educativeProgram = new EducativeProgram();
+        educativeProgram1 = new EducativeProgram();
+        educativeProgram2 = new EducativeProgram();
     }
 
     @Test
     public void getEducationPrograms() throws SQLException {
-        educationProgram1.setName("Ingenieria de software");
-        registeredEducationPrograms.add(educationProgram1);
-        educationProgram2.setName("Estadistica");
-        registeredEducationPrograms.add(educationProgram2);
+        educativeProgram1.setName("Ingenieria de software");
+        registeredEducativePrograms.add(educativeProgram1);
+        educativeProgram2.setName("Estadistica");
+        registeredEducativePrograms.add(educativeProgram2);
 
-        educationPrograms = educationProgramDAO.getEducationPrograms();
+        educativePrograms = educationProgramDAO.getEducativePrograms();
         boolean isValid = true;
         int iteration = 0;
-        for(EducationProgram educationProgramUV : educationPrograms) {
-            if(!educationProgramUV.getName().equals(registeredEducationPrograms.get(iteration).getName())) {
+        for(EducativeProgram educativeProgramUV : educativePrograms) {
+            if(!educativeProgramUV.getName().equals(registeredEducativePrograms.get(iteration).getName())) {
                 isValid = false;
             }
             iteration++;
@@ -47,14 +47,14 @@ class EducationProgramDAOTest {
 
     @Test
     public void register() throws SQLException {
-        educationProgram.setName("Ingenieria de software");
-        assertTrue(educationProgramDAO.register(educationProgram) != -1);
+        educativeProgram.setName("Ingenieria de software");
+        assertTrue(educationProgramDAO.register(educativeProgram) != -1);
     }
 
     @Test
     public void updateEducationProgram() throws SQLException {
-        educationProgram.setIdEducationProgram(1);
-        educationProgram.setName("Ingenieria de software");
-        assertTrue(educationProgramDAO.updateEducationProgram(educationProgram));
+        educativeProgram.setIdEducativeProgram(1);
+        educativeProgram.setName("Ingenieria de Software");
+        assertTrue(educationProgramDAO.updateEducativeProgram(educativeProgram));
     }
 }

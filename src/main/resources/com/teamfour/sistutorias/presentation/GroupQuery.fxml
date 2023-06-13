@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.GroupQueryController">
+   <children>
+      <Label layoutX="44.0" layoutY="22.0" text="Programa Educativo:" />
+      <TableView fx:id="tvAcademicOffer" layoutX="44.0" layoutY="54.0" prefHeight="282.0" prefWidth="508.0">
+        <columns>
+          <TableColumn fx:id="tcNrc" prefWidth="75.0" text="NRC" />
+          <TableColumn fx:id="tcName" prefWidth="298.0" text="Experiencia Educativa" />
+            <TableColumn fx:id="tcTeacher" prefWidth="134.0" text="Docente" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnClose" layoutX="500.0" layoutY="355.0" mnemonicParsing="false" onAction="#closeAction" style="-fx-background-color: dimgrey;" text="Cerrar" textFill="WHITE" />
+      <Label fx:id="lbEducationProgram" layoutX="163.0" layoutY="22.0" prefHeight="17.0" prefWidth="391.0" style="-fx-background-color: white;" />
+   </children>
+</AnchorPane>

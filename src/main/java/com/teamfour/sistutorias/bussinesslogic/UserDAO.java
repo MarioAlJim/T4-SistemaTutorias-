@@ -1,6 +1,7 @@
 package com.teamfour.sistutorias.bussinesslogic;
 
 import com.teamfour.sistutorias.dataaccess.DataBaseConnection;
+import com.teamfour.sistutorias.dataaccess.SHA512;
 import com.teamfour.sistutorias.domain.User;
 
 import java.sql.Connection;
@@ -72,7 +73,7 @@ public class UserDAO implements IUserDAO{
         String query = "INSERT INTO user (email, password, person_id) VALUES (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, user.getEmail());
-        statement.setString(2, user.getPassword());
+        statement.setString(2, SHA512.getSHA512(user.getPassword()));
         statement.setInt(3, user.getIdPerson());
         int columns = statement.executeUpdate();
         int result;
@@ -97,7 +98,7 @@ public class UserDAO implements IUserDAO{
             String query = "UPDATE user SET password = ? WHERE email = ?";
             try {
                 PreparedStatement statement = connection.prepareStatement(query);
-                statement.setString(1, user.getPassword());
+                statement.setString(1, SHA512.getSHA512(user.getPassword()));
                 statement.setString(2, user.getEmail());
                 int columns = statement.executeUpdate();
                 if (columns == 1) {

@@ -85,6 +85,8 @@ public class ConsultGeneralTutorshipReport implements Initializable {
             periods.addAll(periodDAO.getPeriods());
             cbPeriod.setItems(periods);
             cbPeriod.addEventHandler(ActionEvent.ACTION, event -> {
+                tvAcademicProblems.getItems().clear();
+                tvGeneralComment.getItems().clear();
                 cbTutorship.setDisable(false);
                 LoadTutorships();
             });
@@ -106,6 +108,8 @@ public class ConsultGeneralTutorshipReport implements Initializable {
             }
             cbTutorship.setItems(tutorships);
             cbTutorship.addEventHandler(ActionEvent.ACTION, event -> {
+                tvAcademicProblems.getItems().clear();
+                tvGeneralComment.getItems().clear();
                 LoadTutorshipReports();
                 lbTutorshipDate.setText("Fecha de Tutoria: " +
                         cbTutorship.getSelectionModel().getSelectedItem().getStart());
@@ -148,8 +152,15 @@ public class ConsultGeneralTutorshipReport implements Initializable {
                     }
                 }
             }
-            lbTutoredAttendance.setText("Porcentaje de Asistencia: " + (totalAssistances * 100) / totalStudents + "%");
-            lbTutoredRisk.setText("Porcentaje en Riesgo: " + (totalRisks * 100) / totalStudents + "%");
+            if (totalStudents != 0){
+                lbTutoredAttendance.setText("Porcentaje de Asistencia: " + (totalAssistances * 100) / totalStudents + "%");
+                lbTutoredRisk.setText("Porcentaje en Riesgo: " + (totalRisks * 100) / totalStudents + "%");
+            } else {
+                lbTutoredAttendance.setText("Porcentaje de Asistencia: 0%");
+                lbTutoredRisk.setText("Porcentaje en Riesgo: 0%");
+            }
+
+
 
             generateComments();
             tvAcademicProblems.setItems(FXCollections.observableArrayList(academicProblems));

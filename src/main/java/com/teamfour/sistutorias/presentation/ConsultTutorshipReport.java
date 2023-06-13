@@ -65,15 +65,15 @@ public class ConsultTutorshipReport implements Initializable {
 
     private ObservableList<User> tutors;
     private ObservableList<Tutorship> tutorships;
-    private EducationProgram educationProgram;
+    private EducativeProgram educativeProgram;
     private ObservableList<Assistance> assistances;
     private ObservableList<AcademicProblem> academicProblems;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Remove after testing
-        educationProgram = new EducationProgram();
-        educationProgram.setIdEducationProgram(1);
+        educativeProgram = new EducativeProgram();
+        educativeProgram.setIdEducativeProgram(1);
 
         tutors = FXCollections.observableArrayList();
         tutorships = FXCollections.observableArrayList();
@@ -98,7 +98,7 @@ public class ConsultTutorshipReport implements Initializable {
     private void LoadTutors() {
         UserDAO userDAO = new UserDAO();
         try {
-            tutors.addAll(userDAO.getTutors(educationProgram.getIdEducationProgram()));
+            tutors.addAll(userDAO.getTutors(educativeProgram.getIdEducativeProgram()));
             cbTutor.setItems(tutors);
             cbTutor.setOnAction(event -> LoadTutorships());
         } catch (SQLException e) {

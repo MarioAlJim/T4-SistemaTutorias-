@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="440.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.MainMenuController">
+<AnchorPane prefHeight="440.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.sistutorias.presentation.MainMenuController">
    <children>
       <GridPane prefHeight="391.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -55,7 +40,7 @@
                   <Insets bottom="3.0" right="25.0" />
                </GridPane.margin>
             </ComboBox>
-            <TabPane prefHeight="392.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
+            <TabPane fx:id="tpRoles" prefHeight="392.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
               <tabs>
                   <Tab fx:id="tabTutor" text="Tutor académico">
                     <content>
@@ -94,8 +79,8 @@
                                        <children>
                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte de tutoría académica" GridPane.halignment="CENTER" />
                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickFillTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Llenar reporte de tutoría académica" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterProblem" prefHeight="26.0" prefWidth="230.0" text="Registrar problemática académica" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyProblem" prefHeight="26.0" prefWidth="230.0" text="Consultar problemática académica" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultAcademicProblem" prefHeight="26.0" prefWidth="230.0" text="Consultar problemática académica" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                          <Button layoutX="35.0" layoutY="125.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickAcademicOffer" prefHeight="26.0" prefWidth="230.0" text="Consultar oferta académica" GridPane.rowIndex="3" />
                                        </children>
                                        <padding>
                                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -142,13 +127,12 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterTutorship" prefHeight="26.0" prefWidth="230.0" text="Registrar fechas de sesión de tutoría" GridPane.halignment="CENTER" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyTutorship" prefHeight="26.0" prefWidth="230.0" text="Modificar fechas de sesión de tutoría" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultReportByTutor" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte por tutor académico" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTutorado" prefHeight="26.0" prefWidth="230.0" text="Administrar tutorado" GridPane.rowIndex="4" />
-                                          <Button layoutX="35.0" layoutY="264.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickAssignTutor" prefHeight="26.0" prefWidth="230.0" text="Asignar tutor académico" GridPane.rowIndex="5" />
-                                          <Button layoutX="35.0" layoutY="272.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyTutorAssignment" prefHeight="26.0" prefWidth="230.0" text="Modificar asignación de tutor académico" GridPane.rowIndex="6" />
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" />
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultReportByTutor" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte por tutor académico" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTutee" prefHeight="26.0" prefWidth="230.0" text="Administrar tutorado" GridPane.rowIndex="2" />
+                                          <Button layoutX="35.0" layoutY="264.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickAssignTutor" prefHeight="26.0" prefWidth="230.0" text="Asignar tutor académico" GridPane.rowIndex="3" />
+                                          <Button layoutX="35.0" layoutY="272.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyTutorAssignment" prefHeight="26.0" prefWidth="230.0" text="Modificar asignación de tutor académico" GridPane.rowIndex="4" />
+                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolutionAsCoordinator" prefHeight="26.0" prefWidth="230.0" text="Consultar soluciones a problemáticas" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                                        </children>
                                        <padding>
                                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -196,7 +180,7 @@
                                            </rowConstraints>
                                            <children>
                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterSolution" prefHeight="26.0" prefWidth="230.0" text="Registrar solución a problemática" GridPane.halignment="CENTER" />
-                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolution" prefHeight="26.0" prefWidth="230.0" text="Consultar solución a problemática" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolutionAsCareerManager" prefHeight="26.0" prefWidth="230.0" text="Administrar soluciones a problemáticas" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                            </children>
                                            <padding>

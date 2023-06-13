@@ -41,14 +41,12 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
     @FXML
     private TextArea taSolution;
 
-    final int MAX_CHARS = 100;
+    final int MAX_CHARS = 200;
     private final ObservableList<AcademicProblemsTable> tableAcademicProblems = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // FOR DEMONSTRATION PURPOSES
-            //SessionGlobalData.getSessionGlobalData().getUserRoleProgram().setIdProgram(1);
             populateComboBoxes();
             populateTable();
             seeAcademicProblemListener();
@@ -64,8 +62,9 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
         TeacherDAO teacherDAO = new TeacherDAO();
         ObservableList<Teacher> teachers = FXCollections.observableArrayList();
         teachers.add(new Teacher());
-        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram()));
+        teachers.addAll(teacherDAO.getTeachersByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram()));
         this.cbTeacher.setItems(teachers);
+        this.cbTeacher.getSelectionModel().selectFirst();
         this.cbTeacher.setConverter(new StringConverter<Teacher>() {
             @Override
             public String toString(Teacher teacher) {
@@ -81,7 +80,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
         EEDAO eedao = new EEDAO();
         ObservableList<EE> ees = FXCollections.observableArrayList();
         ees.add(new EE());
-        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram()));
+        ees.addAll(eedao.getEEsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram()));
         this.cbEE.setItems(ees);
         this.cbEE.getSelectionModel().selectFirst();
         this.cbEE.setConverter(new StringConverter<EE>() {
@@ -99,7 +98,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
 
     public void populateTable() throws SQLException {
         AcademicProblemDAO academicProblemDAO = new AcademicProblemDAO();
-        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getIdRoleProgram());
+        ArrayList<AcademicProblem> academicProblemsWithoutSolution = academicProblemDAO.getAcademicProblemsWithoutSolutionByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
         for(AcademicProblem academicProblem : academicProblemsWithoutSolution) {
             AcademicProblemsTable academicProblemFromTable = new AcademicProblemsTable();
             academicProblemFromTable.setIdAcademicProblem(academicProblem.getIdAcademicProblem());
@@ -157,6 +156,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
                         solutionLinked = academicProblemDAO.linkSolutionToProblems(academicProblem,solution);
                         if(solutionLinked) {
                             this.taSolution.clear();
+                            this.taAcademicProblem.clear();
                             this.tvAcademicProblems.getItems().remove(academicProblem);
                         } else {
                             break;
@@ -168,7 +168,7 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
                     this.taSolution.clear();
                     WindowManagement.showAlert("Solución registrada",
                             "La solución se registró correctamente",
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
                 } else {
                     WindowManagement.showAlert("Solución no registrada",
                             "La solución no ha sido registrada",
@@ -212,9 +212,9 @@ public class RegisterSolutionToAcademicProblemController implements Initializabl
 
     @FXML
     private void filterAcademicProblems(ActionEvent event) {
-        Teacher selectedTeacher = (Teacher) this.cbTeacher.getSelectionModel().getSelectedItem();
+        Teacher selectedTeacher = this.cbTeacher.getSelectionModel().getSelectedItem();
         String selectedTeacherName = selectedTeacher.getFullName().replaceAll("\\s", "");
-        EE selectedEE = (EE) this.cbEE.getSelectionModel().getSelectedItem();
+        EE selectedEE = this.cbEE.getSelectionModel().getSelectedItem();
         String selectedEEName = selectedEE.getName().replaceAll("\\s", "");
 
         ObservableList<AcademicProblemsTable> filteredAcademicProblems = FXCollections.observableArrayList();

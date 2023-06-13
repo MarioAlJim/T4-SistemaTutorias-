@@ -1,4 +1,3 @@
-
 package com.teamfour.sistutorias.presentation;
 
 import java.net.URL;
@@ -19,7 +18,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -56,44 +54,41 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setTutorsTable();
-        setTutoradosTable();
+        setTutors();
+        setTutorados();
         seeSelectedTutorListener();
         seeSelectedTutoradoListener();
         searchTutor();
         searchTutorado();
     }
 
-    private void setTutoradosTable() {
+    private void setTutorados() {
         colNameTurorado.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colNumberRegister.setCellValueFactory(new PropertyValueFactory<>("registrationNumber"));
         TutoradoDAO tutoradoDAO = new TutoradoDAO();
         ArrayList<Tutorado> tutorados = new ArrayList<>();
         tutoradosData = FXCollections.observableArrayList();
         try {
-            //tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
-            tutorados = tutoradoDAO.getTutoradosWithTutor(1);
+            tutorados = tutoradoDAO.getTutoradosWithTutor(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
         } catch (SQLException exception) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         tutoradosData.addAll(tutorados);
         tvTutorados.setItems(tutoradosData);
     }
 
-    private void setTutorsTable() {
+    private void setTutors() {
         colNameTutor.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colNumPersonal.setCellValueFactory(new PropertyValueFactory<>("email"));
         UserRoleProgramDAO userRoleProgramDAO = new UserRoleProgramDAO();
         ArrayList<UserRoleProgram> tutors = new ArrayList<>();
         tutorsData = FXCollections.observableArrayList();
         try {
-            //tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getIdProgram());
-            //
-            tutors = userRoleProgramDAO.getTutorsByProgram(1);
+            tutors = userRoleProgramDAO.getTutorsByProgram(SessionGlobalData.getSessionGlobalData().getActiveRole().getEducationProgram().getIdEducativeProgram());
         } catch (SQLException exception) {
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.connectionLostMessage();
+            close();
         }
         tutorsData.addAll(tutors);
         tvTutors.setItems(tutorsData);
@@ -192,16 +187,17 @@ public class ModifyAsignmentTutorTutoradoController implements Initializable {
                     System.out.println(result);
                 }
             } catch (SQLException exception) {
-                WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                WindowManagement.connectionLostMessage();
                 Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, exception);
             }
+        } else {
+            WindowManagement.showAlert("Atencion", "Debe seleccionar un tutor y un tutoradop para cambiar la asignacion", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    public void close(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
+    public void close() {
+        Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
     }
 }

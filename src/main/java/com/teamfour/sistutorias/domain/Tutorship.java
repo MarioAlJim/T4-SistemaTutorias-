@@ -6,6 +6,11 @@ public class Tutorship {
     private String end;
     private int periodId;
 
+    public Tutorship (){
+        idTutorShip = 0;
+        start = "";
+        end = "";
+    }
     public int getIdTutorShip() {
         return idTutorShip;
     }

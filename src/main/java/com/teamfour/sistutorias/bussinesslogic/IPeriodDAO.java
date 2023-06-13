@@ -7,4 +7,5 @@ import java.util.ArrayList;
 
 public interface IPeriodDAO {
     public ArrayList<Period> getPeriods() throws SQLException;
+    public Period getCurrentPeriod() throws SQLException;
 }

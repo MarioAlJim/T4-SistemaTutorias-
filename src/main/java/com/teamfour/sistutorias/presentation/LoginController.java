@@ -9,15 +9,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import com.teamfour.sistutorias.bussinesslogic.*;
 import com.teamfour.sistutorias.domain.*;
+import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
 
@@ -31,76 +31,80 @@ public class LoginController implements Initializable {
     private Label lblInvalidUser;
     @FXML
     private Label lblInvalidPassword;
+    @FXML
+    private Button btnSignIn;
+    @FXML
+    private Button btnExit;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    private void validateUser(String uvAcount, String password) {
-        UserRoleProgram user;
-        try {
-            UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
-            user = userRoleProgram.searchUser(uvAcount, password);
-            if (user.getName() != null) {
-                SessionGlobalData.getSessionGlobalData().setUserRoleProgram(user);
-                invoqueWindow();
-            } else {
-                WindowManagement.showAlert("Error", "No se encontro el usuario, verifique la informacion", Alert.AlertType.INFORMATION);
-            }
-        }catch (SQLException exception) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
-            WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
-        }
+    private boolean validateUser(String uvAcount) {
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        return pattern.matcher(uvAcount).find();
     }
 
     private void invoqueWindow() {
-        int tipeUser = 1;
-        String window = "";
-        String title = "";
+        int typeUser = 1;
         ArrayList<RoleProgram> roles = SessionGlobalData.getSessionGlobalData().getUserRoleProgram().getRolesPrograms();
-        for (RoleProgram roleProgram: roles) {
-            if(roleProgram.getRole() == 4) {
-                tipeUser = 2;
+        for (RoleProgram roleProgram : roles) {
+            if (roleProgram.getRole() == 4) {
+                typeUser = 2;
             }
         }
-
-        switch (tipeUser) {
-            case 2:
-                window = "AdminMenu.fxml";
-                title = "Menu de administrador";
-                break;
-            case 1:
-                window = "MainMenu.fxml";
-                title = "Menu principal";
-                break;
-        }
-
-        Stage stage = new Stage();
-        stage.setTitle(title);
+        closeAux();
+        PeriodDAO periodDAO = new PeriodDAO();
+        TutorshipDAO tutorshipDAO = new TutorshipDAO();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
-            stage.setScene(new Scene(loader.load()));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            closeAux();
-            stage.show();
-        } catch (IOException exception){
+            Period period = periodDAO.getCurrentPeriod();
+            Tutorship tutorship = tutorshipDAO.getCurrentTutorship(period.getIdPeriod());
+            SessionGlobalData.getSessionGlobalData().setCurrentPeriod(period);
+            SessionGlobalData.getSessionGlobalData().setCurrentTutorship(tutorship);
+            switch (typeUser) {
+                case 2:
+                    WindowManagement.changeScene("Menu de administrador", getClass().getResource("AdminMenu.fxml"));
+                    break;
+                case 1:
+                    WindowManagement.changeScene("Menu principal", getClass().getResource("MainMenu.fxml"));
+                    break;
+            }
+        } catch (IOException exception) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
             WindowManagement.showAlert("Error", "Error no se pudo cargar el menu", Alert.AlertType.INFORMATION);
+        } catch (SQLException exception) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
+            WindowManagement.showAlert("Error", "Error al conectar con la base de datos, compruebe su conexion", Alert.AlertType.INFORMATION);
         }
     }
 
     @FXML
-    private void signUp(ActionEvent event) {
-        String uvAcount = txtUser.getText();
+    private void signUp() {
+        String uvAcount = txtUser.getText().trim().replaceAll(" ","");
         String password = txtPassword.getText();
-        if(uvAcount.isEmpty() || uvAcount.length() > 15){
+        if(uvAcount.isEmpty() || uvAcount.length() > 50){
             lblInvalidUser.setVisible(true);
-        }else if(password.isEmpty() || password.length() > 15){
+        }else if(password.isEmpty() || password.length() > 50){
             lblInvalidPassword.setVisible(true);
         }else {
-            lblInvalidUser.setVisible(false);
             lblInvalidPassword.setVisible(false);
-            validateUser(uvAcount, password);
+            lblInvalidUser.setVisible(false);
+            if (validateUser(uvAcount)) {
+                UserRoleProgram user;
+                try {
+                    UserRoleProgramDAO userRoleProgram = new UserRoleProgramDAO();
+                    user = userRoleProgram.searchUser(uvAcount, password);
+                    if (user.getEmail().equals(uvAcount)) {
+                        SessionGlobalData.getSessionGlobalData().setUserRoleProgram(user);
+                        invoqueWindow();
+                    } else {
+                        WindowManagement.showAlert("Error", "No se encontro el usuario, verifique la informacion", Alert.AlertType.INFORMATION);
+                    }
+                } catch (SQLException exception) {
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, exception);
+                    WindowManagement.showAlert("Error", "Error en la conexion con la base de datos", Alert.AlertType.INFORMATION);
+                }
+            } else {
+                WindowManagement.showAlert("Error", "El usuario ingresado no es valido", Alert.AlertType.INFORMATION);
+            }
         }
     }
 
@@ -117,4 +121,14 @@ public class LoginController implements Initializable {
         stage.close();
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        URL linkImgUsers = getClass().getResource("/com/teamfour/sistutorias/images/users.png");
+        Image intSignIn = new Image(linkImgUsers.toString(),15,15,false,true);
+        btnSignIn.setGraphic(new ImageView(intSignIn));
+
+        URL linkImgOut = getClass().getResource("/com/teamfour/sistutorias/images/exit.png");
+        Image imgOut = new Image(linkImgOut.toString(),15,15,false,true);
+        btnExit.setGraphic(new ImageView(imgOut));
+    }
 }
