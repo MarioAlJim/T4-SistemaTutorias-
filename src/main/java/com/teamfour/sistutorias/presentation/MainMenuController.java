@@ -142,7 +142,7 @@ public class MainMenuController implements Initializable {
                 getClass().getResource("ConsultTutorshipReport.fxml"));
     }
 
-    public void clickManageTutorado() throws IOException {
+    public void clickManageTutee() throws IOException {
         setSessionGlobalDataRol(2);
         WindowManagement.changeScene("Administrar tutorados",
                 getClass().getResource("ManageTutorados.fxml"));

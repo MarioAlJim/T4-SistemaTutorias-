@@ -129,10 +129,10 @@
                                        <children>
                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" />
                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultReportByTutor" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte por tutor académico" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTutorado" prefHeight="26.0" prefWidth="230.0" text="Administrar tutorado" GridPane.rowIndex="2" />
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickManageTutee" prefHeight="26.0" prefWidth="230.0" text="Administrar tutorado" GridPane.rowIndex="2" />
                                           <Button layoutX="35.0" layoutY="264.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickAssignTutor" prefHeight="26.0" prefWidth="230.0" text="Asignar tutor académico" GridPane.rowIndex="3" />
                                           <Button layoutX="35.0" layoutY="272.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickModifyTutorAssignment" prefHeight="26.0" prefWidth="230.0" text="Modificar asignación de tutor académico" GridPane.rowIndex="4" />
-                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolutionAsCoordinator" prefHeight="26.0" prefWidth="230.0" text="Consultar solución a problemática" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolutionAsCoordinator" prefHeight="26.0" prefWidth="230.0" text="Consultar soluciones a problemáticas" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                                        </children>
                                        <padding>
                                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -180,7 +180,7 @@
                                            </rowConstraints>
                                            <children>
                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRegisterSolution" prefHeight="26.0" prefWidth="230.0" text="Registrar solución a problemática" GridPane.halignment="CENTER" />
-                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolutionAsCareerManager" prefHeight="26.0" prefWidth="230.0" text="Consultar solución a problemática" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultSolutionAsCareerManager" prefHeight="26.0" prefWidth="230.0" text="Administrar soluciones a problemáticas" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickConsultGeneralTutorshipReport" prefHeight="26.0" prefWidth="230.0" text="Consultar reporte general de tutorías" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                            </children>
                                            <padding>
