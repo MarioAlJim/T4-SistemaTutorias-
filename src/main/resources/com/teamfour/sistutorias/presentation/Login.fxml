@@ -18,7 +18,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-        <PasswordField fx:id="txtPassword" focusTraversable="false" layoutX="331.0" layoutY="130.0" prefHeight="25.0" prefWidth="136.0" text="UM0lOduRRMtTebC">
+        <PasswordField fx:id="txtPassword" focusTraversable="false" layoutX="331.0" layoutY="130.0" prefHeight="25.0" prefWidth="136.0" text="">
          <font>
             <Font size="13.0" />
          </font></PasswordField>
@@ -26,7 +26,7 @@
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-        <TextField fx:id="txtUser" layoutX="331.0" layoutY="78.0" prefHeight="25.0" prefWidth="136.0" text="elimurrieta@uv.mx">
+        <TextField fx:id="txtUser" layoutX="331.0" layoutY="78.0" prefHeight="25.0" prefWidth="136.0" text="">
          <font>
             <Font size="13.0" />
          </font></TextField>
