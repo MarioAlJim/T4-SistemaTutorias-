@@ -43,8 +43,10 @@ public class AdminMenuController implements Initializable {
     }
 
     public void clickManageGroups() throws IOException {
-        WindowManagement.changeScene("Administrar grupos",
-                getClass().getResource("GroupAdministration.fxml"));
+        if (activePeriod()) {
+            WindowManagement.changeScene("Administrar grupos",
+                    getClass().getResource("GroupAdministration.fxml"));
+        }
     }
 
     public void clickManageTutorship() throws IOException {

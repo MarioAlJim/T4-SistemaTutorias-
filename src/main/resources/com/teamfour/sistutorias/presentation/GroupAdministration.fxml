@@ -23,7 +23,7 @@
         </TableView>
         <Button fx:id="btnDeleteGroup" layoutX="826.0" layoutY="474.0" mnemonicParsing="false" onAction="#deleteGroup" style="-fx-background-color: Indianred;" text="Eliminar" textFill="WHITE" />
         <Button fx:id="btnModifyGroup" layoutX="898.0" layoutY="474.0" mnemonicParsing="false" onAction="#modifyGroup" style="-fx-background-color: Goldenrod;" text="Modificar" textFill="WHITE" />
-        <Label layoutX="24.0" layoutY="150.0" prefHeight="21.0" prefWidth="159.0" text="Grupos en el sistema">
+        <Label layoutX="24.0" layoutY="150.0" prefHeight="21.0" prefWidth="159.0" text="Grupos registrados">
             <font>
                 <Font size="15.0" />
             </font>
@@ -52,7 +52,7 @@
       </TableView>
       <TextField fx:id="tfSelectedEE" layoutX="783.0" layoutY="401.0" prefHeight="25.0" prefWidth="270.0" />
       <TextField fx:id="tfSelectedTeacher" layoutX="469.0" layoutY="401.0" prefHeight="25.0" prefWidth="304.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="75.0" layoutX="14.0" layoutY="20.0" stroke="#dddddd" strokeType="INSIDE" width="800.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="75.0" layoutX="14.0" layoutY="20.0" stroke="#dddddd" strokeType="INSIDE" width="1053.0" />
       <Label layoutX="24.0" layoutY="44.0" prefHeight="21.0" prefWidth="159.0" text="Programa educativo">
          <font>
             <Font size="15.0" />
@@ -64,7 +64,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lbPeriod" layoutX="533.0" layoutY="41.0" prefHeight="25.0" prefWidth="228.0">
+      <Label fx:id="lbPeriod" layoutX="533.0" layoutY="41.0" prefHeight="25.0" prefWidth="521.0">
          <font>
             <Font size="16.0" />
          </font>

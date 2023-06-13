@@ -1,10 +1,11 @@
 package com.teamfour.sistutorias.presentation;
 
+import com.teamfour.sistutorias.bussinesslogic.RegisterDAO;
 import com.teamfour.sistutorias.domain.EducativeProgram;
+import com.teamfour.sistutorias.domain.Register;
 import com.teamfour.sistutorias.domain.RoleProgram;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -16,7 +17,9 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
@@ -119,8 +122,18 @@ public class MainMenuController implements Initializable {
     public void clickFillTutorshipReport() throws IOException {
         setSessionGlobalDataRol(1);
         if (activeTutorship()) {
-            WindowManagement.changeScene("Registrar reporte de tutoría académica",
-                    getClass().getResource("FillTutorshipReport.fxml"));
+            RegisterDAO registerDAO = new RegisterDAO();
+            try {
+                List<Register> register = registerDAO.getTutorshipRegister(SessionGlobalData.getSessionGlobalData().getCurrentTutorship().getIdTutorShip());
+                if (register.isEmpty()) {
+                    WindowManagement.changeScene("Registrar reporte de tutoría académica",
+                            getClass().getResource("FillTutorshipReport.fxml"));
+                } else {
+                    WindowManagement.showAlert("Usted ya ha registrado un reporte para esta tutoria", "Ya registrado", Alert.AlertType.INFORMATION);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -161,21 +174,33 @@ public class MainMenuController implements Initializable {
     }
 
     public void clickRegisterSolution() throws IOException {
-        setSessionGlobalDataRol(3);
-        WindowManagement.changeScene("Registrar solución a problemática académica",
-                getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
+        if (activePeriod()) {
+            setSessionGlobalDataRol(3);
+            WindowManagement.changeScene("Registrar solución a problemática académica",
+                    getClass().getResource("RegisterSolutionToAcademicProblem.fxml"));
+        }
     }
 
     public void clickConsultSolutionAsCoordinator() throws IOException {
-        setSessionGlobalDataRol(2);
-        WindowManagement.changeScene("Soluciones a problemáticas académicas",
-                getClass().getResource("SolutionsToAcademicProblems.fxml"));
+        if (activePeriod()) {
+            setSessionGlobalDataRol(2);
+            WindowManagement.changeScene("Soluciones a problemáticas académicas",
+                    getClass().getResource("SolutionsToAcademicProblems.fxml"));
+        }
     }
 
     public void clickConsultSolutionAsCareerManager() throws IOException {
-        setSessionGlobalDataRol(3);
-        WindowManagement.changeScene("Soluciones a problemáticas académicas",
-                getClass().getResource("SolutionsToAcademicProblems.fxml"));
+        if(activePeriod()) {
+            setSessionGlobalDataRol(3);
+            WindowManagement.changeScene("Soluciones a problemáticas académicas",
+                    getClass().getResource("SolutionsToAcademicProblems.fxml"));
+        }
+    }
+
+    public void clickAcademicOffer() throws IOException {
+        setSessionGlobalDataRol(1);
+        WindowManagement.changeScene("Oferta académica",
+                getClass().getResource("GroupQuery.fxml"));
     }
 
     private boolean activeTutorship() {
@@ -187,9 +212,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    public void clickAcademicOffer(ActionEvent actionEvent) throws IOException {
-        setSessionGlobalDataRol(1);
-        WindowManagement.changeScene("Oferta académica",
-                getClass().getResource("GroupQuery.fxml"));
+    private boolean activePeriod () {
+        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() == 0) {
+            return true;
+        } else {
+            WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay un periodo activo", Alert.AlertType.INFORMATION);
+            return false;
+        }
     }
 }
