@@ -215,7 +215,7 @@ public class MainMenuController implements Initializable {
     }
 
     private boolean activePeriod () {
-        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() == 0) {
+        if (SessionGlobalData.getSessionGlobalData().getCurrentPeriod().getIdPeriod() != 0) {
             return true;
         } else {
             WindowManagement.showAlert("No disponible", "La accion no se puede realizar debido a que no hay un periodo activo", Alert.AlertType.INFORMATION);
